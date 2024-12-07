@@ -1,0 +1,816 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Schedules
+{% endblock %}
+
+
+{% block main %}
+
+    <div id="schedule">
+    
+        <div id="select-year">
+            <form action="/schedules" method="post">
+                <select id="select-year" name="school_year" required> 
+                    <option value="" disabled selected translation-key="school_year"> School year </option>
+                    <option value="2324"> 2023/2024 </option>
+                    <option value="2425"> 2024/2025 </option>
+                </select>
+                <button type="submit" class="button" id="see-schedule" translation-key="see_schedule"> See schedule </button>
+            </form>
+        </div>
+
+        {% if classes_data %}
+        
+            {% if user.role == "teacher" %}
+                <span class="lang-pt">
+                    <h3> O teu horário para este ano letivo </h3>
+                </span>
+                <span class="lang-en">
+                    <h3> Your schedule for this school year </h3>
+                </span>
+
+                <table class ="table">
+                    <thead>
+                        <tr>
+                            <th translation-key="weekday"> Weekday </th>
+                            <th translation-key="start_time"> Start Time </th>
+                            <th translation-key="class"> Class </th>
+                            <th translation-key="student"> Student </th>
+                            <th translation-key="duration"> Duration </th>
+                            <th translation-key="classroom"> Classroom </th>
+                        </tr>
+                    </thead>
+
+                    {% for item in classes_data %}
+                        <tbody>
+                            <td translation-key="{{ item.weekday | lower}}">
+                                {{ item.weekday }}
+                            </td>
+                            <td>
+                                {{ item.class.hour_formatted }}
+                            </td>
+                            <td translation-key="{{ item.class.name | lower }}" >
+                                {{ item.class.name }}
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for student in item.students %}
+                                        <li>
+                                            {{ student.user.name }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                {{ item.class.duration }} min
+                            </td>
+                            <td>
+                                {{ item.class.classroom }}
+                            </td>
+                        </tbody>
+                    {% endfor %}
+                </table>
+
+            {% elif user.role == "student" %}
+                <span class="lang-pt">
+                    <h3> O teu horário para este ano letivo </h3>
+                </span>
+                <span class="lang-en">
+                    <h3> Your schedule for this school year </h3>
+                </span>
+
+                <table class ="table">
+                    <thead>
+                        <tr>
+                            <th translation-key="weekday"> Weekday </th>
+                            <th translation-key="start_time"> Start Time </th>
+                            <th translation-key="class"> Class </th>
+                            <th translation-key="teacher"> Teacher </th>
+                            <th translation-key="duration"> Duration </th>
+                            <th translation-key="classroom"> Classroom </th>
+                    </thead>
+
+                    {% for item in classes_data %}
+                        <tbody>
+                            <td translation-key="{{ item.weekday }} | lower">
+                                {{ item.weekday }}
+                            </td>
+                            <td>
+                                {{ item.class.hour }}
+                            </td>
+                            <td translation-key="{{ item.class.name }} | lower">
+                                {{ item.class.name }}
+                            </td>
+                            <td>
+                                {{ item.teacher }}
+                            </td>
+                            <td>
+                                {{ item.class.duration }} min
+                            </td>
+                            <td>
+                                {{ item.class.classroom}}
+                            </td>
+                        </tbody>
+                    {% endfor %}
+                </table>
+                
+            {% else %}
+                <span class="lang-pt">
+                    <h3> Horário atual </h3>
+                </span>
+                <span class="lang-en">
+                    <h3> Current Schedule </h3>
+                </span>
+                
+                <div id="plus-icon-column">
+                    <div class="horizontal-elements">
+                        <button class="new-schedule" onclick="newSchedule()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16" id="plus-icon-btn">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+                            </svg> 
+                        </button>
+                        <span class="lang-pt">
+                            <h3> Adicionar novo horário </h3>
+                        </span>
+                        <span class="lang-en">
+                            <h3> Add new schedule </h3>
+                        </span>
+                    </div> 
+
+                    <div class="modal-overlay new-schedule-overlay"> 
+                        <div class="modal new-schedule-modal">
+                            <div class="modal-content new-schedule-content">
+                                <form id="new-schedule-form" action="/new_class" method="POST">
+                                    <table class="table">
+                                        <thead>
+                                            <th> <label for="new-class-name" translation-key="class"> Class: </label> </th>
+                                            <th> <label for="new-class-weekday" translation-key="weekday"> Weekday: </label> </th>
+                                            <th> <label for="new-class-start" translation-key="start_time"> Start Time: </label> </th>
+                                            <th> <label for="new-class-duration" translation-key="duration"> Duration: </label> </th>
+                                            <th> <label for="new-class-teacher" translation-key="teacher"> Teacher: </label> </th>
+                                            <th> <label for="new-class-students" translation-key="students"> Students: </label> </th>
+                                            <th> <label for="new-class-classroom" translation-key="classroom"> Classroom: </label> </th>
+                                            <th> <label for="new-class-first-lesson" translation-key="first_lesson"> First Lesson: </label> </th>
+                                        </thead>
+                                        <tbody>
+                                            <td> <input type="text" id="new-class-name" name="class_name" required></td>
+                                            <td> 
+                                                <span class="lang-pt" hidden>
+                                                    <select id="new-class-weekday" name="weekday" required>
+                                                        {% set weekdays = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"] %}
+                                                            <option disabled selected> </option>
+                                                        {% for day in weekdays %}
+                                                            <option value="{{ day }}"> {{ day }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </span>
+                                                <span class="lang-en">
+                                                    <select id="new-class-weekday" name="weekday" required>
+                                                        {% set weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] %}
+                                                    
+                                                        {% for day in weekdays %}
+                                                            <option value="{{ day }}"> {{ day }}</option>
+                                                        {% endfor %}
+                                                    </select> 
+                                                </span> 
+                                            </td>
+                                            <td> <input type="time" id="new-class-start" name="start_time" required> </td>
+                                            <td> <input type="number" min="30" max="120" id="new-class-duration" name="duration" required></td>
+                                            <td>
+                                                <select name="teacher" id="new-class-teacher" required>
+                                                    <option selected disabled> </option>
+                                                {% for name in teacher_names %}
+                                                    <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td> 
+                                                <ul>
+                                                    {% for student in active_students %}
+                                                    <li>
+                                                        <input type="checkbox" name="students[]" value="{{ student.id }}"> {{ student.name }} 
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </td>
+                                            <td> <input type="text" id="new-class-classroom" name="classroom" required> </td>
+                                            <td> <input type="date" id="new-class-first-lesson" name="first_lesson" required> </td>
+                                        </tbody>
+                                    </table>
+                                    <button class="button create-new-schedule" type="submit" translation-key="confirm"> Confirm </button>
+                                    <button class="button cancel-new-schedule" translation-key="cancel"> Cancel </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class ="table">
+                    <thead>
+                        <tr>
+                            <th translation-key="weekday"> Weekday </th>
+                            <th translation-key="start_time"> Start Time </th>
+                            <th translation-key="class"> Class </th>
+                            <th translation-key="teacher"> Teacher </th>
+                            <th translation-key="student"> Student </th>
+                            <th translation-key="duration"> Duration </th>
+                            <th translation-key="classroom"> Classroom </th>
+                        </tr>
+                    </thead>
+                    
+                    {% for item in classes_data %}
+                        <tbody>
+                            <td class="weekday">
+                                <ul>
+                                    <li translation-key="{{ item.weekday | lower }}"> {{ item.weekday }} </li>
+                                    <li>
+                                        <span class="lang-pt" hidden>
+                                            <select name="weekdays" class="hidden-class{{ item.class.class_id }}" hidden>
+                                                {% set weekdays = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"] %}
+                                                <!-- TODO:fix weekday in pt != item.weekday -->
+                                                {% for day in weekdays %}
+                                                    {% if day == item.weekday %}
+                                                        <option value="{{ day }}" selected> {{ day }}</option>
+                                                    {% else %}
+                                                        <option value="{{ day }}"> {{ day }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </span>
+                                        <span class="lang-en">
+                                            <select name="weekdays" class="hidden-class{{ item.class.class_id }}" hidden>                                
+                                                {% set weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] %}
+
+                                                {% for day in weekdays %}
+                                                    {% if day == item.weekday %}
+                                                        <option value="{{ day }}" selected> {{ day }}</option>
+                                                    {% else %}
+                                                        <option value="{{ day }}"> {{ day }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </td>
+
+                            <td class="start-time">
+                                <ul>
+                                    <li class="start-time-default"> {{ item.class.hour_formatted }} </li>
+                                    <li> <input type="time" class="hidden-class{{ item.class.class_id }}" hidden> </li>
+                                </ul> 
+                            </td>
+
+                            <td class="class-name" translation-key="{{ item.class.name | lower }}">
+                                {{ item.class.name }}
+                            </td>
+
+                            <td class="teacher-name">
+                                <ul>
+                                    <li> {{ item.teacher[0] }} </li>
+                                    <li> 
+                                        <select name="teachers" class="hidden-class{{ item.class.class_id }}" hidden>
+                                            {% for name in teacher_names %}
+                                                {% if name[0] == item.teacher[0] %}
+                                                    <option value="{{ name[0] }}" selected> {{ name[0] }} </option>
+                                                {% else %}
+                                                    <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </li>
+                                </ul>
+                            </td>
+
+                            <td class="student-names">
+                                <ul class="original-students">
+                                    {% for student in item.students %} 
+                                        <li>    
+                                        {{ student.user.name }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                                <ul class="updated-students" hidden> 
+                                </ul>
+
+                                <span class="lang-pt" hidden>
+                                    <button type="button" class="hidden-class{{ item.class.class_id }}" class-id-name="hidden-class{{ item.class.class_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Editar lista de alunos </button>
+                                </span>
+                                <span class="lang-en">
+                                    <button type="button" class="hidden-class{{ item.class.class_id }}" class-id-name="hidden-class{{ item.class.class_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Edit students list </button>
+                                </span>
+
+                                <!-- Edit students modal -->
+                                <div class="modal-overlay edit-students-overlay hidden-class{{ item.class.class_id }}">
+                                    <div class="modal edit-students-modal hidden-class{{ item.class.class_id }}">
+                                        <div class="modal-content edit-students-content">
+                                            <!-- Left column: All students -->
+                                            <div class="students-modal-left">
+                                                <div class="students-modal-header"> 
+                                                    <span class="lang-pt" hidden>
+                                                        <h3> Alunos disponíveis </h3>
+                                                    </span>
+                                                    <span class="lang-en">
+                                                        <h3> Available Students </h3>
+                                                    </span>
+                                                   
+                                                </div>
+                                                <div class="students-modal-body">
+                                                    {% for student in students %}
+                                                    <div class="student-item all-students" student-id="{{ student.id }}">
+                                                        <button type="button" onclick="addStudent(this)" > + </button>
+                                                        <span> {{ student.name }} </span>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="students-modal-middle">
+                                                <button type="button" class="button students-modal-button" onclick="saveStudents(this.closest('.edit-students-modal'), this.closest('.edit-students-overlay'))" translation-key="save"> Save </button>
+                                                <button type="button" class="button students-modal-button" onclick="resetStudents(this.closest('.edit-students-modal'), this.closest('.edit-students-overlay'))" translation-key="cancel"> Cancel </button>
+                                            </div>
+                                            <!-- Right column: students in class -->                                                  
+                                            <div class="students-modal-right">
+                                                <div class="students-modal-header">
+                                                    <span class="lang-pt" hidden>
+                                                        <h3> Alunos nesta aula </h3>
+                                                    </span>
+                                                    <span class="lang-en">
+                                                        <h3> Students in this class </h3>
+                                                    </span>
+                                                   
+                                                </div>
+                                                <div class="students-modal-body">
+                                                    {% for student in item.students %}
+                                                    <div class="student-item students-in-class og-student" student-id="{{ student.student_id }}">
+                                                        <button type="button" onclick="removeStudent(this)"> X </button> 
+                                                        <span> {{ student.user.name }} </span>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="class-duration">
+                                <ul> 
+                                    <li> {{ item.class.duration }} min </li>
+                                    <li>
+                                        <input type="number" min="30" max="120" name="durations" class="hidden-class{{ item.class.class_id }}" placeholder="{{ item.class.duration }}" hidden>
+                                    </li>   
+                                </ul>
+                               
+                            </td>
+
+                            <td class="classroom">
+                                <ul>
+                                    <li> {{ item.class.classroom }} </li>
+                                    <li>
+                                        <input type="text" name="classrooms" class="hidden-class{{ item.class.class_id }}" placeholder="{{ item.class.classroom }}" hidden>
+                                    </li>
+                                </ul>
+                            </td>
+
+                            <td class="edit">
+                                <button class="edit-btn" data-class-id-name="hidden-class{{ item.class.class_id }}" onclick=displayEdit(this)> <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                    </svg> 
+                                </button>
+                                <button class="delete-btn" data-class-id-name="hidden-class{{ item.class.class_id }}" onclick=displayDeleteModal(this)> <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                  </svg>
+                                </button>
+                            
+                                <!-- Delete modal -->
+                                <div class="modal-overlay delete-class-overlay">
+                                    <div class="modal delete-class-modal">
+                                        <div class="modal-content delete-class-content">
+                                            <div class="delete-class-body">
+                                                <span class="lang-pt">
+                                                    <h2> Atenção!</h2>
+                                                    <h3> Tem a certeza que quer remover este horário? </h3>
+                                                    <h6> (Aulas anteriores associadas a este horário não serão eliminadas) </h4>
+                                                </span>
+                                                <span class="lang-en">
+                                                    <h2> Warning!</h2>
+                                                    <h3> Are you sure you want to remove this Class from your Schedule? </h3>
+                                                    <h6> (This action won't delete past lessons associated to this Class) </h4>
+                                                </span>
+                                                
+                                            </div>
+                                            
+                                            <div class="delete-class-buttons">
+                                                <button class="button confirm-delete" translation-key="delete"> Delete </button>
+                                                <button class="button cancel-delete" translation-key="go_back"> Go back </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="change-buttons hidden-class{{ item.class.class_id }}" hidden>
+                                <button class="button" class-id="{{ item.class.class_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'))" translation-key="confirm"> Confirm </button>
+                            </td>
+                            <td class="change-buttons hidden-class{{ item.class.class_id }}" hidden>
+                                <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('data-class-id-name'))" data-class-id-name="hidden-class{{ item.class.class_id }}" id="cancel-edit" translation-key="cancel"> Cancel </button>
+                            </td>
+                        
+                        </tbody>
+                     
+                    {% endfor %}
+                </table>
+
+            {% endif %}
+
+        {% else %}
+        <h3> You have no assigned schedule </h3>
+
+        {% endif %}
+    </div>
+
+
+    <script>
+
+        // Create new schedule
+        function newSchedule() {
+            let overlay = document.querySelector(".new-schedule-overlay");
+            let modal = document.querySelector(".new-schedule-modal");
+            let exit = modal.querySelector(".cancel-new-schedule");
+
+            overlay.style.display="block";
+            modal.style.display="block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                } 
+            };
+
+            exit.onclick = function(event) {
+                if (event.target == exit) {
+                    modal.style.display = "none";
+                    overlay.style.display="none";
+                }  
+            }
+        }
+
+        // Cancel/close edit mode
+        function cancelEdit(tableRow, className) {
+            console.log("Cancel/close edit mode triggered");
+          
+            let inlineEdit = tableRow.querySelectorAll("." + className);
+            let updatedStudents = tableRow.querySelector(".updated-students");
+            let originalStudents = tableRow.querySelector(".original-students");
+            let StudentsInClass = tableRow.querySelectorAll(".students-in-class");
+            let modal = tableRow.querySelector(".edit-students-modal");
+            let overlay = tableRow.querySelector(".edit-students-overlay");
+            let icons = tableRow.querySelector(".edit");
+
+            StudentsInClass.forEach(function(element) {
+                if (element.classList.contains("og-student")) {
+                    console.log("Found og student");    
+                }
+                else {
+                    element.classList.add("added-student");
+                    console.log("Found non og student");  
+                }
+            })
+
+            resetStudents(modal, overlay);
+            
+            updatedStudents.hidden = true;
+            originalStudents.hidden = false;
+
+            icons.hidden=false;
+            
+            inlineEdit.forEach(function(column) {        
+                console.log("For each inlineEdit function triggered");
+
+                column.hidden = true;
+            });
+
+        };
+
+        // Display edit fields inline
+        function displayEdit(button) {
+            let className = button.getAttribute("data-class-id-name");
+            let icons = button.closest('td');
+            let row = document.querySelectorAll("." + className);
+
+            icons.hidden = true;
+
+            row.forEach(function(column) {
+                column.hidden = false;
+            });
+        };
+
+        // Create delete modal
+        function displayDeleteModal(deleteOption) {
+            let overlay = document.querySelector(".delete-class-overlay");
+            let modal = document.querySelector(".delete-class-modal");
+            let className = deleteOption.getAttribute("data-class-id-name")
+            let options = modal.querySelectorAll(".delete-class-buttons button");
+            console.log("Delete modal triggered");
+
+            let classId = className.replace("hidden-class", "");
+ 
+            // make modal appear
+            modal.style.display = "block";
+            overlay.style.display = "block";
+        
+            // Actions that close modal
+            options.forEach(function(option) {
+                option.onclick = function() {
+
+                    // delete class
+                    if (this.innerText === "Delete") {
+                        console.log("Delete button activated");
+                        console.log(classId);
+
+                        fetch('/delete_class', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ classId: classId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.href = data.redirect;
+                        })
+                        .catch(error => console.error("There was a problem with fetch:", error));
+                    }
+
+                    // close modal
+                    else {
+                        modal.style.display = "none";
+                        overlay.style.display = "none";
+                        console.log("Delete modal close triggered");
+                    }
+                };
+            });
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                    console.log("Delete overlay modal triggered");
+                } 
+            };
+        };
+
+
+        // Display "edit students" modal and calls reset function
+        function editStudents(button) {
+            let className = button.getAttribute("class-id-name");
+            let overlay = document.querySelector(".edit-students-overlay." + className);
+            let modal = document.querySelector(".edit-students-modal." + className);
+            console.log("Edit students modal triggered");
+        
+            modal.style.display = "block";
+            overlay.style.display = "block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    
+                    console.log("Edit students overlay triggered");
+                    resetStudents(modal, overlay);
+                }
+            }; 
+        };
+
+        /* Check if students already in class (function called when open "edit students" modal)
+        (hides student in left side if student in right side)*/
+        function checkStudents(button) {
+            console.log("check students function triggered");
+
+            let className = button.getAttribute("class-id-name");
+            let modal = document.querySelector(".edit-students-modal." + className);
+
+            let allStudents = modal.querySelectorAll(".students-modal-left .student-item");
+            let studentsInClass = modal.querySelectorAll(".students-modal-right .student-item");
+            
+            allStudents.forEach(function(studentElement) {
+                let studentId = studentElement.getAttribute("student-id");
+                
+                studentsInClass.forEach(function(inClassElement) {
+                    let inClassId = inClassElement.getAttribute("student-id");
+                    if (studentId == inClassId && inClassElement.hidden == false) {
+                        studentElement.style.display = "none";
+                    }
+                });
+            });
+        };
+
+        /* Cancel current changes (function called when open "edit students" modal and when click "Cancel" btn on "edit students" modal )
+        (displays all students on left side, displays students in class (hidden (when removed) and not hidden) on right side, removes "added-students")
+        */
+        function resetStudents(modal, overlay) {
+            console.log("Reset students function triggered");
+            let allStudents = modal.querySelectorAll(".all-students");
+            let studentsInClass = modal.querySelectorAll(".students-in-class");
+
+            allStudents.forEach(function(studentElement) {
+                studentElement.style.display = "flex";
+            })
+
+            studentsInClass.forEach(function(studentElement) {
+                studentElement.style.display = "flex";
+                let newStudent = modal.querySelectorAll(".added-student");
+
+                if (newStudent.length > 0) {
+                    newStudent.forEach(function(element) {
+                        element.remove();
+                        console.log("New student removed from students-in-class div");
+                    })
+                }
+                else {
+                    console.log("No new students found");
+                }
+            })
+
+            modal.style.display = "none";
+            overlay.style.display = "none";
+        };
+
+        
+        /* Remove students from class 
+        (displays student in left side; hides in right side)*/
+        function removeStudent(button) {
+            console.log("Remove student function was triggered");
+            let parentDiv = button.parentElement;
+            let removedStudent = parentDiv.getAttribute("student-id");
+            let modal = button.closest(".edit-students-modal");
+
+            let allStudents = modal.querySelectorAll(".students-modal-left .student-item");
+            
+            allStudents.forEach(function(studentElement) {
+                let studentId = studentElement.getAttribute("student-id");
+ 
+                if (studentId == removedStudent) {
+                    studentElement.style.display = "flex";
+                }
+            });
+
+            parentDiv.style.display = "none";
+        };
+
+        // Add students to class (hides in left side, adds "added-student" div in right side)
+        function addStudent(button) {
+            let modal = button.closest(".edit-students-modal");
+            let parentDiv = button.parentElement;
+            let studentsInClass = modal.querySelector(".students-modal-right .students-modal-body");
+            let studentId = parentDiv.getAttribute("student-id");
+            let studentName = parentDiv.querySelector("span").textContent; // textContent instead of innerText because it might already be hidden or display:none
+
+            // Define new div attributes
+            let newDiv = document.createElement("div");
+            newDiv.classList.add("student-item", "students-in-class", "added-student");
+            newDiv.setAttribute("student-id", studentId);
+
+            // Create new div's button and span elements
+            newDiv.innerHTML = `
+                <button type="button" onclick="removeStudent(this)"> X </button>
+                <span> ${studentName} </span>
+            `;
+
+            // Append new div to students-modal-body
+            studentsInClass.appendChild(newDiv);
+
+            // Hide student from all students list
+            parentDiv.style.display = "none";
+        }
+
+        /* Save changes in Edit Students 
+        (removes "added-student" class from right side students, updates displayed students list)*/
+        function saveStudents(modal, overlay) {
+            console.log("save changes function triggered");
+
+            let studentsInClass = modal.querySelectorAll(".students-modal-right .student-item");
+            let row = modal.closest("td");
+
+            let updatedStudents = row.querySelector(".updated-students");
+            let originalStudents = row.querySelector(".original-students");
+
+            // clear old changes before updating
+            updatedStudents.innerHTML = "";
+
+            
+            studentsInClass.forEach(function(element) {
+                element.classList.remove("added-student");
+
+                if(element.style.display == "none"){
+                    //element.remove();
+                    console.log("Found hidden student in right side");
+                }
+                // Display updated list
+                else {
+                    let studentName = element.querySelector("span").textContent;
+                    let newLi = document.createElement("li");
+                    newLi.textContent = studentName;
+                    updatedStudents.appendChild(newLi);
+                }
+            })
+
+            originalStudents.hidden=true;
+            updatedStudents.hidden = false;
+
+            modal.style.display="none";
+            overlay.style.display="none";
+        }
+
+        // Handle new data after edit
+        function SubmitChanges(tableRow, dataClassId) {
+            
+            // TODO: Confirm if classId is still working correctly
+            // Previsouly, I had class-id-name and trimmed "class" from string, getting just the Id number)
+            let classId = dataClassId
+
+            console.log(classId);
+
+            // Get startTime
+            let startTimeDefault = tableRow.querySelector(".start-time-default");
+            let startTimeEdit = tableRow.querySelector(".start-time input");
+            let startTime;
+
+            // Get students
+            let studentsOriginal = tableRow.querySelector(".student-names .original-students");
+            let studentsUpdated = tableRow.querySelector(".student-names .updated-students");
+            let students = [];
+
+            // Get rest of inputs
+            let weekday = tableRow.querySelector(".weekday select");
+            //TODO: maybe delete className from data
+            // let className = tableRow.querySelector(".class-name");
+            let teacher = tableRow.querySelector(".teacher-name select");
+            let duration = tableRow.querySelector(".class-duration input");
+            let classroom = tableRow.querySelector(".classroom input");
+
+            // Assign correct values to each input
+            weekday = weekday.value;
+            //className = className.textContent.trim();
+            teacher = teacher.value;
+
+            if (startTimeEdit.value === "") {
+                startTime = startTimeDefault.textContent;
+            } else {
+                startTime = startTimeEdit.value;
+            }
+
+            if (studentsOriginal.hidden === true) {
+                students = Array.from(studentsUpdated.querySelectorAll("li")).map(li => li.textContent.trim());
+            } else {
+                students = Array.from(studentsOriginal.querySelectorAll("li")).map(li => li.textContent.trim());
+            }
+
+            if (duration.value === "") {
+                duration = duration.placeholder;
+            } else {
+                duration = duration.value;
+            }
+
+            if (classroom.value === "") {
+                classroom = classroom.placeholder;
+            } else {
+                classroom = classroom.value;
+            }
+
+            // Send data to app.py via fetch
+            fetch("/change_class", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json" // Lets the server know what kind of data to handle
+                },
+                // Convert every variable to only one data object
+                body: JSON.stringify({
+                    classId: classId,
+                    weekday: weekday,
+                    startTime: startTime,
+                    //className: className,
+                    teacher: teacher,
+                    students: students,
+                    duration: duration,
+                    classroom: classroom
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                window.location.href = data.redirect;
+            })
+            .catch(error => {
+                console.error("There was a problem with fetch:", error);
+            });
+        }
+
+    </script>
+
+{% endblock %}

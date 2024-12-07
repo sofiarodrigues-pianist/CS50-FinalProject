@@ -1,0 +1,202 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Homepage
+{% endblock %}
+
+
+{% block main %}
+
+    {% if logged_in %}
+        <div id = login-welcome>
+            <h1 translation-key="welcome"> Welcome </h1>
+            <h2>{{ user.name }}</h2>
+        </div>
+        <br>
+        <div id = today>
+            {% if user.role == "teacher" %}
+
+                {% if classes_data %}
+                    <span class="lang-pt" hidden>
+                        <h3> Este é o horário para hoje </h3>
+                    </span>
+                    <span class="lang-en">
+                        <h3> This is your schedule for today </h3>
+                    </span>
+                    
+                    <table class ="table">
+                        <thead>
+                            <tr>
+                                <th translation-key="class"> Class </th>
+                                <th translation-key="start_time"> Start Time </th>
+                                <th translation-key="students"> Students </th>
+                                <th translation-key="duration"> Duration </th>
+                                <th translation-key="classroom"> Classroom </th>
+                            </tr>
+                        </thead>
+                        {% for item in classes_data %}
+                            <tbody>
+                                <td translation-key="{{ item.name | lower }}">
+                                    {{ item.name }}
+                                </td>
+                                <td>
+                                    {{ item.class.hour_formatted }}
+                                </td>
+                                <td>
+                                    <ul>
+                                        {% for student in item.students %}
+                                            <li>
+                                                {{ student.user.name }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                                <td>
+                                    {{ item.class.duration }} min
+                                </td>
+                                <td>
+                                    {{ item.class.classroom }}
+                                </td>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                    
+                {% else %}
+                    <span class="lang-pt" hidden>
+                        <h3> Não há aulas hoje </h3>
+                    </span>
+                    <span class="lang-en">
+                        <h3> You have no classes today </h3>
+                    </span>
+                    
+
+                {% endif %}
+
+            {% elif user.role == "student" %}
+
+                {% if classes_data %}
+                    <span class="lang-pt" hidden>
+                        <h3> Este é o teu horário para hoje </h3>
+                    </span>
+                    <span class="lang-en">
+                        <h3> This is your schedule for today </h3>
+                    </span>
+                    <table class ="table">
+                        <thead>
+                            <tr>
+                                <th translation-key="class"> Class </th>
+                                <th translation-key="start_time"> Start Time </th>
+                                <th translation-key="teacher"> Teacher </th>
+                                <th translation-key="duration"> Duration </th>
+                                <th translation-key="classroom"> Classroom </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in classes_data %}
+                                <td translation-key="{{ item.name | lower }}">
+                                    {{ item.name }}
+                                </td>
+                                <td>
+                                    {{ item.class.hour_formatted }}
+                                </td>
+                                <td>
+                                    {{ item.teacher }}
+                                </td>
+                                <td>
+                                    {{ item.class.duration }} min
+                                </td>
+                                <td>
+                                    {{ item.class.classroom }}
+                                </td>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                {% else %}
+                    <h3> You have no classes today </h3>
+
+                {% endif %}
+
+            {% else %}
+
+                {% if classes_data %}
+                    <span class="lang-pt" hidden>
+                        <h3> Este é o horário para hoje: </h3>
+                    </span>
+                    <span class="lang-en">
+                        <h3> This is the schedule for today: </h3>
+                    </span> 
+                    <table class ="table">
+                        <thead>
+                            <tr>
+                                <th translation-key="class"> Class </th>
+                                <th translation-key="start_time"> Start Time </th>
+                                <th translation-key="teacher"> Teacher </th>
+                                <th translation-key="student"> Student </th>
+                                <th translation-key="duration"> Duration </th>
+                                <th translation-key="classroom"> Classroom </th>
+                            </tr>
+                        </thead>
+                        {% for item in classes_data %}
+                        <tbody>
+                            <td translation-key="{{ item.name | lower }}">
+                                {{ item.name }}
+                            </td>
+                            <td>
+                                {{ item.class.hour_formatted }}
+                            </td>
+                            <td>
+                                {{ item.teacher }}
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for student in item.students %}
+                                        <li>
+                                            {{ student.user.name }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                {{ item.class.duration }} min
+                            </td>
+                            <td>
+                                {{ item.class.classroom }}
+                            </td>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                
+                {% else %}
+                    <h3> There are no classes today </h3>
+
+                {% endif %}
+
+                <div class="shortcuts-container">
+                    <a href="/lessons" class="shortcut-btn"> Check Attendances </a>
+                    <a href="/tuitions" class="shortcut-btn"> Check Tuitions </a>
+                    <a href="/salaries" class="shortcut-btn"> Check Salaries </a> 
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    {% else %}
+        <div id = "homepage"> 
+            <span class="lang-pt" hidden>
+                <h1> Bem-vindo à G&S Music Academy </h1>
+                <h2> Gestão Interna </h2>
+            </span>
+            <span class="lang-en">
+                <h1> Welcome to G&S Music Academy </h1>
+                <h2> Internal Management</h2>
+            </span> 
+        </div>
+        <div id = "index_buttons">
+            <a class="button" href="/login" translation-key="login" >Login</a>
+            <a class="button" href="/register" translation-key="register">Register</a>
+        </div>
+    {% endif %}
+
+{% endblock %}

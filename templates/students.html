@@ -1,0 +1,545 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Students
+{% endblock %}
+
+
+{% block main %}
+
+    <div id="students">
+        {% if user.role == "admin" %}
+
+            {% if students_data %}
+                <span class="lang-pt" hidden>
+                    <h3> Alunos atuais </h3>
+                </span>
+                <span class="lang-en">
+                    <h3> Current Students </h3>
+                </span>
+
+                <span id="plus-icon-column">
+                    <div class = "horizontal-elements">
+                        <button class="new-student" onclick="newStudent(this.closest('span'))">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16" id="plus-icon-btn">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+                            </svg> 
+                        </button>
+                        <span class="lang-pt" hidden>
+                            <h5> Novo aluno </h3>
+                        </span>
+                        <span class="lang-en">
+                            <h5> New student </h3>
+                        </span>
+                    </div>
+
+                    <div class="modal-overlay new-student-overlay"> 
+                        <div class="modal new-student-modal">
+                            <div class="modal-content new-student-content">
+                                <form id="new-student-form" action="/new_student" method="POST">
+                                    <table class="table">
+                                        <thead>
+                                            <th> <label for="new-student-name" translation-key="name"> Name </label> </th>
+                                            <th> <label for="new-student-age" translation-key="age"> Age </label> </th>
+                                            <th> <label for="new-student-phone" translation-key="phone"> Phone </label> </th>
+                                            <th> <label for="new-student-start"> Email </label> </th>
+                                            <th> <label for="new-student-duration" translation-key="instrument"> Instrument </label> </th>
+                                            <th> <label for="new-student-teacher" translation-key="teacher"> Teacher </label> </th>
+                                            <th> <label for="new-student-start" translation-key="course"> Course </label> </th>
+                                            <th> <label for="new-student-students" translation-key="tuition"> Tuition </label> </th>
+                                            <th> <label for="new-student-students" translation-key="enrollment"> Enrollment </label> </th>
+                                        </thead>
+                                        <tbody>
+                                            <td> <input type="text" id="new-student-name" name="name" required> </td>
+                                            <td> <input type="number" id="new-student-age" name="age" required> </td>
+                                            <td> <input type="tel" id="new-student-phone" name="phone" required> </td>
+                                            <td> <input type="email" id="new-student-email" name="email" required></td>
+                                            <td> <input type="text" id="new-student-instrument" name="instrument" required> </td>
+                                            <td>
+                                                <select name="teacher" id="new-student-teacher" required>
+                                                    <option></option>
+                                                    {% for name in teacher_names %}
+                                                        <option value="{{ name }}"> {{ name }} </option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            
+                                            <td> 
+                                                <select id="new-student-course" name="course" required>
+                                                    <option></option>
+                                                    {% set courses = ["Mini-Músico", "Mini-Músico Sociável", "Instrumentista", "Instrumentista Sociável", "Semi-Instrumentista", "Semi-Músico", "Músico"] %}
+                                                    {% for course in courses %}
+                                                        <option value="{{ course }}"> {{ course }}</option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td> <input type="number" id="new-student-fee" name="monthly_fee" required> </td>
+                                            <td> <input type="date" id="new-student-enrollment" name="enrollment" required> </td>
+                                        </tbody>
+                                    </table>
+                                    <button class="button create-new-student" type="submit" translation-key="add"> Add </button>
+                                    <button class="button cancel-new-student" translation-key="cancel"> Cancel </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+                <table class ="table">
+                    <thead>
+                        <tr>
+                            <th translation-key="name"> Name </th>
+                            <th translation-key="age"> Age </th>
+                            <th translation-key="contacts"> Contacts </th>
+                            <th translation-key="course"> Course </th>
+                            <th translation-key="instrument"> Instrument </th>
+                            <th translation-key="teacher"> Teacher </th>
+                            <th translation-key="tuition"> Tuition </th>
+                            <th translation-key="enrollment"> Enrollment </th>
+                            
+                        </tr>
+                    </thead>
+
+                    {% for item in students_data %}
+                        <tbody>
+                            <td class="name">
+                                <ul>
+                                    <li> {{ item.student.user.name }} </li>
+                                    <li> <input type="text" class="hidden-student{{ item.student.student_id }}" placeholder="{{ item.student.user.name }}" hidden> </li>
+                                </ul>
+                                
+                            </td>
+                            <td class="age">
+                                <ul>
+                                    <li>
+                                        {% if item.student.user.age %}
+                                            <span> {{ item.student.user.age }} </span>
+                                        {% else %}
+                                            <span> ---- </span>
+                                        {% endif %}
+                                    </li>
+                                    <li> <input type="number" class="hidden-student{{ item.student.student_id }}" placeholder="{{ item.student.user.age }}" hidden> </li>
+                                </ul>  
+                            </td>
+                            <td class="contacts">
+                                <ul>
+                                    {% for data in item.contacts %}
+                                        {% if "@" in data %}
+                                            <li class="emailDefault"> {{ data }} </li>
+                                        {% else %}
+                                            <li class="phoneDefault"> {{data}} </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li class="email"> <input type="email" class="hidden-student{{ item.student.student_id }}" placeholder="E-mail" hidden> </li>
+                                    <li class="phone"> <input type="tel" class="hidden-student{{ item.student.student_id }}" placeholder="Phone number" hidden> </li>
+                                </ul>
+                            </td>
+                            <td class="course">
+                                <ul>
+                                    <li> {{ item.student.course }} </li>
+                                    <li>
+                                        <select name="courses" class="hidden-student{{ item.student.student_id }}" hidden>
+                                            {% set courses = ["Mini-Músico", "Mini-Músico Sociável", "Instrumentista", "Instrumentista Sociável", "Semi-Instrumentista", "Semi-Músico", "Músico"] %}
+                                            
+                                            {% for course in courses %}
+                                                {% if course == item.student.course %}
+                                                    <option value="{{ course }}" selected> {{ course }}</option>
+                                                {% else %}
+                                                    <option value="{{ course}}"> {{ course }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </li> 
+                                </ul>
+                                
+                            </td>
+                            <td class="instrument">
+                                <ul>
+                                    <li>
+                                        {% if item.student.instrument %}
+                                            <span> {{ item.student.instrument }} </span>
+                                        {% else %}
+                                            <span> ---- </span>
+                                        {% endif %}
+                                    </li>
+                                    <li> <input type="text" class="hidden-student{{ item.student.student_id }}" placeholder="{{ item.student.instrument }}" hidden> </li>
+                                </ul>
+                            </td>
+                            <td class="teacher">
+                                <ul>
+                                    <li> {{ item.teacher }} </li>
+                                    <li> 
+                                        <select name="teachers" class="hidden-student{{ item.student.student_id }}" hidden>
+                                            {% for name in teacher_names %}
+                                                {% if name[0] == item.teacher %}
+                                                    <option value="{{ name[0] }}" selected> {{ name[0] }} </option>
+                                                {% else %}
+                                                    <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td class="fee">
+                                <ul>
+                                    <li>
+                                        {% if item.student.monthly_fee %}
+                                            <span> {{ item.student.monthly_fee }} € </span>
+                                        {% else %}
+                                            <span> ---- </span>
+                                        {% endif %}
+                                    </li>
+                                    <li> <input type="number" class="hidden-student{{ item.student.student_id }}" placeholder="{{ item.student.monthly_fee }}" hidden> </li>
+                                </ul>  
+                            </td>
+                            <td class="enrollment">
+                                <ul>
+                                    <li class="enrollment-default"> {{ item.student.user.enrollment }} </li>
+                                    <li> <input type="date" class="hidden-student{{ item.student.student_id }}" hidden> </li>
+                                </ul>
+                                
+                            </td>
+                            <td class="edit">
+                                <button class="edit-btn" student-id-name="hidden-student{{ item.student.student_id }}" onclick=displayEdit(this)> <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                    </svg> 
+                                </button>
+                                <button class="delete-btn" student-id-name="hidden-student{{ item.student.student_id }}" onclick=displayDeleteModal(this)> <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                  </svg>
+                                </button>
+                                <div class="modal-overlay delete-student-overlay">
+                                    <div class="modal delete-student-modal">
+                                        <div class="modal-content delete-student-content">
+                                            <div class="delete-student-body">
+                                                <h2> Warning!</h2>
+                                                <h3> Are you sure you want to delete this Student? </h3>
+                                            </div>
+                                            
+                                            <div class="delete-student-buttons">
+                                                <button class="button confirm-delete"> Delete </button>
+                                                <button class="button cancel-delete"> Go back </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="change-buttons hidden-student{{ item.student.student_id }}" hidden>
+                                <button class="button" student-id="{{ item.student.student_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('student-id'))"> Confirm </button>
+                               
+                            </td>
+                            <td class="change-buttons hidden-student{{ item.student.student_id }}" hidden>
+                                <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('student-id-name'))" student-id-name="hidden-student{{ item.student.student_id }}" id="cancel-edit"> Cancel </button>
+                            </td>
+
+                        </tbody>
+                    {% endfor %}
+                </table>
+
+            {% else %}
+                <h3> There are no students yet </h3>
+                <span>
+                    <button onclick="newStudent(this.closest('span'))"> Register new student </button>
+                    <div class="modal-overlay new-student-overlay"> 
+                        <div class="modal new-student-modal">
+                            <div class="modal-content new-student-content">
+                                <form id="new-student-form" action="/new_student" method="POST">
+                                    <table class="table">
+                                        <thead>
+                                            <th> <label for="new-student-name"> Name: </label> </th>
+                                            <th> <label for="new-student-age"> Age: </label> </th>
+                                            <th> <label for="new-student-phone"> Phone: </label> </th>
+                                            <th> <label for="new-student-start"> Email: </label> </th>
+                                            <th> <label for="new-student-duration"> Instrument: </label> </th>
+                                            <th> <label for="new-student-teacher"> Teacher: </label> </th>
+                                            <th> <label for="new-student-start"> Course: </label> </th>
+                                            <th> <label for="new-student-students"> Monthly Fee: </label> </th>
+                                            <th> <label for="new-student-students"> Date of Enrollment: </label> </th>
+                                        </thead>
+                                        <tbody>
+                                            <td> <input type="text" id="new-student-name" name="name" required> </td>
+                                            <td> <input type="number" id="new-student-age" name="age" required> </td>
+                                            <td> <input type="tel" id="new-student-phone" name="phone" required> </td>
+                                            <td> <input type="email" id="new-student-email" name="email" required></td>
+                                            <td> <input type="text" id="new-student-instrument" name="instrument" required> </td>
+                                            <td>
+                                                <select name="teacher" id="new-student-teacher" required>
+                                                    <option></option>
+                                                    {% for name in teacher_names %}
+                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            
+                                            <td> 
+                                                <select id="new-student-course" name="course" required>
+                                                    <option></option>
+                                                    {% set courses = ["Mini-Músico", "Mini-Músico Sociável", "Instrumentista", "Instrumentista Sociável", "Semi-Instrumentista", "Semi-Músico", "Músico"] %}
+                                                    {% for course in courses %}
+                                                        <option value="{{ course }}"> {{ course }}</option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td> <input type="number" id="new-student-fee" name="monthly_fee" required> </td>
+                                            <td> <input type="date" id="new-student-enrollment" name="enrollment" required> </td>
+                                        </tbody>
+                                    </table>
+                                    <button class="button create-new-student" type="submit"> Add student </button>
+                                    <button class="button cancel-new-student"> Cancel </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+                
+            {% endif %}
+
+        {% else %}
+            <h2> Sorry, you don't have permission to see this page. </h2>
+
+        {% endif %}
+    </div>
+
+
+    <script>
+
+        // Display "Add new student" modal
+        function newStudent() {
+            let overlay = document.querySelector(".new-student-overlay");
+            let modal = document.querySelector(".new-student-modal");
+            let exit = modal.querySelector(".cancel-new-student");
+
+            overlay.style.display="block";
+            modal.style.display="block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                } 
+            };
+
+            exit.onclick = function(event) {
+                if (event.target == exit) {
+                    modal.style.display = "none";
+                    overlay.style.display="none";
+                }  
+            }
+        }
+
+
+        // Display edit fields inline
+        function displayEdit(button) {
+            let studentName = button.getAttribute("student-id-name");
+            let icons = button.closest('td');
+            let row = document.querySelectorAll("." + studentName);
+
+            icons.hidden = true;
+
+            row.forEach(function(column) {
+                column.hidden = false;
+            });
+        };
+
+        // Cancel/close edit mode
+        function cancelEdit(tableRow, studentName) {
+            console.log("Cancel/close edit mode triggered");
+
+            let icons = tableRow.querySelector(".edit");
+            let inlineEdit = tableRow.querySelectorAll("." + studentName);
+            let modal = tableRow.querySelector(".edit-students-modal");
+            let overlay = tableRow.querySelector(".edit-students-overlay");
+            
+            inlineEdit.forEach(function(column) {        
+                console.log("For each inlineEdit function triggered");
+
+                column.hidden = true;
+            });
+
+            icons.hidden = false;
+        };
+
+        // Handle new data after edit
+        function SubmitChanges(tableRow, studentId) {
+
+            console.log(studentId);
+
+            // Get enrollment date
+            let enrollmentDefault = tableRow.querySelector(".enrollment-default");
+            let enrollmentEdit = tableRow.querySelector(".enrollment input");
+            let enrollment;
+
+            // Get contacts
+            let phone = tableRow.querySelector(".phone input");
+            let email = tableRow.querySelector(".email input");
+
+            // Get rest of inputs
+            let name = tableRow.querySelector(".name input");
+            let age = tableRow.querySelector(".age input");
+            let course = tableRow.querySelector(".course select");
+            let instrument = tableRow.querySelector(".instrument input");
+            let fee = tableRow.querySelector(".fee input");
+            let teacher = tableRow.querySelector(".teacher select");
+            
+            // Assign correct values to each input
+            course = course.value;
+            teacher = teacher.value;
+
+            // enrollment
+            if (enrollmentEdit.value === "") {
+                enrollment = enrollmentDefault.textContent;
+            } else {
+                enrollment = enrollmentEdit.value;
+            }
+
+            // email
+            if (email.value === "") {
+                let emailDefault = tableRow.querySelector(".emailDefault");
+
+                if (emailDefault) {
+                    email = emailDefault.textContent;
+                }
+                else {
+                    email = "";
+                }
+            } else {
+                email = email.value;
+            }
+
+            // phone
+            if (phone.value === "") {
+                let phoneDefault = tableRow.querySelector(".phoneDefault");
+
+                if (phoneDefault) {
+                    phone = phoneDefault.textContent;
+                }
+                else {
+                    phone = "";
+                }
+            } else {
+                phone = phone.value;
+            }
+
+            // name
+            if (name.value === "") {
+                name = name.placeholder;
+            } else {
+                name = name.value;
+            }
+
+            // instrument
+            if (instrument.value === "") {
+                instrument = instrument.placeholder;
+            } else {
+                instrument = instrument.value;
+            }
+
+            // age
+            if (age.value === "") {
+                age = age.placeholder;
+            } else {
+                age = age.value;
+            }
+            
+            // monthly fee
+            if (fee.value === "") {
+                fee = fee.placeholder;
+            } else {
+                fee = fee.value;
+            }
+            
+
+            // Send data to app.py via fetch
+            fetch("/change_student", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json" // Lets the server know what kind of data to handle
+                },
+                // Convert every variable to only one data object
+                body: JSON.stringify({
+                    id: studentId,
+                    name: name,
+                    age: age,
+                    email: email,
+                    phone: phone,
+                    course: course,
+                    instrument: instrument,
+                    teacher: teacher,
+                    fee: fee,
+                    enrollment: enrollment
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                window.location.href = data.redirect;
+            })
+            .catch(error => {
+                console.error("There was a problem with fetch:", error);
+            });
+        }
+
+                
+        // Display delete modal
+        function displayDeleteModal(deleteOption) {
+            let overlay = document.querySelector(".delete-student-overlay");
+            let modal = document.querySelector(".delete-student-modal");
+            let studentName = deleteOption.getAttribute("student-id-name")
+            let options = modal.querySelectorAll(".delete-student-buttons button");
+            console.log("Delete modal triggered");
+
+            let studentId = studentName.replace("hidden-student", "");
+ 
+            // make modal appear
+            modal.style.display = "block";
+            overlay.style.display = "block";
+        
+            // Actions that close modal
+            options.forEach(function(option) {
+                option.onclick = function() {
+
+                    // delete class
+                    if (this.innerText === "Delete") {
+                        console.log("Delete button activated");
+                        console.log(studentId);
+
+                        fetch('/delete_student', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ studentId: studentId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.href = data.redirect;
+                        })
+                        .catch(error => console.error("There was a problem with fetch:", error));
+                    }
+
+                    // close modal
+                    else {
+                        modal.style.display = "none";
+                        overlay.style.display = "none";
+                        console.log("Delete modal close triggered");
+                    }
+                };
+            });
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                    console.log("Delete overlay modal triggered");
+                } 
+            };
+        };
+
+
+    </script>
+{% endblock %}

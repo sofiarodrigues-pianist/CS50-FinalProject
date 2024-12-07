@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html lang="en"> <!-- default language -->
+
+    <head>
+        <!-- copy-pasted. I guess this is the norm -->
+        <meta charset="utf=8">
+        <meta name="viewport" content="initial-scale=1, width=device-width"> 
+
+        <!-- link to personal stylesheet -->
+        <link href="/static/css/style.css" rel="stylesheet">
+
+        <title> G&S Music Academy: {% block title %}{% endblock %} </title>
+
+    </head>
+
+    <body>
+        <div class="grid-container">
+            
+            <div class="header">
+                {% if user %}
+                    <div class="navbar"> 
+                        <div class="nav-icon">
+                            <a href="/"> <img src="/static/G&S logo_branco.png" alt="logo" width="180" height="90"> </a>
+                        </div>
+
+                        <ul class="nav-items">
+                            {% if user.role == "teacher" %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/schedules" translation-key="schedules">Schedules</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/lessons" translation-key="lessons">Lessons</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/salaries" translation-key="salaries">Salaries</a>
+                                </li>
+
+                            {% elif user.role == "student" %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/schedules" translation-key="schedules">Schedules</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/lessons" translation-key="lessons">Lessons</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/tuitions" translation-key="tuitions">Tuitions</a>
+                                </li>
+
+                            {% elif user.role == "admin" %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/schedules" translation-key="schedules">Schedules</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/lessons" translation-key="lessons">Lessons</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/teachers" translation-key="teachers">Teachers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/students" translation-key="students">Students</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/tuitions" translation-key="tuitions">Tuitions</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/salaries" translation-key="salaries">Salaries</a>
+                                </li>
+
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="right">
+
+                        <div class="nav-item user">
+                            <button class="user-btn"> 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="user-icon" viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                                </svg>
+                            </button>
+                
+                            <div class="modal-overlay user-overlay"> 
+                                <div class="modal user-modal">
+                                    <div class="modal-content user-content">
+                                        <ul class="options user-options">
+                                            <li> 
+                                                <a href="/logout" id="logout" translation-key="logout">Logout</a>
+                                            </li>
+                                            <li> 
+                                                <label for="language" translation-key="language"> Language: </label>
+                                                <select class="fallout" id="language" aria-label="Choose language" onchange="switchLang(this.value)">
+                                                    <option value="en">English</option>
+                                                    <option value="pt">Português</option>
+                                                </select> 
+                                            </li>
+                                        </ul>
+                                        <span class="exit user-exit lang-en"> X </span>
+                                        <span class="exit user-exit lang-pt" hidden> Sair </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="navbar"> </div>
+                    <div class="right">
+                        <button class="translate"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" class="translate-icon" viewBox="0 0 16 16">
+                                <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286zm1.634-.736L5.5 3.956h-.049l-.679 2.022z"/>
+                                <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zm7.138 9.995q.289.451.63.846c-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6 6 0 0 1-.415-.492 2 2 0 0 1-.94.31"/>
+                              </svg>
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="main">
+                {% block main %}
+                {% endblock %}
+            </div>
+            
+            <div class="footer"> 
+                <h5> Copyright SR  </h5>
+            </div>
+
+            <script>
+
+                // adapted from W3Schools
+                document.addEventListener("DOMContentLoaded", function() {
+                    let userOverlay = document.querySelector(".user-overlay");
+                    let userModal = document.querySelector(".user-modal");
+                    let userExit = document.querySelector(".user-exit");
+                    let userButton = document.querySelector(".user-btn");
+                                   
+                    // place modal below icon, aligned right
+                    let userBtnRect = userButton.getBoundingClientRect();
+                    userModal.style.top = `${userBtnRect.bottom + window.scrollY}px`;
+                    userModal.style.right = `${window.innerWidth - userBtnRect.right}px`;
+
+                    userButton.onclick = function() {
+                        userModal.style.display = "block";
+                        userOverlay.style.display = "block";
+                    }
+
+                    userExit.onclick = function() {
+                        userModal.style.display = "none";
+                        userOverlay.style.display = "none";
+                    }   
+
+                    userOverlay.onclick = function(event) {
+                        if (event.target == userOverlay) {
+                            userModal.style.display = "none";
+                            userOverlay.style.display = "none";
+                        } 
+                    }
+                });
+                
+                // Save language preference
+                function saveLanguage() {
+                    let language = document.getElementById("language").value;
+                    localStorage.setItem("selectedLanguage", language);
+                    console.log("storage language:", language)
+                }
+
+                window.onload = function() {
+                    let savedLang = localStorage.getItem("selectedLanguage");
+                    console.log("saved language:", savedLang)
+                    if (savedLang) {
+                        document.getElementById("language").value = savedLang;
+                        switchLang(savedLang);
+                    }
+                }
+
+                // change page language
+                function switchLang(lang) {
+
+                    const translations = {
+                        en: {
+                            welcome:"Welcome",
+                            login:"Login",
+                            logout:"Logout",
+                            register:"Register",
+                            language:"Language",
+                            check:"Check",
+                            cancel:"Cancel",
+                            create:"Create",
+                            confirm:"Confirm",
+                            save:"Save",
+                            add:"Add",
+                            delete:"Delete",
+                            go_back:"Go Back",
+                            search:"Search",
+                            select:"Select",
+                            see_schedule:"See Schedule",
+                            active:"Active",
+                            inactive:"Inactive",
+                            monday:"Monday",
+                            tuesday:"Tuesday",
+                            wednesday:"Wednesday",
+                            thursday:"Thursday",
+                            friday:"Friday",
+                            saturday:"Saturday",
+                            class: "Class",
+                            lesson: "Lesson",
+                            lessons: "Lessons",
+                            schedule: "Schedule",
+                            schedules: "Schedules",
+                            teacher: "Teacher",
+                            teachers:"Teachers",
+                            student: "Student",
+                            students: "Students",
+                            classroom: "Classroom",
+                            start_time: "Start Time",
+                            duration: "Duration",
+                            tuition:"Tuition",
+                            tuitions:"Tuitions",
+                            fee:"Fee",
+                            salary:"Salary",
+                            salaries:"Salaries",
+                            weekday:"Weekday",
+                            month:"Month",
+                            monthly:"Monthly",
+                            payment: "Payment",
+                            payment_date: "Payment date",
+                            enrollment: "Enrollment",
+                            school_year:"School Year",
+                            date: "Date",
+                            first_lesson:"First Lesson",
+                            name:"Name",
+                            age:"Age",
+                            contacts:"Contacts",
+                            phone:"Phone",
+                            course:"Course",
+                            instrument:"Instrument",
+                            musical_expression:"Musical Expression",
+                            piano:"Piano",
+                            saxophone:"Saxophone",
+                            jazz_guitar:"Jazz Guitar",
+                            guitar:"Guitar",
+                            violin:"Violin",
+                            cello:"Cello",
+                            trumpet:"Trumpet",
+                            drums:"Drums",
+                            voice:"Voice",
+                            combo:"Combo",
+                            group_class:"Group Class",
+                            music_production:"Music Production"
+                        },
+
+                        pt: {
+                            welcome:"Bem-vindo",
+                            login:"Iniciar sessão",
+                            logout:"Terminar sessão",
+                            register:"Registar",
+                            language:"Idioma",
+                            check:"Consultar",
+                            cancel:"Cancelar",
+                            create:"Criar",
+                            confirm:"Confirmar",
+                            save:"Guardar",
+                            add:"Adicionar",
+                            delete:"Eliminar",
+                            go_back:"Retroceder",
+                            search:"Pesquisar",
+                            select:"Selecionar",
+                            see_schedule:"Ver horário",
+                            monday:"Segunda-feira",
+                            tuesday:"Terça-feira",
+                            wednesday:"Quarta-feira",
+                            thursday:"Quinta-feira",
+                            friday:"Sexta-feira",
+                            saturday:"Sábado",
+                            active:"Activo",
+                            inactive:"Inactivo",
+                            class: "Aula",
+                            lesson: "Aula",
+                            lessons: "Aulas",
+                            schedule: "Horário",
+                            schedules: "Horários",
+                            teacher: "Professor",
+                            teachers:"Professores",
+                            student: "Aluno",
+                            students: "Alunos",
+                            classroom: "Sala",
+                            start_time: "Hora de início",
+                            duration: "Duração",
+                            tuition:"Mensalidade",
+                            tuitions:"Mensalidades",
+                            fee:"Valor",
+                            salary:"Salário",
+                            salaries:"Salários",
+                            weekday:"Dia da semana",
+                            month:"Mês",
+                            monthly:"Mensal",
+                            payment: "Pagamento",
+                            payment_date: "Data de Pagamento",
+                            enrollment: "Matrícula",
+                            school_year:"Ano Letivo",
+                            date:"Data",
+                            first_lesson:"Primeira Aula",
+                            name:"Nome",
+                            age:"Idade",
+                            contacts:"Contactos",
+                            phone:"Telemóvel",
+                            course:"Curso",
+                            instrument:"Instrumento",
+                            musical_expression:"Expressão Musical",
+                            piano:"Piano",
+                            saxophone:"Saxofone",
+                            jazz_guitar:"Guitarra Jazz",
+                            guitar:"Guitarra",
+                            violin:"Violino",
+                            cello:"Violoncelo",
+                            trumpet:"Trompete",
+                            drums:"Bateria",
+                            voice:"Canto",
+                            combo:"Combo",
+                            group_class:"Aula de Grupo",
+                            music_production:"Produção Musical"
+                        }
+                    };
+
+                    // Spans for manually translated sentences 
+                    let ptSpans = document.querySelectorAll(".lang-pt");
+                    let enSpans = document.querySelectorAll(".lang-en");
+                    console.log(ptSpans);
+                     
+                    console.log(enSpans);
+                    // Dictionary translation
+                    let keys = document.querySelectorAll("[translation-key]");
+
+                    let overlay = document.querySelector(".user-overlay");
+                    let modal = document.querySelector(".user-modal");
+
+                    if (lang == "pt") {
+                        ptSpans.forEach(function(span) {
+                            span.hidden = false;
+                            console.log(span)
+                        })
+                        enSpans.forEach(function(span) {
+                            span.hidden = true;
+                        })
+
+                        keys.forEach(function(element) {
+                            let key = element.getAttribute("translation-key");
+                            // Replace whitespace with underscore
+                            if (key.includes(" ")) {
+                                key = key.replace(" ", "_");
+                            }
+                            // Translate using key from dictionary || if translation not found, display key
+                            element.textContent = translations [lang][key] || key;
+                        })
+
+                        saveLanguage()
+                        overlay.style.display = "none";
+                        modal.style.display = "none";
+                    }
+                    else if (lang == "en") {
+                        ptSpans.forEach(function(span) {
+                            span.hidden = true;
+                        })
+                        enSpans.forEach(function(span) {
+                            span.hidden = false;
+                        })
+
+                        keys.forEach(function(element) {
+                            let key = element.getAttribute("translation-key");
+                            // Translate using key from dictionary || if translation not found, display key
+                            element.textContent = translations [lang][key] || key 
+                        })
+
+                        saveLanguage()
+                        overlay.style.display = "none";
+                        modal.style.display = "none";
+                    }
+                }
+                
+
+            </script>
+
+        </div>
+    </body>
+
+</html>

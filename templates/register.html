@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+
+{% block main %}
+    <form action="/register" method="post">
+        <div>
+            <span lang="en">
+                <input autocomplete="off" name="user" placeholder="school_ID" type="text">
+            </span>
+            <span lang="pt" style="display: none;">
+                <input autocomplete="off" name="user" placeholder="ID da escola" type="text">
+            </span>
+        </div>
+        <div>
+            <span lang="en">
+                <input name="password" placeholder="Password" type="password">
+                <input name="confirmation" placeholder="Confirm Password" type="password">
+            </span>
+            <span lang="pt" style="display: none;">
+                <input name="password" placeholder="Palavra-chave" type="password">
+                <input name="confirmation" placeholder="Confirme a palavra-chave" type="password">
+            </span>   
+        </div>
+        <button type="submit">
+            <span lang="en">Register</span>
+            <span lang="pt" style="display: none;">Registar</span>
+        </button>
+    </form>
+{% endblock %}

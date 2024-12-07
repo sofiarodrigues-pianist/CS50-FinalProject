@@ -1,0 +1,623 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Salaries
+{% endblock %}
+
+
+{% block main %}
+
+    <div id="salaries">
+        {% if user.role == "admin" %}
+
+            {% if salaries_data %}
+        
+                <h3> Salaries from current teachers </h3>
+                <span id="plus-icon-column"> 
+                    <div class="horizontal-elements">
+                        <button class="new-salary" onclick="newSalary(this.closest('span'))">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16" id="plus-icon-btn">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+                            </svg> 
+                        </button>
+                        <h5> Add new salary </h5>
+                    </div>
+
+                    <div class="modal-overlay new-salary-overlay"> 
+                        <div class="modal new-salary-modal">
+                            <div class="modal-content new-salary-content">
+                                <form id="new-salary-form" action="/new_salary" method="POST">
+                                    <table class="table">
+                                        <thead>
+                                            <th> <label for="new-salary-month" translation-key="month"> Month </label> </th>
+                                            <th> <label for="new-salary-teacher" translation-key="teacher"> Teacher </label> </th>
+                                            <th> <label for="new-salary" translation-key="salary"> Salary </label> </th>
+                                            <th> <label for="new-salary-payment" translation-key="payment_date"> Payment Date </label> </th>
+                                        </thead>
+                                        <tbody>
+                                            <td> 
+                                                <select id="new-salary-month" name="month" required>
+                                                    <option> </option>
+                                                    {% set months = {
+                                                        9: "September", 10: "October", 11: "November", 12: "December", 
+                                                        1: "January", 2: "February", 3: "March", 4: "April",
+                                                        5: "May", 6: "June", 7: "July"
+                                                    } %} 
+                                                    {% for number, name in months.items() %}
+                                                        <option value="{{ number }}"> {{ name }}</option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td>
+                                                <select name="teacher" id="new-salary-teacher" required>
+                                                    <option></option>
+                                                    {% for name in teachers_names %}
+                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td> <input type="number" id="new-salary" name="salary" required> </td>
+                                            <td> <input type="date" id="new-salary-payment" name="payment" > </td>
+                                        </tbody>
+                                    </table>
+                                    <button class="button create-new-salary" type="submit" translation-key="add"> Add </button>
+                                    <button class="button cancel-new-salary" translation-key="cancel"> Cancel </button>
+                                </form> 
+                            </div>
+                        </div>
+                    </div>
+                </span>
+                
+                <span id="search-icon">
+                    <div class="horizontal-elements">
+                        <button class="search-btn" onclick="searchSalary(this.closest('span'))">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
+                        <h5 translation-key="search"> Search </h5>  
+                    </div>
+                    
+                    <div class="modal-overlay search-overlay">
+                        <div class="modal search-modal">
+                            <div class="modal-content search-content">
+                                <div id="select-teacher">
+                                    <form action="/salaries" method="post">
+                                        <select id="select-teacher" name="teacher" required> 
+                                            <option value="" disabled selected > Search by teacher </option>
+                                            {% for name in teachers_names %}
+                                                <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" class="button" id="see-salary"> See salaries </button>
+                                    </form>
+                                    <form action="/salaries" method="post">
+                                        <select id="select-month" name="month" placeholder="Search by month" required> 
+                                            <option value="" disabled selected > Search by month </option>
+                                            {% set months = {
+                                                9: "September", 10: "October", 11: "November", 12: "December", 
+                                                1: "January", 2: "February", 3: "March", 4: "April",
+                                                5: "May", 6: "June", 7: "July"
+                                            } %} 
+                                            {% for number, name in months.items() %}
+                                                <option value="{{ number }}"> {{ name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" class="button" id="see-salary"> See salaries </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </span>
+
+                <table class ="table">
+                    <thead>
+                        <tr>
+                            <th translation-key="month"> Month </th>
+                            <th translation-key="teacher"> Teacher </th>
+                            <th translation-key="salary"> Salary </th>
+                            <th translation-key="payment_date"> Payment Date </th>
+                        </tr>
+                    </thead>
+
+                    {% for item in salaries_data %}
+                        <tbody class="salary-payed-{{ item.salary.is_payed }}">
+                            <td class="salary-date">
+                                <ul>
+                                    <li> {{ item.salary.salary_date}} </li>
+                                </ul>
+                                
+                            </td>
+                            <td class="salary-teacher">
+                                <ul>
+                                    <li> {{ item.teacher }}</li>
+                                </ul>  
+                            </td>
+                            <td class="salary">
+                                <ul>
+                                    <li> {{ item.salary.salary_value }} € </li>
+                                    <li> <input type="number" class="hidden-salary{{ item.salary.salary_id }}" placeholder="{{ item.salary.salary_value }}" hidden> </li>
+                                </ul>  
+                            </td>
+                            <td class="payment">
+                                <ul>
+                                    {% if item.salary.payment_date %}
+                                        <li class="payment-date"> {{ item.salary.payment_date }} </li>
+                                    {% else %}
+                                        <li> ---- </li>
+                                    {% endif %}   
+                                    <li> <input type="date" class="hidden-salary{{ item.salary.salary_id }}" hidden> </li>
+                                </ul>  
+                            </td>
+
+                            <td class="edit">
+                                <button class="check-btn" salary-id="{{ item.salary.salary_id }}" onclick="confirmPayment(this.closest('tbody'), this.getAttribute('salary-id'))"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="check" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
+                                    <span class="tooltip-text" hidden> Confirm payment </span>
+                                </button>
+                                <div class="modal-overlay confirm-payment-overlay">
+                                    <div class="modal confirm-payment-modal">
+                                        <div class="modal-content confirm-payment-content">
+                                            <div class="confirm-payment-body">
+                                                <h2> Select a payment date:</h2>
+                                                <input type="date" required>
+                                            </div>
+                                            
+                                            <div class="confirm-payment-buttons">
+                                                <button class="button confirm-payment"> Confirm </button>
+                                                <button class="button cancel-payment"> Go back </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="cross-btn" salary-id="{{ item.salary.salary_id }}" payment-date="{{ item.salary.payment_date }}" onclick="removePayment(this.getAttribute('salary-id'))">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="cross" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                                    </svg>
+                                    <span class="tooltip-text" hidden> Payment is missing </span>
+                                </button>
+
+                                <button class="edit-btn" salary-id-name="hidden-salary{{ item.salary.salary_id }}" onclick=displayEdit(this)> <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                    </svg> 
+                                </button>
+                                <button class="delete-btn" salary-id-name="hidden-salary{{ item.salary.salary_id }}" onclick=displayDeleteModal(this)> <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                  </svg>
+                                </button>
+                                <div class="modal-overlay delete-salary-overlay">
+                                    <div class="modal delete-salary-modal">
+                                        <div class="modal-content delete-salary-content">
+                                            <div class="delete-salary-body">
+                                                <h2> Warning!</h2>
+                                                <h3> Are you sure you want to delete this salary? </h3>
+                                            </div>
+                                            
+                                            <div class="delete-salary-buttons">
+                                                <button class="button confirm-delete"> Delete </button>
+                                                <button class="button cancel-delete"> Go back </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="change-buttons hidden-salary{{ item.salary.salary_id }}" hidden>
+                                <button class="button" salary-id="{{ item.salary.salary_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('salary-id'))"> Confirm </button>
+                               
+                            </td>
+                            <td class="change-buttons hidden-salary{{ item.salary.salary_id }}" hidden>
+                                <button class="button" salary-id-name="hidden-salary{{ item.salary.salary_id }}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('salary-id-name'))"> Cancel </button>
+                            </td>
+
+                        </tbody>
+                    {% endfor %}
+                </table>
+
+            {% else %}
+                <h3> There are no salaries yet </h3>
+                
+                <span> 
+                    <button onclick="newSalary(this.closest('span'))"> Add new salaries </button>
+                    <div class="modal-overlay new-salary-overlay"> 
+                        <div class="modal new-salary-modal">
+                            <div class="modal-content new-salary-content">
+                                <form id="new-salary-form" action="/new_salary" method="POST">
+                                    <table class="table">
+                                        <thead>
+                                            <th> <label for="new-salary-month"> Month </label> </th>
+                                            <th> <label for="new-salary-teacher"> Teacher </label> </th>
+                                            <th> <label for="new-salary"> Salary </label> </th>
+                                            <th> <label for="new-salary-payment"> Payment Date </label> </th>
+                                        </thead>
+                                        <tbody>
+                                            <td> 
+                                                <select id="new-salary-month" name="month" required>
+                                                    <option> </option>
+                                                    {% set months = {
+                                                        9: "September", 10: "October", 11: "November", 12: "December", 
+                                                        1: "January", 2: "February", 3: "March", 4: "April",
+                                                        5: "May", 6: "June", 7: "July"
+                                                    } %} 
+                                                    {% for number, name in months.items() %}
+                                                        <option value="{{ number }}"> {{ name }}</option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td>
+                                                <select name="teacher" id="new-salary-teacher" required>
+                                                    <option></option>
+                                                    {% for name in teachers_names %}
+                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td> <input type="number" id="new-salary" name="salary" required> </td>
+                                            <td> <input type="date" id="new-salary-payment" name="payment" > </td>
+                                        </tbody>
+                                    </table>
+                                    <button class="button create-new-salary" type="submit"> Add salary </button>
+                                    <button class="button cancel-new-salary"> Cancel </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+
+            {% endif %}
+                
+        {% elif user.role == "teacher" %}
+            {% if salaries_data %}
+                <table class ="table">
+                    <thead>
+                        <tr>
+                            <th translation-key="month"> Month </th>
+                            <th translation-key="salary"> Salary </th>
+                            <th translation-key="payment_date"> Payment Date </th>
+                        </tr>
+                    </thead>
+
+                    {% for item in salaries_data %}
+                        <tbody class="salary-payed-{{ item.is_payed }}">
+                            <td class="salary-date">
+                                <ul>
+                                    <li> {{ item.salary_date}} </li>
+                                </ul>
+                            </td>
+                            <td class="salary">
+                                <ul>
+                                    <li> {{ item.salary_value }} € </li>
+                                </ul>  
+                            </td>
+                            <td class="payment">
+                                <ul>
+                                    {% if item.payment_date %}
+                                        <li class="payment-date"> {{ item.payment_date }} </li>
+                                    {% else %}
+                                        <li> ---- </li>
+                                    {% endif %}   
+                                </ul>  
+                            </td>
+                        </tbody>
+                    {% endfor %}
+                </table>
+
+            {% else %}
+                <h2> You don't have salaries to show. Go ask your boss. </h2>
+            {% endif %}
+            
+        {% else %}
+            <h2> Sorry, you don't have permission to see this page. </h2>
+
+        {% endif %}
+    </div>
+
+    <script>
+        // Check payments and change row color
+        document.addEventListener("DOMContentLoaded", function() {
+            let payed = document.querySelectorAll(".salary-payed-True");
+            let notPayed = document.querySelectorAll(".salary-payed-False");
+
+            if (payed) {
+                payed.forEach(function(row) {
+                    row.style.backgroundColor = "lightGreen";
+                    row.style.color = "black";
+                });
+            };
+
+            if(notPayed) {
+                notPayed.forEach(function(row) {
+                    row.style.backgroundColor = "red";
+                });
+            };
+        });
+
+        // Confirm salary payment
+        function confirmPayment(row, salaryId) {
+            let overlay = row.querySelector(".confirm-payment-overlay");
+            let modal = row.querySelector(".confirm-payment-modal");
+            let options = modal.querySelectorAll(".confirm-payment-buttons button");
+            
+            modal.style.display = "block";
+            overlay.style.display = "block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                } 
+            };
+
+            options.forEach(function(option) {
+                option.onclick = function() {
+                    if (this.innerText === "Confirm") {
+                        let paymentInput = modal.querySelector("input");
+                        let paymentDate = paymentInput.value;
+                        // Define payment as "salary" (handle salaries db insted of tuitions db)
+                        let moneyDoc = "salary";
+
+                        if (!paymentDate) {
+                            alert("Please select a payment date");
+                            return;
+                        }
+
+                        console.log("Payment input:", paymentInput);
+                        console.log("Payment date:", paymentDate); 
+
+                        fetch("/confirm_payment", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                moneyDoc: moneyDoc,
+                                salaryId: salaryId,
+                                paymentDate: paymentDate
+                            })
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.reload();
+                            }
+                            else {
+                                
+                                console.error("Failed to confirm payment");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("There was a problem with fetch:", error);
+                        });
+                    }
+                    else {
+                        modal.style.display = "none";
+                        overlay.style.display = "none";
+                    }
+                }
+            })
+        }
+
+        // Remove payment
+        function removePayment(salaryId) {
+            
+            fetch("/remove_payment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json" // Lets the server know what kind of data to handle
+                },
+                // Convert every variable to only one data object
+                body: JSON.stringify({
+                    moneyDoc: "salary",
+                    salaryId: salaryId,
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                }
+                else {
+                    console.error("Failed to remove payment.");
+                }
+            })
+            .catch(error => {
+                console.error("There was a problem with fetch:", error);
+            });
+        }
+
+        // Display "Add new salary" modal
+        function newSalary(spanTag) {
+            let overlay = spanTag.querySelector(".new-salary-overlay");
+            let modal = spanTag.querySelector(".new-salary-modal");
+            let exit = modal.querySelector(".cancel-new-salary");
+
+            overlay.style.display="block";
+            modal.style.display="block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                } 
+            };
+
+            exit.onclick = function(event) {
+                if (event.target == exit) {
+                    modal.style.display = "none";
+                    overlay.style.display="none";
+                }  
+            }
+        }
+
+        function searchSalary(spanTag) {
+            let overlay = spanTag.querySelector(".search-overlay");
+            let modal = spanTag.querySelector(".search-modal");
+
+            overlay.style.display="block";
+            modal.style.display="block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                } 
+            };
+        }
+
+        // Display edit fields inline
+        function displayEdit(button) {
+            let salaryName = button.getAttribute("salary-id-name");
+            let icons = button.closest('td');
+            let row = document.querySelectorAll("." + salaryName);
+
+            icons.hidden = true;
+
+            row.forEach(function(column) {
+                column.hidden = false;
+            });
+        };
+
+        // Cancel/close edit mode
+        function cancelEdit(tableRow, salaryName) {
+            console.log("Cancel/close edit mode triggered");
+
+            let icons = tableRow.querySelector(".edit");
+            let inlineEdit = tableRow.querySelectorAll("." + salaryName);
+            let modal = tableRow.querySelector(".edit-salaries-modal");
+            let overlay = tableRow.querySelector(".edit-salaries-overlay");
+            
+            inlineEdit.forEach(function(column) {        
+                console.log("For each inlineEdit function triggered");
+
+                column.hidden = true;
+            });
+
+            icons.hidden = false;
+        };
+
+        // Handle new data after edit
+        function SubmitChanges(tableRow, salaryId) {
+
+            console.log(salaryId);
+
+            // Get inputs
+            let salary = tableRow.querySelector(".salary input");
+            let paymentInput = tableRow.querySelector(".payment input");
+            let paymentDisplay = tableRow.querySelector(".payment-date");
+            let isPayed = "False";
+            let payment = null;
+            
+            // Assign correct values to each input
+
+            // salary
+            if (salary.value === "") {
+                salary = salary.placeholder;
+            } else {
+                salary = salary.value;
+            }
+
+            // payment date
+            if (paymentDisplay && paymentInput.value === "") {
+                payment = paymentDisplay.textContent;
+                isPayed = "True";
+            } 
+            else if (paymentInput.value !== "") {
+                payment = paymentInput.value;
+                isPayed = "True";
+            } else {
+                payment = null;
+                isPayed = "False"; 
+            }
+
+            // Send data to app.py via fetch
+            fetch("/change_salary", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json" // Lets the server know what kind of data to handle
+                },
+                // Convert every variable to only one data object
+                body: JSON.stringify({
+                    id: salaryId,
+                    salary: salary,
+                    payment: payment,
+                    isPayed: isPayed
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                }
+                else {
+                    console.error("Failed to submit changes in salary");
+                }
+            })
+            .catch(error => {
+                console.error("There was a problem with fetch:", error);
+            });
+        }
+
+                
+        // Display delete modal
+        function displayDeleteModal(deleteOption) {
+            let overlay = document.querySelector(".delete-salary-overlay");
+            let modal = document.querySelector(".delete-salary-modal");
+            let salaryName = deleteOption.getAttribute("salary-id-name")
+            let options = modal.querySelectorAll(".delete-salary-buttons button");
+            console.log("Delete modal triggered");
+
+            let salaryId = salaryName.replace("hidden-salary", "");
+ 
+            // make modal appear
+            modal.style.display = "block";
+            overlay.style.display = "block";
+        
+            // Actions that close modal
+            options.forEach(function(option) {
+                option.onclick = function() {
+
+                    // delete class
+                    if (this.innerText === "Delete") {
+                        console.log("Delete button activated");
+                        console.log(salaryId);
+
+                        fetch('/delete_finance', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ 
+                                moneyDoc: "salary",
+                                salaryId: salaryId, 
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.href = data.redirect;
+                        })
+                        .catch(error => console.error("There was a problem with fetch:", error));
+                    }
+
+                    // close modal
+                    else {
+                        modal.style.display = "none";
+                        overlay.style.display = "none";
+                        console.log("Delete modal close triggered");
+                    }
+                };
+            });
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                    console.log("Delete overlay modal triggered");
+                } 
+            };
+        };
+
+
+    </script>
+{% endblock %}

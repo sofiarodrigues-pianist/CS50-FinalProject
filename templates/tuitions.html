@@ -1,0 +1,638 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Tuitions
+{% endblock %}
+
+
+{% block main %}
+
+    <div id="tuitions">
+        {% if user.role == "admin" %}
+
+            {% if tuitions_data %}
+                <span class="lang-pt" hidden>
+                    <h3> Mensalidades do presente ano letivo </h3>
+                </span>
+                <span class="lang-en">
+                    <h3> Tuitions from current school year </h3>
+                </span>
+
+                <span id="plus-icon-column"> 
+                    <div class="horizontal-elements">
+                        <button class="new-tuition" onclick="newTuition(this.closest('span'))">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16" id="plus-icon-btn">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+                            </svg> 
+                        </button>
+
+                        <span class="lang-pt" hidden>
+                            <h5> Nova mensalidade </h5>
+                        </span>
+                        <span class="lang-en">
+                            <h5> New tuition </h5>
+                        </span>
+                    </div>
+
+                    <div class="modal-overlay new-tuition-overlay"> 
+                        <div class="modal new-tuition-modal">
+                            <div class="modal-content new-tuition-content">
+                                <form id="new-tuition-form" action="/new_tuition" method="POST">
+                                    <table class="table">
+                                        <thead>
+                                            <th> <label for="new-tuition-month" translation-key="month"> Month </label> </th>
+                                            <th> <label for="new-tuition-student" translation-key="student"> Student </label> </th>
+                                            <th> <label for="new-tuition-fee" translation-key="fee"> Fee </label> </th>
+                                            <th> <label for="new-tuition-payment" translation-key="payment_date"> Payment Date </label> </th>
+                                        </thead>
+                                        <tbody>
+                                            <td> 
+                                                <select id="new-tuition-month" name="month" required>
+                                                    <option> </option>
+                                                    {% set months = {
+                                                        9: "September", 10: "October", 11: "November", 12: "December", 
+                                                        1: "January", 2: "February", 3: "March", 4: "April",
+                                                        5: "May", 6: "June", 7: "July"
+                                                    } %} 
+                                                    {% for number, name in months.items() %}
+                                                        <option value="{{ number }}" translation-key="{{name}}"> {{ name }}</option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td>
+                                                <select name="student" id="new-tuition-student" required>
+                                                    <option></option>
+                                                    {% for name in students_names %}
+                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td> <input type="number" id="new-tuition-fee" name="fee" required> </td>
+                                            <td> <input type="date" id="new-tuition-payment" name="payment" > </td>
+                                        </tbody>
+                                    </table>
+                                    <button class="button create-new-tuition" type="submit" translation-key="add"> Add </button>
+                                    <button class="button cancel-new-tuition" translation-key="cancel"> Cancel </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+                
+                <span id="search-icon">
+                    <div class="horizontal-elements">
+                        <button class="search-btn" onclick="searchTuition(this.closest('span'))">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
+                        <h5> Search Tuitions </h5>  
+                    </div>
+                    
+                    <div class="modal-overlay search-overlay">
+                        <div class="modal search-modal">
+                            <div class="modal-content search-content">
+                                <div id="select-student">
+                                    <form action="/tuitions" method="post">
+                                        <select id="select-student" name="student" required> 
+                                            <option value="" disabled selected > Search by student </option>
+                                            {% for name in students_names %}
+                                                <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" class="button" id="see-tuition"> See tuitions </button>
+                                    </form>
+                                    <form action="/tuitions" method="post">
+                                        <select id="select-month" name="month" placeholder="Search by month" required> 
+                                            <option value="" disabled selected > Search by month </option>
+                                            {% set months = {
+                                                9: "September", 10: "October", 11: "November", 12: "December", 
+                                                1: "January", 2: "February", 3: "March", 4: "April",
+                                                5: "May", 6: "June", 7: "July"
+                                            } %} 
+                                            {% for number, name in months.items() %}
+                                                <option value="{{ number }}"> {{ name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" class="button" id="see-tuition"> See tuitions </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </span>
+
+                <table class ="table">
+                    <thead>
+                        <tr>
+                            <th translation-key="month"> Month </th>
+                            <th translation-key="student"> Student </th>
+                            <th translation-key="fee"> Fee </th>
+                            <th translation-key="payment_date"> Payment Date </th>
+                        </tr>
+                    </thead>
+
+                    {% for item in tuitions_data %}
+                        <tbody class="tuition-payed-{{ item.tuition.is_payed }}">
+                            <td class="tuition-date">
+                                <ul>
+                                    <li> {{ item.tuition.tuition_date}} </li>
+                                </ul>
+                                
+                            </td>
+                            <td class="tuition-student">
+                                <ul>
+                                    <li> {{ item.student }}</li>
+                                </ul>  
+                            </td>
+                            <td class="fee">
+                                <ul>
+                                    <li> {{ item.tuition.tuition_value }} € </li>
+                                    <li> <input type="number" class="hidden-tuition{{ item.tuition.tuition_id }}" placeholder="{{ item.tuition.tuition_value }}" hidden> </li>
+                                </ul>  
+                            </td>
+                            <td class="payment">
+                                <ul>
+                                    {% if item.tuition.payment_date %}
+                                        <li class="payment-date"> {{ item.tuition.payment_date }} </li>
+                                    {% else %}
+                                        <li> ---- </li>
+                                    {% endif %}   
+                                    <li> <input type="date" class="hidden-tuition{{ item.tuition.tuition_id }}" hidden> </li>
+                                </ul>  
+                            </td>
+
+                            <td class="edit">
+                                <button class="check-btn" tuition-id="{{ item.tuition.tuition_id }}" onclick="confirmPayment(this.closest('tbody'), this.getAttribute('tuition-id'))"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="check" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
+                                    <span class="tooltip-text" hidden> Confirm payment </span>
+                                </button>
+                                <div class="modal-overlay confirm-payment-overlay">
+                                    <div class="modal confirm-payment-modal">
+                                        <div class="modal-content confirm-payment-content">
+                                            <div class="confirm-payment-body">
+                                                <h2> Select a payment date:</h2>
+                                                <input type="date" required>
+                                            </div>
+                                            
+                                            <div class="confirm-payment-buttons">
+                                                <button class="button confirm-payment"> Confirm </button>
+                                                <button class="button cancel-payment"> Go back </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="cross-btn" tuition-id="{{ item.tuition.tuition_id }}" payment-date="{{ item.tuition.payment_date }}" onclick="removePayment(this.getAttribute('tuition-id'))">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="cross" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                                    </svg>
+                                    <span class="tooltip-text" hidden> Payment is missing </span>
+                                </button>
+
+                                <button class="edit-btn" tuition-id-name="hidden-tuition{{ item.tuition.tuition_id }}" onclick=displayEdit(this)> <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                    </svg> 
+                                </button>
+                                <button class="delete-btn" tuition-id-name="hidden-tuition{{ item.tuition.tuition_id }}" onclick=displayDeleteModal(this)> <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                  </svg>
+                                </button>
+                                <div class="modal-overlay delete-tuition-overlay">
+                                    <div class="modal delete-tuition-modal">
+                                        <div class="modal-content delete-tuition-content">
+                                            <div class="delete-tuition-body">
+                                                <h2> Warning!</h2>
+                                                <h3> Are you sure you want to delete this tuition? </h3>
+                                            </div>
+                                            
+                                            <div class="delete-tuition-buttons">
+                                                <button class="button confirm-delete"> Delete </button>
+                                                <button class="button cancel-delete"> Go back </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="change-buttons hidden-tuition{{ item.tuition.tuition_id }}" hidden>
+                                <button class="button" tuition-id="{{ item.tuition.tuition_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('tuition-id'))"> Confirm </button>
+                               
+                            </td>
+                            <td class="change-buttons hidden-tuition{{ item.tuition.tuition_id }}" hidden>
+                                <button class="button" tuition-id-name="hidden-tuition{{ item.tuition.tuition_id }}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('tuition-id-name'))"> Cancel </button>
+                            </td>
+
+                        </tbody>
+                    {% endfor %}
+                </table>
+
+            {% else %}
+                <h3> There are no tuitions yet </h3>
+                
+                <span> 
+                    <button onclick="newTuition(this.closest('span'))"> Add new tuitions </button>
+                    <div class="modal-overlay new-tuition-overlay"> 
+                        <div class="modal new-tuition-modal">
+                            <div class="modal-content new-tuition-content">
+                                <form id="new-tuition-form" action="/new_tuition" method="POST">
+                                    <table class="table">
+                                        <thead>
+                                            <th> <label for="new-tuition-month"> Tuition Month </label> </th>
+                                            <th> <label for="new-tuition-student"> Student </label> </th>
+                                            <th> <label for="new-tuition-fee"> Fee </label> </th>
+                                            <th> <label for="new-tuition-payment"> Payment Date </label> </th>
+                                        </thead>
+                                        <tbody>
+                                            <td> 
+                                                <select id="new-tuition-month" name="month" required>
+                                                    <option> </option>
+                                                    {% set months = {
+                                                        9: "September", 10: "October", 11: "November", 12: "December", 
+                                                        1: "January", 2: "February", 3: "March", 4: "April",
+                                                        5: "May", 6: "June", 7: "July"
+                                                    } %} 
+                                                    {% for number, name in months.items() %}
+                                                        <option value="{{ number }}"> {{ name }}</option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td>
+                                                <select name="student" id="new-tuition-student" required>
+                                                    <option></option>
+                                                    {% for name in students_names %}
+                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </td>
+                                            <td> <input type="number" id="new-tuition-fee" name="fee" required> </td>
+                                            <td> <input type="date" id="new-tuition-payment" name="payment" > </td>
+                                        </tbody>
+                                    </table>
+                                    <button class="button create-new-tuition" type="submit"> Add tuition </button>
+                                    <button class="button cancel-new-tuition"> Cancel </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+
+            {% endif %}
+
+        {% elif user.role == "student" %}
+            {% if tuitions_data %}
+
+                <table class ="table">
+                    <thead>
+                        <tr>
+                            <th> Month </th>
+                            <th> Fee </th>
+                            <th> Payment Date </th>
+                        </tr>
+                    </thead>
+
+                    {% for item in tuitions_data %}
+                        <tbody class="tuition-payed-{{ item.is_payed }}">
+                            <td class="tuition-date">
+                                <ul>
+                                    <li> {{ item.tuition_date}} </li>
+                                </ul>
+                                
+                            </td>
+                            <td class="fee">
+                                <ul>
+                                    <li> {{ item.tuition_value }} € </li>
+                                    <li> <input type="number" class="hidden-tuition{{ item.tuition_id }}" placeholder="{{ item.tuition_value }}" hidden> </li>
+                                </ul>  
+                            </td>
+                            <td class="payment">
+                                <ul>
+                                    {% if item.payment_date %}
+                                        <li class="payment-date"> {{ item.payment_date }} </li>
+                                    {% else %}
+                                        <li> ---- </li>
+                                    {% endif %}   
+                                    <li> <input type="date" class="hidden-tuition{{ item.tuition_id }}" hidden> </li>
+                                </ul>  
+                            </td>
+                        </tbody>
+                    {% endfor %}
+                </table>
+
+            {% else %}
+                <h3> There are no tuitions yet </h3>
+            {% endif %}
+
+        {% else %}
+            <h2> Sorry, you don't have permission to see this page. </h2>
+
+        {% endif %}
+    </div>
+
+    <script>
+        // Check payments and change row color
+        document.addEventListener("DOMContentLoaded", function() {
+            let payed = document.querySelectorAll(".tuition-payed-True");
+            let notPayed = document.querySelectorAll(".tuition-payed-False");
+
+            if (payed) {
+                payed.forEach(function(row) {
+                    row.style.backgroundColor = "lightGreen";
+                    row.style.color = "black";
+                });
+            };
+
+            if(notPayed) {
+                notPayed.forEach(function(row) {
+                    row.style.backgroundColor = "red";
+                });
+            };
+        });
+
+        // Confirm tuition payment
+        function confirmPayment(row, tuitionId) {
+            let overlay = row.querySelector(".confirm-payment-overlay");
+            let modal = row.querySelector(".confirm-payment-modal");
+            let options = modal.querySelectorAll(".confirm-payment-buttons button");
+            
+            modal.style.display = "block";
+            overlay.style.display = "block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                } 
+            };
+
+            options.forEach(function(option) {
+                option.onclick = function() {
+                    if (this.innerText === "Confirm") {
+                        let paymentInput = modal.querySelector("input");
+                        let paymentDate = paymentInput.value;
+                        // Define payment as "tuition" (handle tuitions db insted of salaries db)
+                        let moneyDoc = "tuition";
+
+                        if (!paymentDate) {
+                            alert("Please select a payment date");
+                            return;
+                        }
+
+                        console.log("Payment input:", paymentInput);
+                        console.log("Payment date:", paymentDate); 
+
+                        fetch("/confirm_payment", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                moneyDoc: moneyDoc,
+                                tuitionId: tuitionId,
+                                paymentDate: paymentDate
+                            })
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.reload();
+                            }
+                            else {
+                                
+                                console.error("Failed to confirm payment");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("There was a problem with fetch:", error);
+                        });
+                    }
+                    else {
+                        modal.style.display = "none";
+                        overlay.style.display = "none";
+                    }
+                }
+            })
+        }
+
+        // Remove payment
+        function removePayment(tuitionId) {
+            
+            fetch("/remove_payment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json" // Lets the server know what kind of data to handle
+                },
+                // Convert every variable to only one data object
+                body: JSON.stringify({
+                    moneyDoc: "tuition",
+                    tuitionId: tuitionId,
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                }
+                else {
+                    console.error("Failed to remove payment.");
+                }
+            })
+            .catch(error => {
+                console.error("There was a problem with fetch:", error);
+            });
+        }
+
+        // Display "Add new tuition" modal
+        function newTuition(spanTag) {
+            let overlay = spanTag.querySelector(".new-tuition-overlay");
+            let modal = spanTag.querySelector(".new-tuition-modal");
+            let exit = modal.querySelector(".cancel-new-tuition");
+
+            overlay.style.display="block";
+            modal.style.display="block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                } 
+            };
+
+            exit.onclick = function(event) {
+                if (event.target == exit) {
+                    modal.style.display = "none";
+                    overlay.style.display="none";
+                }  
+            }
+        }
+
+        function searchTuition(spanTag) {
+            let overlay = spanTag.querySelector(".search-overlay");
+            let modal = spanTag.querySelector(".search-modal");
+
+            overlay.style.display="block";
+            modal.style.display="block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                } 
+            };
+        }
+
+        // Display edit fields inline
+        function displayEdit(button) {
+            let tuitionName = button.getAttribute("tuition-id-name");
+            let icons = button.closest('td');
+            let row = document.querySelectorAll("." + tuitionName);
+
+            icons.hidden = true;
+
+            row.forEach(function(column) {
+                column.hidden = false;
+            });
+        };
+
+        // Cancel/close edit mode
+        function cancelEdit(tableRow, tuitionName) {
+            console.log("Cancel/close edit mode triggered");
+
+            let icons = tableRow.querySelector(".edit");
+            let inlineEdit = tableRow.querySelectorAll("." + tuitionName);
+            let modal = tableRow.querySelector(".edit-tuitions-modal");
+            let overlay = tableRow.querySelector(".edit-tuitions-overlay");
+            
+            inlineEdit.forEach(function(column) {        
+                console.log("For each inlineEdit function triggered");
+
+                column.hidden = true;
+            });
+
+            icons.hidden = false;
+        };
+
+        // Handle new data after edit
+        function SubmitChanges(tableRow, tuitionId) {
+
+            console.log(tuitionId);
+
+            // Get inputs
+            let fee = tableRow.querySelector(".fee input");
+            let paymentInput = tableRow.querySelector(".payment input");
+            let paymentDisplay = tableRow.querySelector(".payment-date");
+            let isPayed = "False";
+            let payment = null;
+            
+            // Assign correct values to each input
+
+            // monthly fee
+            if (fee.value === "") {
+                fee = fee.placeholder;
+            } else {
+                fee = fee.value;
+            }
+
+            // payment date
+            if (paymentDisplay && paymentInput.value === "") {
+                payment = paymentDisplay.textContent;
+                isPayed = "True";
+            } 
+            else if (paymentInput.value !== "") {
+                payment = paymentInput.value;
+                isPayed = "True";
+            } else {
+                payment = null;
+                isPayed = "False"; 
+            }
+
+            // Send data to app.py via fetch
+            fetch("/change_tuition", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json" // Lets the server know what kind of data to handle
+                },
+                // Convert every variable to only one data object
+                body: JSON.stringify({
+                    id: tuitionId,
+                    fee: fee,
+                    payment: payment,
+                    isPayed: isPayed
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                }
+                else {
+                    console.error("Failed to submit changes in tuition");
+                }
+            })
+            .catch(error => {
+                console.error("There was a problem with fetch:", error);
+            });
+        }
+
+                
+        // Display delete modal
+        function displayDeleteModal(deleteOption) {
+            let overlay = document.querySelector(".delete-tuition-overlay");
+            let modal = document.querySelector(".delete-tuition-modal");
+            let tuitionName = deleteOption.getAttribute("tuition-id-name")
+            let options = modal.querySelectorAll(".delete-tuition-buttons button");
+            console.log("Delete modal triggered");
+
+            let tuitionId = tuitionName.replace("hidden-tuition", "");
+ 
+            // make modal appear
+            modal.style.display = "block";
+            overlay.style.display = "block";
+        
+            // Actions that close modal
+            options.forEach(function(option) {
+                option.onclick = function() {
+
+                    // delete class
+                    if (this.innerText === "Delete") {
+                        console.log("Delete button activated");
+                        console.log(tuitionId);
+
+                        fetch('/delete_finance', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                moneyDoc: "tuition", 
+                                tuitionId: tuitionId 
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.href = data.redirect;
+                        })
+                        .catch(error => console.error("There was a problem with fetch:", error));
+                    }
+
+                    // close modal
+                    else {
+                        modal.style.display = "none";
+                        overlay.style.display = "none";
+                        console.log("Delete modal close triggered");
+                    }
+                };
+            });
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                    console.log("Delete overlay modal triggered");
+                } 
+            };
+        };
+
+
+    </script>
+{% endblock %}

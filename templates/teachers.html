@@ -1,0 +1,444 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Teachers
+{% endblock %}
+
+
+{% block main %}
+
+    <div id="teachers">
+        {% if user.role == "admin" %}
+
+            {% if teachers_data %}
+                <span class="lang-pt" hidden>
+                    <h3> Professores atuais </h3>
+                </span>
+                <span class="lang-en">
+                    <h3> Current Teachers </h3>
+                </span>
+
+                <span id="plus-icon-column">
+                    <div class = "horizontal-elements">
+                        <button class="new-teacher" onclick="newTeacher(this.closest('span'))">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16" id="plus-icon-btn">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+                            </svg> 
+                        </button>
+                        <span class="lang-pt" hidden>
+                            <h5> Novo professor </h3>
+                        </span>
+                        <span class="lang-en">
+                            <h3> New teacher </h3>
+                        </span>
+                    </div>
+
+                    <div class="modal-overlay new-teacher-overlay"> 
+                        <div class="modal new-teacher-modal">
+                            <div class="modal-content new-teacher-content">
+                                <form id="new-teacher-form" action="/new_teacher" method="POST">
+                                    <table class="table">
+                                        <thead>
+                                            <th> <label for="new-teacher-name" translation-key="name"> Name </label> </th>
+                                            <th> <label for="new-teacher-age" translation-key="age"> Age </label> </th>
+                                            <th> <label for="new-teacher-phone" translation-key="phone"> Phone </label> </th>
+                                            <th> <label for="new-teacher-email"> Email </label> </th>
+                                            <th> <label for="new-teacher-instrument" translation-key="instrument"> Instrument </label> </th>
+                                            <th> <label for="new-teacher-salary" translation-key="salary"> Salary </label> </th>
+                                        </thead>
+                                        <tbody>
+                                            <td> <input type="text" id="new-teacher-name" name="name" required> </td>
+                                            <td> <input type="number" id="new-teacher-age" name="age" required> </td>
+                                            <td> <input type="tel" id="new-teacher-phone" name="phone" required> </td>
+                                            <td> <input type="email" id="new-teacher-email" name="email" required></td>
+                                            <td> <input type="text" id="new-teacher-instrument" name="instrument" required> </td>
+                                            <td> <input type="number" id="new-teacher-salary" name="salary" required> </td>
+                                        </tbody>
+                                    </table>
+                                    <button class="button create-new-teacher" type="submit" translation-key="add"> Add </button>
+                                    <button class="button cancel-new-teacher" translation-key="cancel"> Cancel </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+                <table class ="table">
+                    <thead>
+                        <tr>
+                            <th translation-key="name"> Name </th>
+                            <th translation-key="age"> Age </th>
+                            <th translation-key="contacts"> Contacts </th>
+                            <th translation-key="instrument"> Instrument </th>
+                            <th translation-key="salary"> Salary </th>
+                        </tr>
+                    </thead>
+
+                    {% for item in teachers_data %}
+                        <tbody>
+                            <td class="name">
+                                <ul>
+                                    <li> {{ item.teacher.user.name }} </li>
+                                    <li> <input type="text" class="hidden-teacher{{ item.teacher.teacher_id }}" placeholder="{{ item.teacher.user.name }}" hidden> </li>
+                                </ul>
+                                
+                            </td>
+                            <td class="age">
+                                <ul>
+                                    <li>
+                                        {% if item.teacher.user.age %}
+                                            <span> {{ item.teacher.user.age }} </span>
+                                        {% else %}
+                                            <span> ---- </span>
+                                        {% endif %}
+                                    </li>
+                                    <li> <input type="number" class="hidden-teacher{{ item.teacher.teacher_id }}" placeholder="{{ item.teacher.user.age }}" hidden> </li>
+                                </ul>  
+                            </td>
+                            <td class="contacts">
+                                <ul>
+                                    {% for data in item.contacts %}
+                                        {% if "@" in data %}
+                                            <li class="emailDefault"> {{ data }} </li>
+                                        {% else %}
+                                            <li class="phoneDefault"> {{data}} </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li class="email"> <input type="email" class="hidden-teacher{{ item.teacher.teacher_id }}" placeholder="E-mail" hidden> </li>
+                                    <li class="phone"> <input type="tel" class="hidden-teacher{{ item.teacher.teacher_id }}" placeholder="Phone number" hidden> </li>
+                                </ul>
+                            </td>
+
+                            <td class="instrument">
+                                <ul>
+                                    <li>
+                                        {% if item.teacher.instrument %}
+                                            <span translation-key="{{ item.teacher.instrument | lower }}"> {{ item.teacher.instrument }} </span>
+                                        {% else %}
+                                            <span> ---- </span>
+                                        {% endif %}
+                                    </li>
+                                    <li> <input type="text" class="hidden-teacher{{ item.teacher.teacher_id }}" placeholder="{{ item.teacher.instrument }}" hidden> </li>
+                                </ul>
+                            </td>
+
+                            <td class="salary">
+                                <ul>
+                                    <li>
+                                        {% if item.teacher.current_salary %}
+                                            <span> {{ item.teacher.current_salary }} € </span>
+                                        {% else %}
+                                            <span> ---- </span>
+                                        {% endif %}
+                                    </li>
+                                    <li> <input type="number" class="hidden-teacher{{ item.teacher.teacher_id }}" placeholder="{{ item.teacher.current_salary }}" hidden> </li>
+                                </ul>  
+                            </td>
+
+                            <td class="edit">
+                                <button class="edit-btn" teacher-id-name="hidden-teacher{{ item.teacher.teacher_id }}" onclick=displayEdit(this)> <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                    </svg> 
+                                </button>
+                                <button class="delete-btn" teacher-id-name="hidden-teacher{{ item.teacher.teacher_id }}" onclick=displayDeleteModal(this)> <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                  </svg>
+                                </button>
+                                <div class="modal-overlay delete-teacher-overlay">
+                                    <div class="modal delete-teacher-modal">
+                                        <div class="modal-content delete-teacher-content">
+                                            <div class="delete-teacher-body">
+                                                <span class="lang-pt">
+                                                    <h2> Atenção!</h2>
+                                                    <h3> Tem a certeza que quer remover este professor? </h3>
+                                                </span>
+                                                <span class="lang-en">
+                                                    <h2> Warning!</h2>
+                                                    <h3> Are you sure you want to remove this teacher? </h3>
+                                                </span>
+                                            </div>
+                                                                                     
+                                            <div class="delete-teacher-buttons">
+                                                <button class="button confirm-delete" translation-key="delete"> Delete </button>
+                                                <button class="button cancel-delete" translation-key="go_back"> Go back </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="change-buttons hidden-teacher{{ item.teacher.teacher_id }}" hidden>
+                                <button class="button" teacher-id="{{ item.teacher.teacher_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('teacher-id'))"> Confirm </button>
+                               
+                            </td>
+                            <td class="change-buttons hidden-teacher{{ item.teacher.teacher_id }}" hidden>
+                                <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('teacher-id-name'))" teacher-id-name="hidden-teacher{{ item.teacher.teacher_id }}" id="cancel-edit"> Cancel </button>
+                            </td>
+
+                        </tbody>
+                    {% endfor %}
+                </table>
+
+            {% else %}
+                <h3> There are no teachers yet </h3>
+
+                <span>
+                    <button onclick="newTeacher(this.closest('span'))"> Register new teacher </button>
+                    <div class="modal-overlay new-teacher-overlay"> 
+                        <div class="modal new-teacher-modal">
+                            <div class="modal-content new-teacher-content">
+                                <form id="new-teacher-form" action="/new_teacher" method="POST">
+                                    <table class="table">
+                                        <thead>
+                                            <th> <label for="new-teacher-name"> Name: </label> </th>
+                                            <th> <label for="new-teacher-age"> Age: </label> </th>
+                                            <th> <label for="new-teacher-phone"> Phone: </label> </th>
+                                            <th> <label for="new-teacher-email"> Email: </label> </th>
+                                            <th> <label for="new-teacher-instrument"> Instrument: </label> </th>
+                                            <th> <label for="new-teacher-salary"> Salary: </label> </th>
+                                        </thead>
+                                        <tbody>
+                                            <td> <input type="text" id="new-teacher-name" name="name" required> </td>
+                                            <td> <input type="number" id="new-teacher-age" name="age" required> </td>
+                                            <td> <input type="tel" id="new-teacher-phone" name="phone" required> </td>
+                                            <td> <input type="email" id="new-teacher-email" name="email" required></td>
+                                            <td> <input type="text" id="new-teacher-instrument" name="instrument" required> </td>
+                                            <td> <input type="number" id="new-teacher-salary" name="salary" required> </td>
+                                        </tbody>
+                                    </table>
+                                    <button class="button create-new-teacher" type="submit"> Add teacher </button>
+                                    <button class="button cancel-new-teacher"> Cancel </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+                
+            {% endif %}
+
+        {% else %}
+            <h2> Sorry, you don't have permission to see this page. </h2>
+
+        {% endif %}
+    </div>
+
+
+    <script>
+
+        // Display "Add new teacher" modal
+        function newTeacher() {
+            let overlay = document.querySelector(".new-teacher-overlay");
+            let modal = document.querySelector(".new-teacher-modal");
+            let exit = modal.querySelector(".cancel-new-teacher");
+
+            overlay.style.display="block";
+            modal.style.display="block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                } 
+            };
+
+            exit.onclick = function(event) {
+                if (event.target == exit) {
+                    modal.style.display = "none";
+                    overlay.style.display="none";
+                }  
+            }
+        }
+
+
+        // Display edit fields inline
+        function displayEdit(button) {
+            let teacherName = button.getAttribute("teacher-id-name");
+            let icons = button.closest('td');
+            let row = document.querySelectorAll("." + teacherName);
+
+            icons.hidden = true;
+
+            row.forEach(function(column) {
+                column.hidden = false;
+            });
+        };
+
+        // Cancel/close edit mode
+        function cancelEdit(tableRow, teacherName) {
+            console.log("Cancel/close edit mode triggered");
+
+            let icons = tableRow.querySelector(".edit");
+            let inlineEdit = tableRow.querySelectorAll("." + teacherName);
+            let modal = tableRow.querySelector(".edit-teacher-modal");
+            let overlay = tableRow.querySelector(".edit-teacher-overlay");
+            
+            inlineEdit.forEach(function(column) {        
+                console.log("For each inlineEdit function triggered");
+
+                column.hidden = true;
+            });
+
+            icons.hidden = false;
+        };
+
+        // Handle new data after edit
+        function SubmitChanges(tableRow, teacherId) {
+
+            console.log(teacherId);
+
+            // Get contacts
+            let phone = tableRow.querySelector(".phone input");
+            let email = tableRow.querySelector(".email input");
+
+            // Get rest of inputs
+            let name = tableRow.querySelector(".name input");
+            let age = tableRow.querySelector(".age input");
+            let instrument = tableRow.querySelector(".instrument input");
+            let salary = tableRow.querySelector(".salary input");
+
+            // email
+            if (email.value === "") {
+                let emailDefault = tableRow.querySelector(".emailDefault");
+
+                if (emailDefault) {
+                    email = emailDefault.textContent;
+                }
+                else {
+                    email = "";
+                }
+            } else {
+                email = email.value;
+            }
+
+            // phone
+            if (phone.value === "") {
+                let phoneDefault = tableRow.querySelector(".phoneDefault");
+
+                if (phoneDefault) {
+                    phone = phoneDefault.textContent;
+                }
+                else {
+                    phone = "";
+                }
+            } else {
+                phone = phone.value;
+            }
+
+            // name
+            if (name.value === "") {
+                name = name.placeholder;
+            } else {
+                name = name.value;
+            }
+
+            // instrument
+            if (instrument.value === "") {
+                instrument = instrument.placeholder;
+            } else {
+                instrument = instrument.value;
+            }
+
+            // age
+            if (age.value === "") {
+                age = age.placeholder;
+            } else {
+                age = age.value;
+            }
+            
+            // salary
+            if (salary.value === "") {
+                salary = salary.placeholder;
+            } else {
+                salary = salary.value;
+            }
+            
+
+            // Send data to app.py via fetch
+            fetch("/change_teacher", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json" // Lets the server know what kind of data to handle
+                },
+                // Convert every variable to only one data object
+                body: JSON.stringify({
+                    id: teacherId,
+                    name: name,
+                    age: age,
+                    email: email,
+                    phone: phone,
+                    instrument: instrument,
+                    salary: salary
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                window.location.href = data.redirect;
+            })
+            .catch(error => {
+                console.error("There was a problem with fetch:", error);
+            });
+        }
+
+                
+        // Display delete modal
+        function displayDeleteModal(deleteOption) {
+            let overlay = document.querySelector(".delete-teacher-overlay");
+            let modal = document.querySelector(".delete-teacher-modal");
+            let teacherName = deleteOption.getAttribute("teacher-id-name")
+            let options = modal.querySelectorAll(".delete-teacher-buttons button");
+            console.log("Delete modal triggered");
+
+            let teacherId = teacherName.replace("hidden-teacher", "");
+ 
+            // make modal appear
+            modal.style.display = "block";
+            overlay.style.display = "block";
+        
+            // Actions that close modal
+            options.forEach(function(option) {
+                option.onclick = function() {
+
+                    // delete class
+                    if (this.innerText === "Delete") {
+                        console.log("Delete button activated");
+                        console.log(teacherId);
+
+                        fetch('/delete_teacher', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ teacherId: teacherId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.href = data.redirect;
+                        })
+                        .catch(error => console.error("There was a problem with fetch:", error));
+                    }
+
+                    // close modal
+                    else {
+                        modal.style.display = "none";
+                        overlay.style.display = "none";
+                        console.log("Delete modal close triggered");
+                    }
+                };
+            });
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                    console.log("Delete overlay modal triggered");
+                } 
+            };
+        };
+
+
+    </script>
+{% endblock %}

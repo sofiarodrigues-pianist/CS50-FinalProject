@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+
+{% block main %}
+    <div class="login-form">
+        <form action="/login" method="post">
+            <div class="login-fields">
+                <div class="login-id">
+                    <span lang="en">
+                        <input autocomplete="off" name="user" placeholder="school_ID" type="text">
+                    </span>
+                    <span lang="pt" style="display: none;">
+                        <input autocomplete="off" name="user" placeholder="ID da escola" type="text">
+                    </span>
+                </div>
+                <div class="login-password">
+                    <span lang="en">
+                        <input name="password" placeholder="Password" type="password">
+                    </span>
+                    <span lang="pt" style="display: none;">
+                        <input name="password" placeholder="Palavra-chave" type="password">
+                    </span>   
+                </div>
+                <button type="submit">
+                    <span lang="en">Login</span>
+                    <span lang="pt" style="display: none;">Iniciar sessão</span>
+                </button>
+            </div>
+        </form>
+    </div>
+   
+{% endblock %}

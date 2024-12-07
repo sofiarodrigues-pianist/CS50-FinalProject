@@ -1,0 +1,450 @@
+/* Design grid template */
+
+.grid-container {
+    display: grid;
+    grid-template-areas:
+        'header header header header header header header header'
+        'main main main main main main main main'
+        'footer footer footer footer footer footer footer footer';
+    gap: 10px;
+    padding: 10px;
+}
+
+.horizontal-elements {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+
+
+/* Header organization */
+
+.header {
+    grid-area: header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(17, 17, 17);
+}
+
+.navbar {
+    display: flex;
+    justify-content: flex-start;
+    background-color: rgb(19, 18, 18);
+}
+
+.right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+/* Header items design */
+
+.nav-items {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.nav-item {
+    margin-right: 15px;
+    font-family: "Impact Regular";
+    font-size: 25px;
+}
+
+.nav-link:hover {
+    color: gold;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: white;
+}
+
+.user {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: medium;
+}
+
+#logout {
+    text-decoration: none;
+    color: black;
+}
+
+#logout:hover {
+    color: grey;
+}
+
+/* Main design */
+
+.main {
+    grid-area: main;
+}
+
+.main > div {
+    font-family: "Lucida Sans unicode Regular";
+}
+
+.footer {
+    grid-area: footer;
+}
+
+
+body {
+    background-color: rgb(10, 10, 10);
+    color: whitesmoke;
+}
+
+/* Homepage */ 
+
+#homepage {
+    text-align: center;
+    color: whitesmoke;
+    font-family: "Lucida Sans unicode Regular";
+    font-size: 20px;
+}
+
+#index_buttons {
+    text-align: center;
+    font-size: 30px;
+}
+
+#login-welcome {
+    text-align: center;
+    color: whitesmoke;
+    font-family: "Corbel";
+    font-size: 30px;
+}
+
+.shortcuts-container {
+    padding-right: 200px;
+    padding-left: 200px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.login-form {
+    display: flex;
+    align-content: center;
+    justify-content: space-around;
+}
+
+.login-id, .login-password {
+    margin: 5px;
+    font-size: large;
+}
+
+/* Tables */
+
+table {
+    table-layout: auto;
+    width: 100%;
+    padding: 40px;
+}
+
+th, td {
+    border: 1px solid grey;
+    text-align: center;
+    padding: 5px;
+}
+
+th {
+    font-size: larger;
+    background-color: lightsalmon;
+    color: black;
+}
+
+#plus-icon-column {
+    background-color: transparent;
+    border: none;
+}
+
+tbody:hover {
+    background-color: lightgoldenrodyellow !important;
+    color: black !important;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.add-comp {
+    background-color: black;
+    padding: 20px;
+    gap: 10px;
+}
+
+.add-comp:hover, .comp.btn:hover{
+    background-color: black;
+}
+
+
+/* Edit icons */
+
+.edit {
+    border: none;
+    background-color: rgb(17, 17, 17);;
+}
+
+.edit:hover {
+    background-color: rgb(17, 17, 17);;
+    cursor: default;
+}
+
+.edit-btn, .delete-btn, .check-btn, .cross-btn, .eye-btn, .hide-eye-btn, .search-btn {
+    background-color: rgb(17, 17, 17);;
+    border: 0px;
+    cursor: pointer;
+}
+
+.edit-btn:hover, .delete-btn:hover, .check-btn:hover, .cross-btn:hover, .eye-btn:hover, .hide-eye-btn:hover {
+    opacity: 1;
+    background-color: rgb(17, 17, 17);;
+}
+
+.pencil, .bin, .check, .cross, .eye, .eye-slash, .search {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.pencil:hover, .bin:hover, .eye:hover, .eye-slash:hover, .search:hover {
+    background-color: transparent;
+    fill: lightsalmon;
+}
+
+.check:hover {
+    fill: greenyellow;
+}
+
+.cross:hover  {
+    fill: red;
+}
+
+
+
+/* Modal general design */ 
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal { 
+    position: absolute;
+    z-index: 2;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    border: 5px solid lightsalmon;
+    padding: 5px;
+    width: auto;
+}
+
+.modal-content {
+    color: black;
+}
+
+.exit {
+    align-self: flex-start;
+    margin-right: 5px;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
+}
+
+.exit:hover,
+.exit:focus {
+    color: darkgrey;
+}
+
+
+/* Pencil modal */
+
+.pencil-content, .user-content {
+    display: flex;
+    justify-content: space-between;
+    color: black;
+    z-index: 2;
+}
+
+.options {
+    margin: 10px;
+}
+
+.options li:hover {
+    color: grey;
+    cursor: pointer;
+}
+
+/* Delete class modal */
+
+.delete-class-modal, .delete-lesson-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.delete:hover {
+    background-color: transparent;
+    color: red;
+}
+
+/* Edit students in class modal*/
+
+.edit-students-modal {
+    width: 100%;
+    max-width: 800px;
+}
+
+.edit-students-content {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto;
+}
+
+.students-modal-middle {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+}
+
+.student-item {
+    display: flex;
+    align-items: center;
+}
+
+/* Schedule modal (lessons.html / selected-lessons.html) */
+
+.schedule-modal {
+    display: none;
+    color: black;
+    font-size: small;
+}
+
+/* fallout lists */
+
+.fallout {
+    background-color: transparent;
+    color: black;
+    border: 1px solid black;
+    padding: 5px;
+    font-family: "Lucida Sans unicode Regular";
+}
+
+/* buttons */
+
+.button {
+    background-color: transparent;
+    border: 2px solid lightsalmon;
+    transition-duration: 0.2s;
+    text-decoration: none;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: lightsalmon;
+    color: whitesmoke;
+}
+
+.shortcut-btn {
+    padding: 40px;
+    border-radius: 40px;
+    background-color: rgb(223, 85, 85);
+    color: white;
+    font-size: large;
+    text-decoration: none;
+}
+
+.shortcut-btn:hover {
+    background-color: rgb(136, 46, 39);
+    color:black;
+}
+
+.new-schedule, .new-lesson, .new-student, .new-tuition, .new-teacher, .new-salary {
+    background-color: transparent;
+    border: none;
+}
+
+.change-buttons {
+    background-color: rgb(17, 17, 17);;
+    gap: 5px;
+    align-items: center;
+    padding: 5px;
+    border: none;
+}
+
+.students-modal-button {
+    background-color: transparent;
+    gap: 5px;
+    padding: 5px;
+    color: black;
+    margin: 10px;
+}
+
+.user-btn, .translate {
+    cursor: pointer;
+    background-color: transparent;
+    border: 0px;
+    padding: 10px;
+    margin-right: 30px;
+}
+
+.user-icon, .translate-icon {
+    background-color: transparent;
+}
+
+.user-btn:hover {
+    background-color: lightsalmon;
+    border-radius: 40%;
+}
+
+#plus-icon-btn {
+    background-color: transparent;
+}
+
+#plus-icon-btn:hover {
+    cursor: pointer;
+    fill: lightgreen;
+}
+
+#see-schedule {
+    color: whitesmoke;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: medium;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#select-date, #select-school-year, #see-tuition {
+    border-radius: 5px;
+    padding: 5px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: small;
+    cursor: pointer;
+}
+
+#confirm-edit, #cancel-edit {
+    color: whitesmoke;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 5px;
+}
+
+#language:hover {
+    cursor: pointer;
+    background-color: rgb(17, 17, 17);;
+    color: whitesmoke;
+}
