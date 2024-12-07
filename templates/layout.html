@@ -335,10 +335,12 @@
                     if (lang == "pt") {
                         ptSpans.forEach(function(span) {
                             span.hidden = false;
+                            span.required = true;
                             console.log(span)
                         })
                         enSpans.forEach(function(span) {
                             span.hidden = true;
+                            span.required = false;
                         })
 
                         keys.forEach(function(element) {
@@ -358,9 +360,11 @@
                     else if (lang == "en") {
                         ptSpans.forEach(function(span) {
                             span.hidden = true;
+                            span.required = false;
                         })
                         enSpans.forEach(function(span) {
                             span.hidden = false;
+                            span.required = true;
                         })
 
                         keys.forEach(function(element) {

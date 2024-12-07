@@ -47,17 +47,28 @@
                                         </thead>
                                         <tbody>
                                             <td> 
-                                                <select id="new-tuition-month" name="month" required>
-                                                    <option> </option>
+                                                <select class="new-tuition-month lang-en" name="month"> 
+                                                    <option value="" disabled selected > </option>
                                                     {% set months = {
                                                         9: "September", 10: "October", 11: "November", 12: "December", 
                                                         1: "January", 2: "February", 3: "March", 4: "April",
                                                         5: "May", 6: "June", 7: "July"
                                                     } %} 
                                                     {% for number, name in months.items() %}
-                                                        <option value="{{ number }}" translation-key="{{name}}"> {{ name }}</option>
+                                                        <option value="{{ number }}"> {{ name }}</option>
                                                     {% endfor %}
-                                                </select> 
+                                                </select>
+                                                <select class="new-tuition-month lang-pt" name="month" hidden> 
+                                                    <option value="" disabled selected > </option>
+                                                    {% set months = {
+                                                        9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro", 
+                                                        1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
+                                                        5: "Maio", 6: "Junho", 7: "Julho"
+                                                    } %} 
+                                                    {% for number, name in months.items() %}
+                                                        <option value="{{ number }}"> {{ name }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </td>
                                             <td>
                                                 <select name="student" id="new-tuition-student" required>
@@ -86,24 +97,32 @@
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                             </svg>
                         </button>
-                        <h5> Search Tuitions </h5>  
+                        <h5 translation-key="search"> Search </h5>  
                     </div>
                     
                     <div class="modal-overlay search-overlay">
                         <div class="modal search-modal">
                             <div class="modal-content search-content">
-                                <div id="select-student">
+                                <div id="select-tuition">
                                     <form action="/tuitions" method="post">
-                                        <select id="select-student" name="student" required> 
-                                            <option value="" disabled selected > Search by student </option>
+                                        <select class="select-student lang-en" name="student" placeholder="Search by student"> 
+                                            <option value="" disabled selected> Search by student </option>
                                             {% for name in students_names %}
                                                 <option value="{{ name[0] }}"> {{ name[0] }} </option>
                                             {% endfor %}
                                         </select>
-                                        <button type="submit" class="button" id="see-tuition"> See tuitions </button>
+                                        <select class="select-student lang-pt" name="student" placeholder="Procurar por aluno" hidden> 
+                                            <option value="" disabled selected> Procurar por aluno </option>
+                                            {% for name in students_names %}
+                                                <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                            {% endfor %}
+                                        </select>
+                                        
+                                        <button type="submit" class="button" id="see-tuition" translation-key="search"> Search </button>
                                     </form>
+
                                     <form action="/tuitions" method="post">
-                                        <select id="select-month" name="month" placeholder="Search by month" required> 
+                                        <select class="select-month lang-en" name="month" placeholder="Search by month"> 
                                             <option value="" disabled selected > Search by month </option>
                                             {% set months = {
                                                 9: "September", 10: "October", 11: "November", 12: "December", 
@@ -114,7 +133,18 @@
                                                 <option value="{{ number }}"> {{ name }}</option>
                                             {% endfor %}
                                         </select>
-                                        <button type="submit" class="button" id="see-tuition"> See tuitions </button>
+                                        <select class="select-month lang-pt" name="month" placeholder="Procurar por mês" hidden> 
+                                            <option value="" disabled selected > Procurar por mês </option>
+                                            {% set months = {
+                                                9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro", 
+                                                1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
+                                                5: "Maio", 6: "Junho", 7: "Julho"
+                                            } %} 
+                                            {% for number, name in months.items() %}
+                                                <option value="{{ number }}"> {{ name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" class="button" id="see-tuition" translation-key="search"> Search </button>
                                     </form>
                                 </div>
                             </div>
@@ -248,8 +278,8 @@
                                         </thead>
                                         <tbody>
                                             <td> 
-                                                <select id="new-tuition-month" name="month" required>
-                                                    <option> </option>
+                                                <select class="new-tuition-month lang-en" name="month"> 
+                                                    <option value="" disabled selected > </option>
                                                     {% set months = {
                                                         9: "September", 10: "October", 11: "November", 12: "December", 
                                                         1: "January", 2: "February", 3: "March", 4: "April",
@@ -258,7 +288,18 @@
                                                     {% for number, name in months.items() %}
                                                         <option value="{{ number }}"> {{ name }}</option>
                                                     {% endfor %}
-                                                </select> 
+                                                </select>
+                                                <select class="new-tuition-month lang-pt" name="month" hidden> 
+                                                    <option value="" disabled selected > </option>
+                                                    {% set months = {
+                                                        9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro", 
+                                                        1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
+                                                        5: "Maio", 6: "Junho", 7: "Julho"
+                                                    } %} 
+                                                    {% for number, name in months.items() %}
+                                                        <option value="{{ number }}"> {{ name }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </td>
                                             <td>
                                                 <select name="student" id="new-tuition-student" required>
@@ -288,9 +329,9 @@
                 <table class ="table">
                     <thead>
                         <tr>
-                            <th> Month </th>
-                            <th> Fee </th>
-                            <th> Payment Date </th>
+                            <th translation-key="month"> Month </th>
+                            <th translation-key="fee"> Fee</th>
+                            <th translation-key="payment_date"> Payment Date </th>
                         </tr>
                     </thead>
 
