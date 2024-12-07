@@ -1453,7 +1453,6 @@ def tuitions():
 
         if student_name:
 
-            print("student_name:", student_name)
             student_id = db.session.query(Users.id).filter(Users.name == student_name).scalar()
             tuitions = db.session.query(Tuitions).filter(Tuitions.student_id == student_id).all()
 
@@ -1466,6 +1465,7 @@ def tuitions():
 
                 tuitions_data.append(data)
             
+            students_names = db.session.query(Users.name).filter(Users.role == "student").order_by(Users.name).all()
             return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students_names=students_names)
         
         elif month_str:
@@ -1509,7 +1509,8 @@ def tuitions():
                     }
 
                     tuitions_data.append(data)
-
+                    
+                students_names = db.session.query(Users.name).filter(Users.role == "student").order_by(Users.name).all()
                 return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students_names=students_names)
             
             elif user.role == "student":
