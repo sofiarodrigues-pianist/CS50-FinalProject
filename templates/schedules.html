@@ -23,7 +23,7 @@
         {% if classes_data %}
         
             {% if user.role == "teacher" %}
-                <span class="lang-pt">
+                <span class="lang-pt" hidden>
                     <h3> O teu horário para este ano letivo </h3>
                 </span>
                 <span class="lang-en">
@@ -73,7 +73,7 @@
                 </table>
 
             {% elif user.role == "student" %}
-                <span class="lang-pt">
+                <span class="lang-pt" hidden>
                     <h3> O teu horário para este ano letivo </h3>
                 </span>
                 <span class="lang-en">
@@ -116,7 +116,7 @@
                 </table>
                 
             {% else %}
-                <span class="lang-pt">
+                <span class="lang-pt" hidden>
                     <h3> Horário atual </h3>
                 </span>
                 <span class="lang-en">
@@ -130,7 +130,7 @@
                                 <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
                             </svg> 
                         </button>
-                        <span class="lang-pt">
+                        <span class="lang-pt" hidden>
                             <h3> Adicionar novo horário </h3>
                         </span>
                         <span class="lang-en">
@@ -389,7 +389,7 @@
                                     <div class="modal delete-class-modal">
                                         <div class="modal-content delete-class-content">
                                             <div class="delete-class-body">
-                                                <span class="lang-pt">
+                                                <span class="lang-pt" hidden>
                                                     <h2> Atenção!</h2>
                                                     <h3> Tem a certeza que quer remover este horário? </h3>
                                                     <h6> (Aulas anteriores associadas a este horário não serão eliminadas) </h4>

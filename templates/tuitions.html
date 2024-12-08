@@ -204,13 +204,19 @@
                                     <div class="modal confirm-payment-modal">
                                         <div class="modal-content confirm-payment-content">
                                             <div class="confirm-payment-body">
-                                                <h2> Select a payment date:</h2>
+                                                <span class="lang-pt">
+                                                    <h2> Selecionar data de pagamento:</h2>
+                                                </span>
+                                                <span class="lang-en">
+                                                    <h2> Select a payment date:</h2>
+                                                </span>
+                                                
                                                 <input type="date" required>
                                             </div>
                                             
                                             <div class="confirm-payment-buttons">
-                                                <button class="button confirm-payment"> Confirm </button>
-                                                <button class="button cancel-payment"> Go back </button>
+                                                <button class="button confirm-payment" translation-key="confirm"> Confirm </button>
+                                                <button class="button cancel-payment" translation-key="go_back"> Go back </button>
                                             </div>
                                         </div>
                                     </div>
@@ -235,13 +241,19 @@
                                     <div class="modal delete-tuition-modal">
                                         <div class="modal-content delete-tuition-content">
                                             <div class="delete-tuition-body">
-                                                <h2> Warning!</h2>
-                                                <h3> Are you sure you want to delete this tuition? </h3>
+                                                <span class="lang-pt">
+                                                    <h2> Atenção!</h2>
+                                                    <h3> Tem a certeza que quer remover esta mensalidade? </h3>
+                                                </span>
+                                                <span class="lang-en">
+                                                    <h2> Warning!</h2>
+                                                    <h3> Are you sure you want to delete this tuition? </h3>
+                                                </span>
                                             </div>
                                             
                                             <div class="delete-tuition-buttons">
-                                                <button class="button confirm-delete"> Delete </button>
-                                                <button class="button cancel-delete"> Go back </button>
+                                                <button class="button confirm-delete" translation-key="delete"> Delete </button>
+                                                <button class="button cancel-delete" translation-key="go_back"> Go back </button>
                                             </div>
                                         </div>
                                     </div>
@@ -249,32 +261,51 @@
                             </td>
 
                             <td class="change-buttons hidden-tuition{{ item.tuition.tuition_id }}" hidden>
-                                <button class="button" tuition-id="{{ item.tuition.tuition_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('tuition-id'))"> Confirm </button>
+                                <button class="button" tuition-id="{{ item.tuition.tuition_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('tuition-id'))" translation-key="confirm"> Confirm </button>
                                
                             </td>
                             <td class="change-buttons hidden-tuition{{ item.tuition.tuition_id }}" hidden>
-                                <button class="button" tuition-id-name="hidden-tuition{{ item.tuition.tuition_id }}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('tuition-id-name'))"> Cancel </button>
+                                <button class="button" tuition-id-name="hidden-tuition{{ item.tuition.tuition_id }}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('tuition-id-name'))" translation-key="cancel"> Cancel </button>
                             </td>
 
                         </tbody>
                     {% endfor %}
                 </table>
 
-            {% else %}
-                <h3> There are no tuitions yet </h3>
+                {% else %}
+                <span class="lang-pt" hidden>
+                    <h3> Não existem mensalidades ainda </h3>
+                </span>
+                <span class="lang-en">
+                    <h3> There are no tuitions yet </h3>
+                </span>
                 
-                <span> 
-                    <button onclick="newTuition(this.closest('span'))"> Add new tuitions </button>
+                <span id="plus-icon-column"> 
+                    <div class="horizontal-elements">
+                        <button class="new-tuition" onclick="newTuition(this.closest('span'))">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16" id="plus-icon-btn">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+                            </svg> 
+                        </button>
+
+                        <span class="lang-pt" hidden>
+                            <h5> Nova mensalidade </h5>
+                        </span>
+                        <span class="lang-en">
+                            <h5> New tuition </h5>
+                        </span>
+                    </div>
+
                     <div class="modal-overlay new-tuition-overlay"> 
                         <div class="modal new-tuition-modal">
                             <div class="modal-content new-tuition-content">
                                 <form id="new-tuition-form" action="/new_tuition" method="POST">
                                     <table class="table">
                                         <thead>
-                                            <th> <label for="new-tuition-month"> Tuition Month </label> </th>
-                                            <th> <label for="new-tuition-student"> Student </label> </th>
-                                            <th> <label for="new-tuition-fee"> Fee </label> </th>
-                                            <th> <label for="new-tuition-payment"> Payment Date </label> </th>
+                                            <th> <label for="new-tuition-month" translation-key="month"> Month </label> </th>
+                                            <th> <label for="new-tuition-student" translation-key="student"> Student </label> </th>
+                                            <th> <label for="new-tuition-fee" translation-key="fee"> Fee </label> </th>
+                                            <th> <label for="new-tuition-payment" translation-key="payment_date"> Payment Date </label> </th>
                                         </thead>
                                         <tbody>
                                             <td> 
@@ -313,8 +344,8 @@
                                             <td> <input type="date" id="new-tuition-payment" name="payment" > </td>
                                         </tbody>
                                     </table>
-                                    <button class="button create-new-tuition" type="submit"> Add tuition </button>
-                                    <button class="button cancel-new-tuition"> Cancel </button>
+                                    <button class="button create-new-tuition" type="submit" translation-key="add"> Add </button>
+                                    <button class="button cancel-new-tuition" translation-key="cancel"> Cancel </button>
                                 </form>
                             </div>
                         </div>
@@ -364,11 +395,22 @@
                 </table>
 
             {% else %}
+            <span class="lang-pt">
+                <h3> Nâo existem mensalidades ainda </h3>
+            </span>
+            <span class="lang-en">
                 <h3> There are no tuitions yet </h3>
+            </span>
+                
             {% endif %}
 
         {% else %}
-            <h2> Sorry, you don't have permission to see this page. </h2>
+            <span class="lang-pt">
+                <h2> Não tem permissão para ver esta página. </h2>
+            </span>
+            <span class="lang-en">
+                <h2> Sorry, you don't have permission to see this page. </h2>
+            </span>
 
         {% endif %}
     </div>
@@ -399,6 +441,8 @@
             let modal = row.querySelector(".confirm-payment-modal");
             let options = modal.querySelectorAll(".confirm-payment-buttons button");
             
+            console.log("confirmPayment function triggered");
+
             modal.style.display = "block";
             overlay.style.display = "block";
 
@@ -411,7 +455,8 @@
 
             options.forEach(function(option) {
                 option.onclick = function() {
-                    if (this.innerText === "Confirm") {
+                    if (["Confirm", "Confirmar"].includes(this.innerText)) {
+                        console.log("confirm option triggered");
                         let paymentInput = modal.querySelector("input");
                         let paymentDate = paymentInput.value;
                         // Define payment as "tuition" (handle tuitions db insted of salaries db)
@@ -450,6 +495,7 @@
                         });
                     }
                     else {
+                        console.log("else option triggered")
                         modal.style.display = "none";
                         overlay.style.display = "none";
                     }
@@ -634,8 +680,8 @@
             options.forEach(function(option) {
                 option.onclick = function() {
 
-                    // delete class
-                    if (this.innerText === "Delete") {
+                    // delete tuition
+                    if (["Delete", "Eliminar"].includes(this.innerText)) {
                         console.log("Delete button activated");
                         console.log(tuitionId);
 

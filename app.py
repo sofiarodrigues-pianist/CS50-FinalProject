@@ -1411,7 +1411,6 @@ def tuitions():
 
     tuitions_data = []
     
-    
     if request.method == "GET":
         
         if user.role == "admin":
@@ -1454,7 +1453,7 @@ def tuitions():
         if student_name:
 
             student_id = db.session.query(Users.id).filter(Users.name == student_name).scalar()
-            tuitions = db.session.query(Tuitions).filter(Tuitions.student_id == student_id).all()
+            tuitions = db.session.query(Tuitions).filter(Tuitions.student_id == student_id).order_by(Tuitions.tuition_date).all()
 
             for item in tuitions:
 
@@ -1497,7 +1496,7 @@ def tuitions():
                 print("End_date:", end_date)
 
             if user.role == "admin":
-                tuitions = db.session.query(Tuitions).filter(and_(Tuitions.tuition_date >= start_date, Tuitions.tuition_date <= end_date)).all()
+                tuitions = db.session.query(Tuitions).join(Users, Tuitions.student_id == Users.id).filter(and_(Tuitions.tuition_date >= start_date, Tuitions.tuition_date <= end_date)).order_by(Users.name).all()
                 students_names = db.session.query(Users.name).filter(Users.role == "student").order_by(Users.name).all()
 
                 for item in tuitions:

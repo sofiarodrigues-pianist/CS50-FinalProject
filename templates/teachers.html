@@ -179,22 +179,40 @@
                 </table>
 
             {% else %}
-                <h3> There are no teachers yet </h3>
+                <span class="lang-pt" hidden>
+                    <h3> Ainda não há professores. </h3>
+                </span>
+                <span class="lang-en">
+                    <h3> There are no teachers yet. </h3>
+                </span>
+                
+                <span id="plus-icon-column">
+                    <div class = "horizontal-elements">
+                        <button class="new-teacher" onclick="newTeacher(this.closest('span'))">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16" id="plus-icon-btn">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+                            </svg> 
+                        </button>
+                        <span class="lang-pt" hidden>
+                            <h5> Novo professor </h3>
+                        </span>
+                        <span class="lang-en">
+                            <h3> New teacher </h3>
+                        </span>
+                    </div>
 
-                <span>
-                    <button onclick="newTeacher(this.closest('span'))"> Register new teacher </button>
                     <div class="modal-overlay new-teacher-overlay"> 
                         <div class="modal new-teacher-modal">
                             <div class="modal-content new-teacher-content">
                                 <form id="new-teacher-form" action="/new_teacher" method="POST">
                                     <table class="table">
                                         <thead>
-                                            <th> <label for="new-teacher-name"> Name: </label> </th>
-                                            <th> <label for="new-teacher-age"> Age: </label> </th>
-                                            <th> <label for="new-teacher-phone"> Phone: </label> </th>
-                                            <th> <label for="new-teacher-email"> Email: </label> </th>
-                                            <th> <label for="new-teacher-instrument"> Instrument: </label> </th>
-                                            <th> <label for="new-teacher-salary"> Salary: </label> </th>
+                                            <th> <label for="new-teacher-name" translation-key="name"> Name </label> </th>
+                                            <th> <label for="new-teacher-age" translation-key="age"> Age </label> </th>
+                                            <th> <label for="new-teacher-phone" translation-key="phone"> Phone </label> </th>
+                                            <th> <label for="new-teacher-email"> Email </label> </th>
+                                            <th> <label for="new-teacher-instrument" translation-key="instrument"> Instrument </label> </th>
+                                            <th> <label for="new-teacher-salary" translation-key="salary"> Salary </label> </th>
                                         </thead>
                                         <tbody>
                                             <td> <input type="text" id="new-teacher-name" name="name" required> </td>
@@ -205,8 +223,8 @@
                                             <td> <input type="number" id="new-teacher-salary" name="salary" required> </td>
                                         </tbody>
                                     </table>
-                                    <button class="button create-new-teacher" type="submit"> Add teacher </button>
-                                    <button class="button cancel-new-teacher"> Cancel </button>
+                                    <button class="button create-new-teacher" type="submit" translation-key="add"> Add </button>
+                                    <button class="button cancel-new-teacher" translation-key="cancel"> Cancel </button>
                                 </form>
                             </div>
                         </div>
@@ -216,7 +234,12 @@
             {% endif %}
 
         {% else %}
-            <h2> Sorry, you don't have permission to see this page. </h2>
+            <span class="lang-pt" hidden>
+                <h2> Não tem permissão para ver esta página. </h2>
+            </span>
+            <span class="lang-en">
+                <h2> Sorry, you don't have permission to see this page. </h2>
+            </span>
 
         {% endif %}
     </div>
@@ -403,7 +426,7 @@
                 option.onclick = function() {
 
                     // delete class
-                    if (this.innerText === "Delete") {
+                    if (["Delete", "Eliminar"].includes(this.innerText)) {
                         console.log("Delete button activated");
                         console.log(teacherId);
 

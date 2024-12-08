@@ -168,14 +168,29 @@
                     </table>
                 
                 {% else %}
-                    <h3> There are no classes today </h3>
+                    <span class="lang-pt" hidden>
+                        <h3> Não há aulas agendadas para hoje </h3>
+                    </span>
+                    <span class="lang-en">
+                        <h3> There are no classes today </h3>
+                    </span> 
+                    
 
                 {% endif %}
-
-                <div class="shortcuts-container">
-                    <a href="/lessons" class="shortcut-btn"> Check Attendances </a>
-                    <a href="/tuitions" class="shortcut-btn"> Check Tuitions </a>
-                    <a href="/salaries" class="shortcut-btn"> Check Salaries </a> 
+                    <span class="lang-pt" hidden>
+                        <div class="shortcuts-container">
+                            <a href="/lessons" class="shortcut-btn"> Faltas e Presenças </a>
+                            <a href="/tuitions" class="shortcut-btn"> Consultar Mensalidades </a>
+                            <a href="/salaries" class="shortcut-btn"> Consultar Salários </a> 
+                        </div>
+                    </span>
+                    <span class="lang-en">
+                        <div class="shortcuts-container">
+                            <a href="/lessons" class="shortcut-btn"> Check Attendances </a>
+                            <a href="/tuitions" class="shortcut-btn"> Check Tuitions </a>
+                            <a href="/salaries" class="shortcut-btn"> Check Salaries </a> 
+                        </div>
+                    </span>
                 </div>
 
             {% endif %}

@@ -59,7 +59,7 @@
                                                 <select name="teacher" id="new-student-teacher" required>
                                                     <option></option>
                                                     {% for name in teacher_names %}
-                                                        <option value="{{ name }}"> {{ name }} </option>
+                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
                                                     {% endfor %}
                                                 </select> 
                                             </td>
