@@ -6,8 +6,6 @@
         'header header header header header header header header'
         'main main main main main main main main'
         'footer footer footer footer footer footer footer footer';
-    gap: 10px;
-    padding: 10px;
     height: 100vh; /* Makes the grid container take full viewport height */
     grid-template-rows: auto 1fr auto; /* Ensure footer stays at the bottom */
 }
@@ -23,16 +21,18 @@
 
 .header {
     grid-area: header;
+    width:100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(17, 17, 17);
+    /*background-color: #E6E6FA;*/
+    background-color: #C08081;
+    /*background-color: rgb(185, 173, 114);*/
 }
 
 .navbar {
     display: flex;
     justify-content: flex-start;
-    background-color: rgb(19, 18, 18);
 }
 
 .right {
@@ -42,10 +42,6 @@
 }
 
 /* Header items design */
-.active-tab {
-    color: gold;
-    background-color: gold;
-}
 
 .nav-items {
     list-style: none;
@@ -56,17 +52,25 @@
 
 .nav-item {
     margin-right: 15px;
-    font-family: "Impact Regular";
+    font-family: "Raleway";
+    /*font-family: "Impact Regular";*/
     font-size: 25px;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 .nav-link:hover {
-    color: gold;
+    color: lightgoldenrodyellow;
 }
 
 .nav-link {
     text-decoration: none;
     color: white;
+}
+
+.active-tab {
+    color: #002E74;
+    /*color:rgb(62, 76, 115);*/
 }
 
 .user, .translation {
@@ -87,24 +91,29 @@
 
 .main {
     grid-area: main;
+    background-color: #FFFFF0;
+    padding: 2%;
     height: 100%;
+    font-family: "Nunito Sans";
 }
 
-.main > div {
+/*.main > div {
     font-family: "Lucida Sans unicode Regular";
-}
+}*/
 
 .footer {
     grid-area: footer;
-    display: flex;
+    background-color: #FFFFF0;
+    display: grid;
     justify-content: center;
+    margin: 0px;
+    padding-top: 5%;
 }
 
 
 body {
-    background-color: rgb(10, 10, 10);
-    color: whitesmoke;
-    height:100%;
+    margin:0px;
+    color: black;
 }
 
 /* Homepage */ 
@@ -112,7 +121,6 @@ body {
 #homepage {
     text-align: center;
     color: whitesmoke;
-    font-family: "Lucida Sans unicode Regular";
     font-size: 20px;
 }
 
@@ -121,11 +129,11 @@ body {
     font-size: 30px;
 }
 
+
 #login-welcome {
     text-align: center;
-    color: whitesmoke;
-    font-family: "Corbel";
-    font-size: 30px;
+    color: black;
+    font-size: 200%;
 }
 
 .shortcuts-container {
@@ -162,8 +170,8 @@ th, td {
 
 th {
     font-size: larger;
-    background-color: lightsalmon;
-    color: black;
+    background-color: #C08081;
+    color: whitesmoke;
 }
 
 #plus-icon-column {
@@ -256,7 +264,7 @@ ul {
     z-index: 2;
     background-color: whitesmoke;
     border-radius: 5px;
-    border: 5px solid lightsalmon;
+    border: 5px solid #E6E6FA;
     padding: 5px;
     width: auto;
 }
@@ -350,14 +358,13 @@ ul {
     color: black;
     border: 1px solid black;
     padding: 5px;
-    font-family: "Lucida Sans unicode Regular";
 }
 
 /* buttons */
 
 .button {
     background-color: transparent;
-    border: 2px solid lightsalmon;
+    border: 2px solid #E6E6FA;
     transition-duration: 0.2s;
     text-decoration: none;
     padding: 15px;
@@ -365,21 +372,21 @@ ul {
 }
 
 .button:hover {
-    background-color: lightsalmon;
+    background-color: #E6E6FA;
     color: whitesmoke;
 }
 
 .shortcut-btn {
     padding: 40px;
     border-radius: 40px;
-    background-color: rgb(223, 85, 85);
+    background-color: #4682B4;
     color: white;
     font-size: large;
     text-decoration: none;
 }
 
 .shortcut-btn:hover {
-    background-color: rgb(136, 46, 39);
+    background-color: #E6E6FA;
     color:black;
 }
 
@@ -417,7 +424,7 @@ ul {
 }
 
 .user-btn:hover {
-    background-color: lightsalmon;
+    background-color: #E6E6FA;
     border-radius: 40%;
 }
 
@@ -432,7 +439,6 @@ ul {
 
 #see-schedule {
     color: whitesmoke;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: medium;
     border-radius: 10px;
     padding: 10px;
@@ -441,14 +447,12 @@ ul {
 #select-date, #select-school-year, #see-tuition {
     border-radius: 5px;
     padding: 5px;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: small;
     cursor: pointer;
 }
 
 #confirm-edit, #cancel-edit {
     color: whitesmoke;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     padding: 5px;
 }
 

@@ -9,7 +9,15 @@
 
         <!-- link to personal stylesheet -->
         <link href="/static/css/style.css" rel="stylesheet">
-
+        <!-- link to "Raleway" font-family -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <!-- link to Nunito Sans font-family-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+        
         <title> G&S Music Academy: {% block title %}{% endblock %} </title>
 
     </head>
@@ -21,7 +29,7 @@
                 {% if user %}
                     <div class="navbar"> 
                         <div class="nav-icon">
-                            <a href="/"> <img src="/static/G&S logo_branco.png" alt="logo" width="180" height="90"> </a>
+                            <a href="/"> <img src="/static/SS_logo.png" width="200" height="180"> </a>
                         </div>
 
                         <ul class="nav-items">
@@ -152,12 +160,12 @@
                     navLinks.forEach(link => {
                         // Check if the href matches the current path
                         if (link.getAttribute('href') === currentPath) {
-                            // Add 'active-tab' to the parent <li> element
-                            link.parentElement.classList.add('active-tab');
+                            // Add 'active-tab'
+                            link.classList.add('active-tab');
                             console.log("navLink match");
                         } else {
                             // Remove 'active-tab' if it exists
-                            link.parentElement.classList.remove('active-tab');
+                            link.classList.remove('active-tab');
                         }
                     });
                 });
@@ -412,9 +420,7 @@
                     // Spans for manually translated sentences 
                     let ptSpans = document.querySelectorAll(".lang-pt");
                     let enSpans = document.querySelectorAll(".lang-en");
-                    console.log(ptSpans);
-                     
-                    console.log(enSpans);
+                 
                     // Dictionary translation
                     let keys = document.querySelectorAll("[translation-key]");
 
