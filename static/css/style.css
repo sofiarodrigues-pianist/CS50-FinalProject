@@ -69,7 +69,11 @@
 }
 
 .active-tab {
-    color: #002E74;
+    /*color: #002E74;*/
+    padding: 5%;
+    border-bottom: solid 2px goldenrod;
+    border-top: solid 2px goldenrod;
+    border-radius: 30%;
     /*color:rgb(62, 76, 115);*/
 }
 
@@ -240,23 +244,23 @@ ul {
 
 .edit {
     border: none;
-    background-color: rgb(17, 17, 17);;
+    background-color: #FFFFF0;
 }
 
 .edit:hover {
-    background-color: rgb(17, 17, 17);;
+    background-color: #FFFFF0;
     cursor: default;
 }
 
 .edit-btn, .delete-btn, .check-btn, .cross-btn, .eye-btn, .hide-eye-btn, .search-btn {
-    background-color: rgb(17, 17, 17);;
+    background-color: transparent;
     border: 0px;
     cursor: pointer;
 }
 
 .edit-btn:hover, .delete-btn:hover, .check-btn:hover, .cross-btn:hover, .eye-btn:hover, .hide-eye-btn:hover {
     opacity: 1;
-    background-color: rgb(17, 17, 17);;
+    background-color: transparent;
 }
 
 .pencil, .bin, .check, .cross, .eye, .eye-slash, .search {
@@ -264,9 +268,13 @@ ul {
     cursor: pointer;
 }
 
-.pencil:hover, .bin:hover, .eye:hover, .eye-slash:hover, .search:hover {
+.pencil:hover, .eye:hover, .eye-slash:hover, .search:hover {
     background-color: transparent;
     fill: lightsalmon;
+}
+
+.bin:hover {
+    fill: #e8120b;
 }
 
 .check:hover {
@@ -276,7 +284,6 @@ ul {
 .cross:hover  {
     fill: red;
 }
-
 
 
 /* Modal general design */ 
@@ -399,18 +406,18 @@ ul {
 
 .button {
     background-color: transparent;
+    color: black;
     border: 2px solid #E6E6FA;
     transition-duration: 0.2s;
     text-decoration: none;
-    padding: 15px;
+    padding:10%;
     cursor: pointer;
 }
 
 .button:hover {
     background-color: #E6E6FA;
-    color: whitesmoke;
+    color: black;
 }
-
 
 
 .new-schedule, .new-lesson, .new-student, .new-tuition, .new-teacher, .new-salary {
@@ -419,11 +426,11 @@ ul {
 }
 
 .change-buttons {
-    background-color: rgb(17, 17, 17);;
-    gap: 5px;
+    background-color: #FFFFF0;
     align-items: center;
-    padding: 5px;
     border: none;
+    padding-right: 5%;
+    flex-direction: row;
 }
 
 .students-modal-button {
@@ -475,8 +482,7 @@ ul {
 }
 
 #confirm-edit, #cancel-edit {
-    color: whitesmoke;
-    padding: 5px;
+    color: black;
 }
 
 #language:hover {

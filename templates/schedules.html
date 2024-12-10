@@ -10,23 +10,37 @@
     <div id="schedule">
         
         <div class="top-options">
-            <div id="select-year">
-                <form action="/schedules" method="post">
-                    <select id="select-year" name="school_year" required> 
-                        <option value="" disabled selected translation-key="school_year"> School year </option>
-                        <option value="2324"> 2023/2024 </option>
-                        <option value="2425"> 2024/2025 </option>
-                    </select>
-                    <button type="submit" class="button" id="see-schedule" translation-key="see_schedule"> See schedule </button>
-                </form>
-            </div>
+            <span id="search-icon">
+                <div class="horizontal-elements">
+                    <button class="search-btn" onclick="scheduleModal(this.closest('span'))">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg> 
+                    </button> 
+                    <h3 translation-key="search"> Search </h3>
+                </div>
+                <div class="modal-overlay search-year-overlay">
+                    <div class="modal search-year-modal">
+                        <div class="modal-content search-year-content">
+                            <form action="/schedules" method="post">
+                                <select id="select-year" name="school_year" required> 
+                                    <option value="" disabled selected translation-key="school_year"> School year </option>
+                                    <option value="2324"> 2023/2024 </option>
+                                    <option value="2425"> 2024/2025 </option>
+                                </select>
+                                <button type="submit" class="button" id="see-schedule" translation-key="see_schedule"> See schedule </button>
+                            </form>
+                        </div>
+                    </div>  
+                </div>
+            </span>
     
             {% if user.role == "admin" %}
             
                 <div id="plus-icon-column">
                     <div class="horizontal-elements">
                         <button class="new-schedule" onclick="newSchedule()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16" id="plus-icon-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" viewBox="0 0 16 16" id="plus-icon-btn">
                                 <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
                             </svg> 
                         </button>
@@ -382,13 +396,15 @@
                             </td>
 
                             <td class="edit">
-                                <button class="edit-btn" data-class-id-name="hidden-class{{ item.class.class_id }}" onclick=displayEdit(this)> <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="white" viewBox="0 0 16 16">
-                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                <button class="edit-btn" data-class-id-name="hidden-class{{ item.class.class_id }}" onclick=displayEdit(this)> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="black" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
                                     </svg> 
                                 </button>
-                                <button class="delete-btn" data-class-id-name="hidden-class{{ item.class.class_id }}" onclick=displayDeleteModal(this)> <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="white" viewBox="0 0 16 16">
-                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                                  </svg>
+                                <button class="delete-btn" data-class-id-name="hidden-class{{ item.class.class_id }}" onclick=displayDeleteModal(this)> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="black" viewBox="0 0 16 16">
+                                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                    </svg>
                                 </button>
                             
                                 <!-- Delete modal -->
@@ -417,13 +433,17 @@
                                     </div>
                                 </div>
                             </td>
-
+                            <td class="change-buttons hidden-class{{ item.class.class_id }}" hidden>
+                                <button class="button" class-id="{{ item.class.class_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'))" translation-key="confirm"> Confirm </button>
+                                <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('data-class-id-name'))" data-class-id-name="hidden-class{{ item.class.class_id }}" id="cancel-edit" translation-key="cancel"> Cancel </button>
+                            </td>
+                            <!--
                             <td class="change-buttons hidden-class{{ item.class.class_id }}" hidden>
                                 <button class="button" class-id="{{ item.class.class_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'))" translation-key="confirm"> Confirm </button>
                             </td>
                             <td class="change-buttons hidden-class{{ item.class.class_id }}" hidden>
                                 <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('data-class-id-name'))" data-class-id-name="hidden-class{{ item.class.class_id }}" id="cancel-edit" translation-key="cancel"> Cancel </button>
-                            </td>
+                            </td> -->
                         
                         </tbody>
                      
@@ -440,6 +460,22 @@
 
 
     <script>
+
+        // Display search modal
+        function scheduleModal(spanTag) {
+            let overlay = spanTag.querySelector(".search-year-overlay");
+            let modal = spanTag.querySelector(".search-year-modal");
+
+            overlay.style.display="block";
+            modal.style.display="block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                } 
+            };
+        }
 
         // Create new schedule
         function newSchedule() {
@@ -498,6 +534,7 @@
                 console.log("For each inlineEdit function triggered");
 
                 column.hidden = true;
+                column.style.display="none";
             });
 
         };
@@ -512,6 +549,10 @@
 
             row.forEach(function(column) {
                 column.hidden = false;
+            
+                if (!column.classList.contains('modal') && !column.classList.contains('modal-overlay')) {
+                    column.style.display="flex";
+                }
             });
         };
 
