@@ -8,121 +8,21 @@
 {% block main %}
 
     <div id="schedule">
-    
-        <div id="select-year">
-            <form action="/schedules" method="post">
-                <select id="select-year" name="school_year" required> 
-                    <option value="" disabled selected translation-key="school_year"> School year </option>
-                    <option value="2324"> 2023/2024 </option>
-                    <option value="2425"> 2024/2025 </option>
-                </select>
-                <button type="submit" class="button" id="see-schedule" translation-key="see_schedule"> See schedule </button>
-            </form>
-        </div>
-
-        {% if classes_data %}
         
-            {% if user.role == "teacher" %}
-                <span class="lang-pt" hidden>
-                    <h3> O teu horário para este ano letivo </h3>
-                </span>
-                <span class="lang-en">
-                    <h3> Your schedule for this school year </h3>
-                </span>
-
-                <table class ="table">
-                    <thead>
-                        <tr>
-                            <th translation-key="weekday"> Weekday </th>
-                            <th translation-key="start_time"> Start Time </th>
-                            <th translation-key="class"> Class </th>
-                            <th translation-key="student"> Student </th>
-                            <th translation-key="duration"> Duration </th>
-                            <th translation-key="classroom"> Classroom </th>
-                        </tr>
-                    </thead>
-
-                    {% for item in classes_data %}
-                        <tbody>
-                            <td translation-key="{{ item.weekday | lower}}">
-                                {{ item.weekday }}
-                            </td>
-                            <td>
-                                {{ item.class.hour_formatted }}
-                            </td>
-                            <td translation-key="{{ item.class.name | lower }}" >
-                                {{ item.class.name }}
-                            </td>
-                            <td>
-                                <ul>
-                                    {% for student in item.students %}
-                                        <li>
-                                            {{ student.user.name }}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td>
-                                {{ item.class.duration }} min
-                            </td>
-                            <td>
-                                {{ item.class.classroom }}
-                            </td>
-                        </tbody>
-                    {% endfor %}
-                </table>
-
-            {% elif user.role == "student" %}
-                <span class="lang-pt" hidden>
-                    <h3> O teu horário para este ano letivo </h3>
-                </span>
-                <span class="lang-en">
-                    <h3> Your schedule for this school year </h3>
-                </span>
-
-                <table class ="table">
-                    <thead>
-                        <tr>
-                            <th translation-key="weekday"> Weekday </th>
-                            <th translation-key="start_time"> Start Time </th>
-                            <th translation-key="class"> Class </th>
-                            <th translation-key="teacher"> Teacher </th>
-                            <th translation-key="duration"> Duration </th>
-                            <th translation-key="classroom"> Classroom </th>
-                    </thead>
-
-                    {% for item in classes_data %}
-                        <tbody>
-                            <td translation-key="{{ item.weekday }} | lower">
-                                {{ item.weekday }}
-                            </td>
-                            <td>
-                                {{ item.class.hour }}
-                            </td>
-                            <td translation-key="{{ item.class.name }} | lower">
-                                {{ item.class.name }}
-                            </td>
-                            <td>
-                                {{ item.teacher }}
-                            </td>
-                            <td>
-                                {{ item.class.duration }} min
-                            </td>
-                            <td>
-                                {{ item.class.classroom}}
-                            </td>
-                        </tbody>
-                    {% endfor %}
-                </table>
-                
-            {% else %}
-                <span class="lang-pt" hidden>
-                    <h3> Horário atual </h3>
-                </span>
-                <span class="lang-en">
-                    <h3> Current Schedule </h3>
-                </span>
-                
+        <div class="top-options">
+            <div id="select-year">
+                <form action="/schedules" method="post">
+                    <select id="select-year" name="school_year" required> 
+                        <option value="" disabled selected translation-key="school_year"> School year </option>
+                        <option value="2324"> 2023/2024 </option>
+                        <option value="2425"> 2024/2025 </option>
+                    </select>
+                    <button type="submit" class="button" id="see-schedule" translation-key="see_schedule"> See schedule </button>
+                </form>
+            </div>
+    
+            {% if user.role == "admin" %}
+            
                 <div id="plus-icon-column">
                     <div class="horizontal-elements">
                         <button class="new-schedule" onclick="newSchedule()">
@@ -137,7 +37,7 @@
                             <h3> Add new schedule </h3>
                         </span>
                     </div> 
-
+    
                     <div class="modal-overlay new-schedule-overlay"> 
                         <div class="modal new-schedule-modal">
                             <div class="modal-content new-schedule-content">
@@ -205,6 +105,113 @@
                         </div>
                     </div>
                 </div>
+            {% endif %}
+        </div>
+        <br>
+        
+        {% if classes_data %}
+        
+            {% if user.role == "teacher" %}
+                <span class="lang-pt title-container" hidden>
+                    <h3 class="title"> O teu horário para este ano letivo </h3>
+                </span>
+                <span class="lang-en title-container">
+                    <h3 class="title"> Your schedule for this school year </h3>
+                </span>
+
+                <table class ="table">
+                    <thead>
+                        <tr>
+                            <th translation-key="weekday"> Weekday </th>
+                            <th translation-key="start_time"> Start Time </th>
+                            <th translation-key="class"> Class </th>
+                            <th translation-key="student"> Student </th>
+                            <th translation-key="duration"> Duration </th>
+                            <th translation-key="classroom"> Classroom </th>
+                        </tr>
+                    </thead>
+
+                    {% for item in classes_data %}
+                        <tbody>
+                            <td translation-key="{{ item.weekday | lower}}">
+                                {{ item.weekday }}
+                            </td>
+                            <td>
+                                {{ item.class.hour_formatted }}
+                            </td>
+                            <td translation-key="{{ item.class.name | lower }}" >
+                                {{ item.class.name }}
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for student in item.students %}
+                                        <li>
+                                            {{ student.user.name }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                {{ item.class.duration }} min
+                            </td>
+                            <td>
+                                {{ item.class.classroom }}
+                            </td>
+                        </tbody>
+                    {% endfor %}
+                </table>
+
+            {% elif user.role == "student" %}
+                <span class="lang-pt title-container" hidden>
+                    <h3 class="title"> O teu horário para este ano letivo </h3>
+                </span>
+                <span class="lang-en title-container">
+                    <h3 class="title"> Your schedule for this school year </h3>
+                </span>
+
+                <table class ="table">
+                    <thead>
+                        <tr>
+                            <th translation-key="weekday"> Weekday </th>
+                            <th translation-key="start_time"> Start Time </th>
+                            <th translation-key="class"> Class </th>
+                            <th translation-key="teacher"> Teacher </th>
+                            <th translation-key="duration"> Duration </th>
+                            <th translation-key="classroom"> Classroom </th>
+                    </thead>
+
+                    {% for item in classes_data %}
+                        <tbody>
+                            <td translation-key="{{ item.weekday }} | lower">
+                                {{ item.weekday }}
+                            </td>
+                            <td>
+                                {{ item.class.hour }}
+                            </td>
+                            <td translation-key="{{ item.class.name }} | lower">
+                                {{ item.class.name }}
+                            </td>
+                            <td>
+                                {{ item.teacher }}
+                            </td>
+                            <td>
+                                {{ item.class.duration }} min
+                            </td>
+                            <td>
+                                {{ item.class.classroom}}
+                            </td>
+                        </tbody>
+                    {% endfor %}
+                </table>
+                
+            {% else %}
+                <span class="lang-pt title-container" hidden>
+                    <h2 class="title"> Horário atual </h2>
+                </span>
+                <span class="lang-en title-container">
+                    <h2 class="title"> Current Schedule </h2>
+                </span>
+                
 
                 <table class ="table">
                     <thead>

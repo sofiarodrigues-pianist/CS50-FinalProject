@@ -93,8 +93,23 @@
     grid-area: main;
     background-color: #FFFFF0;
     padding: 2%;
-    height: 100%;
     font-family: "Nunito Sans";
+}
+
+.title-container {
+    padding-left: 5%;
+}
+
+.title {
+    align-items: center;
+    border-left: solid 2px goldenrod;
+    border-right: solid 2px goldenrod;
+    padding: 5px;
+}
+
+.top-options {
+    border-bottom: solid 3px goldenrod;
+    padding-left: 5%;
 }
 
 /*.main > div {
@@ -104,10 +119,10 @@
 .footer {
     grid-area: footer;
     background-color: #FFFFF0;
-    display: grid;
+    display:flex;
     justify-content: center;
     margin: 0px;
-    padding-top: 5%;
+    padding-top: 15%;
 }
 
 
@@ -133,14 +148,31 @@ body {
 #login-welcome {
     text-align: center;
     color: black;
+    font-weight:bolder;
     font-size: 200%;
+    border-bottom: solid 3px goldenrod;
 }
 
 .shortcuts-container {
-    padding-right: 200px;
-    padding-left: 200px;
     display: flex;
     justify-content: space-around;
+    width:100%;
+}
+
+.shortcut-btn {
+    padding: 2%;
+    border-bottom: solid 2px goldenrod;
+    border-top: solid 2px goldenrod;
+    border-radius: 30%;
+    /*background-color: #4682B4;*/
+    color: black;
+    font-size: large;
+    text-decoration: none;
+}
+
+.shortcut-btn:hover {
+    background-color: #E6E6FA;
+    color:black;
 }
 
 .login-form {
@@ -159,7 +191,7 @@ body {
 table {
     table-layout: auto;
     width: 100%;
-    padding: 40px;
+    padding: 2% 5% 5% 5%;
 }
 
 th, td {
@@ -177,6 +209,9 @@ th {
 #plus-icon-column {
     background-color: transparent;
     border: none;
+}
+tbody {
+    background-color: whitesmoke;
 }
 
 tbody:hover {
@@ -376,19 +411,7 @@ ul {
     color: whitesmoke;
 }
 
-.shortcut-btn {
-    padding: 40px;
-    border-radius: 40px;
-    background-color: #4682B4;
-    color: white;
-    font-size: large;
-    text-decoration: none;
-}
 
-.shortcut-btn:hover {
-    background-color: #E6E6FA;
-    color:black;
-}
 
 .new-schedule, .new-lesson, .new-student, .new-tuition, .new-teacher, .new-salary {
     background-color: transparent;

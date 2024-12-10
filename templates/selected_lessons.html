@@ -294,7 +294,7 @@
                 <table class ="table">
                     <thead>
                         <tr>
-                            <th translation-key="date"> Lesson date </th>
+                            <th translation-key="date"> Date </th>
                             <th translation-key="weekday"> Weekday </th>
                             <th translation-key="start_time"> Start Time </th>
                             <th translation-key="class"> Class </th>
@@ -375,7 +375,7 @@
                                                         <h3> Alunos disponíveis </h3>
                                                     </span>
                                                     <span class="lang-en">
-                                                        <h3> Available Students </h3>
+                                                        <h3> Available Students </h3> 
                                                     </span>
                                                 </div>
                                                 <div class="students-modal-body">
@@ -437,7 +437,7 @@
                             </td>
 
                             <td class="edit">
-                                {% if item.lesson.attendance == "false" %}
+                                {% if item.lesson.attendance == "false" and item.lesson.is_compensation != "true" %}
                                 <div class="eye-buttons">
                                     <button class="eye-btn" user-role="{{ user.role }}" lesson-id="{{ item.lesson.lesson_id }}" comp-id ="{{ item.lesson.compensation_id }}" onclick="displayCompLesson(this.closest('div'),this.closest('tbody'),this.getAttribute('comp-id'), this.getAttribute('lesson-id'), this.getAttribute('user-role'))">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="eye" viewBox="0 0 16 16">
@@ -687,21 +687,24 @@
                         <span class="no-comp lang-en"> No compensation Lesson yet </span>
                     `;
                 }
-                
+
                 // Place it below original lesson
+                console.log("addComplesson:", addCompLesson);
                 ogLesson.insertAdjacentElement("afterend", addCompLesson);
                 
                 // Call switchLang function again
                 let savedLang = localStorage.getItem("selectedLanguage");
-                    console.log("saved language:", savedLang)
-                    if (savedLang) {
-                        document.getElementById("language").value = savedLang;
-                        switchLang(savedLang);
-                    }
+                console.log("saved language:", savedLang)
+                if (savedLang) {
+                    document.querySelector(".language").value = savedLang;
+                    switchLang(savedLang);
+                }
                 
                 // Switch eye buttons
                 showBtn.hidden = true;
                 hideBtn.hidden = false;
+
+    
             }
             else {
                 console.log("Error: neither compLesson or ogLesson found");

@@ -96,7 +96,7 @@
                                             </li>
                                             <li> 
                                                 <label for="language" translation-key="language"> Language: </label>
-                                                <select class="fallout language" aria-label="Choose language" onchange="switchLang(this.value, this.closest('.user'))">
+                                                <select class="fallout language" aria-label="Choose language" onchange="switchLang(this.value)">
                                                     <option disabled selected></option>
                                                     <option value="en">English</option>
                                                     <option value="pt">Português</option>
@@ -123,7 +123,7 @@
                                 <div class="modal lang-modal">
                                     <div class="modal-content lang-content">
                                         <label for="language" translation-key="language"> Language: </label>
-                                        <select class="fallout language" aria-label="Choose language" onchange="switchLang(this.value, this.closest('.language'))">
+                                        <select class="fallout language" aria-label="Choose language" onchange="switchLang(this.value)">
                                             <option disabled selected></option>
                                             <option value="en">English</option>
                                             <option value="pt">Português</option>
@@ -431,11 +431,13 @@
                         ptSpans.forEach(function(span) {
                             span.hidden = false;
                             span.required = true;
+                            span.style.display = "flex";
                             console.log(span)
                         })
                         enSpans.forEach(function(span) {
                             span.hidden = true;
                             span.required = false;
+                            span.style.display="none";
                         })
 
                         keys.forEach(function(element) {
@@ -457,10 +459,12 @@
                         ptSpans.forEach(function(span) {
                             span.hidden = true;
                             span.required = false;
+                            span.style.display="none";
                         })
                         enSpans.forEach(function(span) {
                             span.hidden = false;
                             span.required = true;
+                            span.style.display = "flex";
                         })
 
                         keys.forEach(function(element) {

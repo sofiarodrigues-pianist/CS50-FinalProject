@@ -17,10 +17,10 @@
             {% if user.role == "teacher" %}
 
                 {% if classes_data %}
-                    <span class="lang-pt" hidden>
+                    <span class="lang-pt title" hidden>
                         <h3> Este é o horário para hoje </h3>
                     </span>
-                    <span class="lang-en">
+                    <span class="lang-en title">
                         <h3> This is your schedule for today </h3>
                     </span>
                     
@@ -75,10 +75,10 @@
             {% elif user.role == "student" %}
 
                 {% if classes_data %}
-                    <span class="lang-pt" hidden>
+                    <span class="lang-pt title" hidden>
                         <h3> Este é o teu horário para hoje </h3>
                     </span>
-                    <span class="lang-en">
+                    <span class="lang-en title">
                         <h3> This is your schedule for today </h3>
                     </span>
                     <table class ="table">
@@ -120,12 +120,13 @@
             {% else %}
 
                 {% if classes_data %}
-                    <span class="lang-pt" hidden>
-                        <h3> Este é o horário para hoje: </h3>
+                    <span class="lang-pt title-container" hidden>
+                        <h3 class="title"> Este é o horário para hoje </h3>
                     </span>
-                    <span class="lang-en">
-                        <h3> This is the schedule for today: </h3>
+                    <span class="lang-en title-container">
+                        <h3 class="title"> This is the schedule for today </h3>
                     </span> 
+
                     <table class ="table">
                         <thead>
                             <tr>
