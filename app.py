@@ -7,7 +7,7 @@ from datetime import datetime
 from werkzeug.exceptions import Unauthorized, NotFound, BadRequest, BadRequestKeyError
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from helpers import login_required, populate_lessons_2324, populate_lessons_2425, populate_tuitions_2425, populate_salaries_2425, adjust_lessons, delete_lessons, all_schedules_info, teacher_schedules_info, student_schedules_info, attendance_update, payment_update, add_tuitions
+from helpers import login_required, populate_lessons_2324, populate_lessons_2425, populate_tuitions_2425, populate_salaries_2425, adjust_lessons, delete_lessons, all_schedules_info, teacher_schedules_info, student_schedules_info, attendance_update, payment_update, add_tuitions, add_salaries
 
 import calendar
 
@@ -28,6 +28,8 @@ year_begin = 2024
 year_finish = 2025
 begin_date = datetime.strptime("2024-9-2", "%Y-%m-%d").date()
 finish_date = datetime.strptime("2025-7-31", "%Y-%m-%d").date()
+weekday_names_pt = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"]
+
 
 # Create Models (ORM "Object-relational mapper" model) and tables
 
@@ -470,7 +472,7 @@ def new_class():
     
     # Get form variables
     class_name = request.form.get("class_name")
-    weekday_name = request.form.get("weekday")
+    weekday_name = request.form.get("weekday").strip()
     start_time = request.form.get("start_time")
     class_duration = request.form.get("duration")
     teacher_name = request.form.get("teacher")
@@ -479,9 +481,12 @@ def new_class():
     first_lesson_str = request.form.get("first_lesson")
 
     # Adjust variables to Schedules model types
-    weekday_names = list(calendar.day_name)
-    if weekday_name in weekday_names:
-        weekday_int = weekday_names.index(weekday_name)
+    weekday_names_en = list(calendar.day_name)
+
+    if weekday_name in weekday_names_en:
+        weekday_int = weekday_names_en.index(weekday_name)
+    elif weekday_name in weekday_names_pt:
+        weekday_int = weekday_names_pt.index(weekday_name)
     else:
         print("Error translating weekday string to int")
         return redirect("/schedules")
@@ -529,7 +534,7 @@ def change_class():
 
     class_data = request.get_json()
 
-    new_weekday_str = class_data["weekday"]
+    new_weekday_str = class_data["weekday"].strip()
     new_time_str = class_data["startTime"].strip()
     # class_name = class_data["className"]
     class_id = class_data["classId"]
@@ -543,9 +548,15 @@ def change_class():
     new_time = datetime.strptime(new_time_str, '%H:%M').time()
     new_weekday = None
 
-    weekday_names = list(calendar.day_name)
-    if new_weekday_str in weekday_names:
-        new_weekday = weekday_names.index(new_weekday_str)
+    weekday_names_en = list(calendar.day_name)
+
+    if new_weekday_str in weekday_names_en:
+        new_weekday = weekday_names_en.index(new_weekday_str)
+    elif new_weekday_str in weekday_names_pt:
+        weekday_int = weekday_names_pt.index(new_weekday_str)
+    else:
+        print("Error translating weekday string to int")
+        return redirect("/schedules")
     
 
     # Get original schedule
@@ -1073,25 +1084,8 @@ def new_teacher():
     db.session.add(new_teacher)
     db.session.commit()
 
-    # Get first salary date
-    today = datetime.today().date()
-    month = today.month
-    year = today.year
-    salary_date = datetime(year, month, 1)
-
-    # Create new Salaries instance
-    new_salary = Salaries(
-        teacher_id = new_user.id,
-        salary_date = salary_date,
-        salary_value = current_salary,
-        is_payed = False,
-        payment_date = None
-    )
-    # Add and associate salary with teacher
-    db.session.add(new_salary)
-    new_teacher.salaries.append(new_salary) 
-
-    db.session.commit()
+    teacher_id = new_user.id
+    add_salaries(db, Salaries, Teachers, teacher_id, current_salary, year_finish)
 
     return redirect("/teachers")
 
@@ -1140,56 +1134,47 @@ def delete_teacher():
     #TODO: Adjust function to teacher
 
     data = request.get_json()
-    student_id = data.get('studentId')
+    teacher_id = data.get('teacherId')
     today = datetime.today().date()
 
-    if student_id:
-        student = db.session.query(Students).filter(Students.student_id == student_id).one_or_none()
+    if teacher_id:
+        teacher = db.session.query(Teachers).filter(Teachers.teacher_id == teacher_id).one_or_none()
 
-        if student:
-            schedules_to_remove = []
-            lessons_to_remove = []
+        if teacher:
+            schedules = db.session.query(Schedules).filter(Schedules.teacher_id == teacher_id).all()
+            lessons = db.session.query(Lessons).filter(and_(Lessons.teacher_id == teacher_id, Lessons.lesson_date > today)).all()
+            lessons_to_delete = []
+            salaries_to_delete = []
+            
+            for schedule in schedules:
+                schedule.active = False
 
-            for schedule in student.schedules:
-                # If schedule is group class
-                if len(schedule.students) > 1:
-                    # Don't remove directly to not skip iterations
-                    schedules_to_remove.append(schedule)
-                # If schedule is individual class
-                else:
-                    schedule.active = False
+            # Get future lessons data and append to array
+            for lesson in lessons:
+                if lesson.lesson_date > today:
+                    lessons_to_delete.append(lesson)
+            # Get future salaries data and append to array
+            for salary in teacher.salaries:
+                if salary.salary_date > today:
+                    salaries_to_delete.append(salary)
 
-            # Remove student from group schedules
-            for item in schedules_to_remove:
-                student.schedules.remove(item)
+            # Delete entries from Lessons and lesson_students
+            for lesson in lessons_to_delete:
+                print("lesson to delete:", lesson)
+                lesson.students.clear()
+                db.session.delete(lesson)
+            # Delete entries from Salaries and teacher_salaries
+            for salary in salaries_to_delete:
+                salary.teacher.clear()
+                db.session.delete(salary)
 
-            for lesson in student.lessons:
-                # If lesson is from group class
-                if len(lesson.students) > 1:
-                    if lesson.lesson_date > today:
-                        # Don't remove directly to not skip iterations
-                        lessons_to_remove.append(lesson)
-                # If lesson is from individual class
-                else:
-                    if lesson.lesson_date > today:
-                        db.session.delete(lesson)
-                        
-            # Remove student from lessons
-            for item in lessons_to_remove:
-                student.lessons.remove(item)
-
-            # Delete future tuitions
-            for tuition in student.tuitions:
-                if tuition.tuition_date > today:
-                    db.session.delete(tuition)
-
-            student.active = False
+            teacher.active = False
 
             # Commit changes and redirect
             db.session.commit()
 
-            students_url = url_for("students") 
-            return jsonify({"redirect": students_url})
+            teachers_url = url_for("teachers") 
+            return jsonify({"redirect": teachers_url})
         else:
             print("There was an error deleting teacher")
     else:
@@ -1356,7 +1341,10 @@ def delete_student():
         if student:
             schedules_to_remove = []
             lessons_to_remove = []
-
+            lessons_to_delete = []
+            tuitions_to_delete = []
+            
+            # Get schedules data and append to array or set active=False
             for schedule in student.schedules:
                 # If schedule is group class
                 if len(schedule.students) > 1:
@@ -1365,11 +1353,12 @@ def delete_student():
                 # If schedule is individual class
                 else:
                     schedule.active = False
+            # Remove student from schedules
+            for schedule in schedules_to_remove:
+                schedule.students.remove(student)
 
-            # Remove student from group schedules
-            for item in schedules_to_remove:
-                student.schedules.remove(item)
 
+            # Get lessons data and append to array
             for lesson in student.lessons:
                 # If lesson is from group class
                 if len(lesson.students) > 1:
@@ -1379,20 +1368,27 @@ def delete_student():
                 # If lesson is from individual class
                 else:
                     if lesson.lesson_date > today:
-                        db.session.delete(lesson)
-                        
-            # Remove student from lessons
-            for item in lessons_to_remove:
-                student.lessons.remove(item)
+                        # Don't delete directly to not skip iterations
+                        lessons_to_delete.append(lesson)
+            # Remove student from lesson
+            for lesson in lessons_to_remove:
+                lesson.students.remove(student)
+            # Delete individual lesson
+            for lesson in lessons_to_delete:
+                lesson.students.clear()
+                db.session.delete(lesson)
 
-            # Delete future tuitions
+
+            # Get tuitions data
             for tuition in student.tuitions:
                 if tuition.tuition_date > today:
-                    db.session.delete(tuition)
-
-            student.active = False
+                    tuitions_to_delete.append(tuition)
+            # Delete tuitions
+            for tuition in tuitions_to_delete:
+                db.session.delete(tuition)
 
             # Commit changes and redirect
+            student.active = False
             db.session.commit()
 
             students_url = url_for("students") 

@@ -70,7 +70,7 @@
                                         <tbody>
                                             <td> <input type="text" id="new-class-name" name="class_name" required></td>
                                             <td> 
-                                                <span class="lang-pt" hidden>
+                                                <!--<span class="lang-pt" hidden>
                                                     <select id="new-class-weekday" name="weekday" required>
                                                         {% set weekdays = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"] %}
                                                             <option disabled selected> </option>
@@ -78,13 +78,14 @@
                                                             <option value="{{ day }}"> {{ day }}</option>
                                                         {% endfor %}
                                                     </select>
-                                                </span>
-                                                <span class="lang-en">
+                                                </span> -->
+                                                <span>
+                                                    
                                                     <select id="new-class-weekday" name="weekday" required>
                                                         {% set weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] %}
                                                     
                                                         {% for day in weekdays %}
-                                                            <option value="{{ day }}"> {{ day }}</option>
+                                                            <option value="{{ day }}" translation-key="{{ day | lower }}"> {{ day }}</option>
                                                         {% endfor %}
                                                     </select> 
                                                 </span> 
@@ -246,11 +247,12 @@
                                 <ul>
                                     <li translation-key="{{ item.weekday | lower }}"> {{ item.weekday }} </li>
                                     <li>
-                                        <span class="lang-pt" hidden>
+                                        <!-- <span class="lang-pt" hidden>
                                             <select name="weekdays" class="hidden-class{{ item.class.class_id }}" hidden>
-                                                {% set weekdays = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"] %}
-                                                <!-- TODO:fix weekday in pt != item.weekday -->
-                                                {% for day in weekdays %}
+                                                {% set weekdays_pt = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"] %}
+                                                {% set weekdays_en = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] %}
+                                                
+                                                {% for day in weekdays_en %}
                                                     {% if day == item.weekday %}
                                                         <option value="{{ day }}" selected> {{ day }}</option>
                                                     {% else %}
@@ -258,16 +260,16 @@
                                                     {% endif %}
                                                 {% endfor %}
                                             </select>
-                                        </span>
-                                        <span class="lang-en">
+                                        </span> -->
+                                        <span>
                                             <select name="weekdays" class="hidden-class{{ item.class.class_id }}" hidden>                                
                                                 {% set weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] %}
 
                                                 {% for day in weekdays %}
                                                     {% if day == item.weekday %}
-                                                        <option value="{{ day }}" selected> {{ day }}</option>
+                                                        <option value="{{ day }}" selected translation-key="{{day | lower}}"> {{ day }}</option>
                                                     {% else %}
-                                                        <option value="{{ day }}"> {{ day }}</option>
+                                                        <option value="{{ day }}" translation-key="{{day | lower}}"> {{ day }}</option>
                                                     {% endif %}
                                                 {% endfor %}
                                             </select>
@@ -534,7 +536,7 @@
                 console.log("For each inlineEdit function triggered");
 
                 column.hidden = true;
-                column.style.display="none";
+                /*column.style.display="none";*/
             });
 
         };
@@ -549,10 +551,6 @@
 
             row.forEach(function(column) {
                 column.hidden = false;
-            
-                if (!column.classList.contains('modal') && !column.classList.contains('modal-overlay')) {
-                    column.style.display="flex";
-                }
             });
         };
 

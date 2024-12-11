@@ -425,3 +425,37 @@ def add_tuitions(db, Tuitions, Students, student_id, fee, first_tuition, year_fi
     db.session.commit()
     print("Tuitions successfully added.")
 
+
+def add_salaries(db, Salaries, Teachers, teacher_id, curr_salary, year_finish):
+    """ Add salaries after creating new teacher """
+
+    today=datetime.today().date()
+
+    # Generate months list
+    first_month = today.month
+    first_year = today.year
+    start_date = datetime(first_year, first_month, 1)
+    end_date = datetime(year_finish, 7, 1)
+    months = rrule(freq=MONTHLY, dtstart=start_date, until=end_date)
+
+    teacher = db.session.query(Teachers).filter(Teachers.teacher_id == teacher_id).scalar()
+
+    for date in months:
+
+        # Add new salary to Salaries model
+        salary = Salaries(
+            teacher_id = teacher_id,
+            salary_date = date,
+            salary_value = curr_salary,
+            is_payed = None,
+            payment_date = None
+        )
+
+        db.session.add(salary)
+
+        # Add salary to teacher_salaries associate table
+        teacher.salaries.append(salary) 
+
+    db.session.commit()
+    print("Salaries successfully added.")
+

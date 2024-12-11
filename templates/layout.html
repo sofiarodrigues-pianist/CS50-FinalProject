@@ -469,6 +469,9 @@
 
                         keys.forEach(function(element) {
                             let key = element.getAttribute("translation-key");
+                            if (key.includes(" ")) {
+                                key = key.replace(" ", "_");
+                            }
                             // Translate using key from dictionary || if translation not found, display key
                             element.textContent = translations [lang][key] || key 
                         })

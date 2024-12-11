@@ -107,6 +107,7 @@
 .title {
     align-items: center;
     border-left: solid 2px goldenrod;
+    /*border-bottom: solid 2px goldenrod;*/
     border-right: solid 2px goldenrod;
     padding: 5px;
 }
@@ -270,7 +271,7 @@ ul {
 
 .pencil:hover, .eye:hover, .eye-slash:hover, .search:hover {
     background-color: transparent;
-    fill: lightsalmon;
+    fill: goldenrod;
 }
 
 .bin:hover {
@@ -406,6 +407,7 @@ ul {
 
 .button {
     background-color: transparent;
+    font-family: "Nunito Sans";
     color: black;
     border: 2px solid #E6E6FA;
     transition-duration: 0.2s;
@@ -425,12 +427,32 @@ ul {
     border: none;
 }
 
-.change-buttons {
+.change-buttons[hidden] {
+    display:none !important;
+}
+
+/*.change-buttons {
+    display: flex;
     background-color: #FFFFF0;
+    height: 100%;
+    justify-content: center;
     align-items: center;
     border: none;
     padding-right: 5%;
     flex-direction: row;
+}*/
+
+td.change-buttons {
+    display: flex;
+    background-color: #FFFFF0;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    padding-right: 5%;
+    flex-direction: row;
+    vertical-align: middle;
+    padding: 0;
 }
 
 .students-modal-button {
@@ -483,6 +505,7 @@ ul {
 
 #confirm-edit, #cancel-edit {
     color: black;
+    align-self: center;
 }
 
 #language:hover {
