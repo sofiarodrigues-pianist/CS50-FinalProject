@@ -8,20 +8,14 @@
 {% block main %}
 
     <div id="salaries">
+
         {% if user.role == "admin" %}
 
-            {% if salaries_data %}
-                <span class="lang-pt" hidden>
-                    <h3> Salários dos professores atuais </h3>
-                </span>
-                <span class="lang-en"> 
-                    <h3> Salaries from current teachers </h3>
-                </span>
-
+            <div class="top-options">
                 <span id="plus-icon-column"> 
                     <div class="horizontal-elements">
                         <button class="new-salary" onclick="newSalary(this.closest('span'))">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16" id="plus-icon-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" viewBox="0 0 16 16" id="plus-icon-btn">
                                 <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
                             </svg> 
                         </button>
@@ -92,7 +86,7 @@
                 <span id="search-icon">
                     <div class="horizontal-elements">
                         <button class="search-btn" onclick="searchSalary(this.closest('span'))">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="search" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                             </svg>
                         </button>
@@ -150,6 +144,15 @@
                         </div>
                     </div>
                 </span>
+            </div>
+
+            {% if salaries_data %}
+                <span class="lang-pt" hidden>
+                    <h3> Salários dos professores atuais </h3>
+                </span>
+                <span class="lang-en"> 
+                    <h3> Salaries from current teachers </h3>
+                </span>              
 
                 <table class ="table">
                     <thead>
@@ -193,7 +196,7 @@
 
                             <td class="edit">
                                 <button class="check-btn" salary-id="{{ item.salary.salary_id }}" onclick="confirmPayment(this.closest('tbody'), this.getAttribute('salary-id'))"> 
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="check" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="check" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                                     </svg>
                                     <span class="tooltip-text" hidden> Confirm payment </span>
@@ -221,17 +224,17 @@
                                 </div>
                                 
                                 <button class="cross-btn" salary-id="{{ item.salary.salary_id }}" payment-date="{{ item.salary.payment_date }}" onclick="removePayment(this.getAttribute('salary-id'))">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="cross" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="cross" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
                                     </svg>
                                     <span class="tooltip-text" hidden> Payment is missing </span>
                                 </button>
 
-                                <button class="edit-btn" salary-id-name="hidden-salary{{ item.salary.salary_id }}" onclick=displayEdit(this)> <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                <button class="edit-btn" salary-id-name="hidden-salary{{ item.salary.salary_id }}" onclick=displayEdit(this)> <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                     <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
                                     </svg> 
                                 </button>
-                                <button class="delete-btn" salary-id-name="hidden-salary{{ item.salary.salary_id }}" onclick=displayDeleteModal(this)> <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                <button class="delete-btn" salary-id-name="hidden-salary{{ item.salary.salary_id }}" onclick=displayDeleteModal(this)> <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                     <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
                                   </svg>
                                 </button>
@@ -271,87 +274,17 @@
                 </table>
 
             {% else %}
-                <span class="lang-pt" hidden>
-                    <h3> Não existem salários ainda </h3>
+                <span class="lang-pt title-container" hidden>
+                    <h2 class="title"> Não existem salários ainda </h2>
                 </span>
-                <span class="lang-en">
-                    <h3> There are no salaries yet </h3>
-                </span>
-                
-                <span id="plus-icon-column"> 
-                    <div class="horizontal-elements">
-                        <button class="new-salary" onclick="newSalary(this.closest('span'))">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16" id="plus-icon-btn">
-                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
-                            </svg> 
-                        </button>
-                        <span class="lang-pt" hidden>
-                            <h3> Novo salário </h3>
-                        </span>
-                        <span class="lang-en"> 
-                            <h3> New Salary </h3>
-                        </span>
-                    </div>
-
-                    <div class="modal-overlay new-salary-overlay"> 
-                        <div class="modal new-salary-modal">
-                            <div class="modal-content new-salary-content">
-                                <form id="new-salary-form" action="/new_salary" method="POST">
-                                    <table class="table">
-                                        <thead>
-                                            <th> <label for="new-salary-month" translation-key="month"> Month </label> </th>
-                                            <th> <label for="new-salary-teacher" translation-key="teacher"> Teacher </label> </th>
-                                            <th> <label for="new-salary" translation-key="salary"> Salary </label> </th>
-                                            <th> <label for="new-salary-payment" translation-key="payment_date"> Payment Date </label> </th>
-                                        </thead>
-                                        <tbody>
-                                            <td> 
-                                                <select class="new-salary-month lang-en" name="month"> 
-                                                    <option value="" disabled selected > </option>
-                                                    {% set months = {
-                                                        9: "September", 10: "October", 11: "November", 12: "December", 
-                                                        1: "January", 2: "February", 3: "March", 4: "April",
-                                                        5: "May", 6: "June", 7: "July"
-                                                    } %} 
-                                                    {% for number, name in months.items() %}
-                                                        <option value="{{ number }}"> {{ name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                                <select class="new-salary-month lang-pt" name="month" hidden> 
-                                                    <option value="" disabled selected > </option>
-                                                    {% set months = {
-                                                        9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro", 
-                                                        1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
-                                                        5: "Maio", 6: "Junho", 7: "Julho"
-                                                    } %} 
-                                                    {% for number, name in months.items() %}
-                                                        <option value="{{ number }}"> {{ name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select name="teacher" id="new-salary-teacher" required>
-                                                    <option></option>
-                                                    {% for name in teachers_names %}
-                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
-                                                    {% endfor %}
-                                                </select> 
-                                            </td>
-                                            <td> <input type="number" id="new-salary" name="salary" required> </td>
-                                            <td> <input type="date" id="new-salary-payment" name="payment" > </td>
-                                        </tbody>
-                                    </table>
-                                    <button class="button create-new-salary" type="submit" translation-key="add"> Add </button>
-                                    <button class="button cancel-new-salary" translation-key="cancel"> Cancel </button>
-                                </form> 
-                            </div>
-                        </div>
-                    </div>
+                <span class="lang-en title-container">
+                    <h2 class="title"> There are no salaries yet </h2>
                 </span>
 
             {% endif %}
                 
         {% elif user.role == "teacher" %}
+
             {% if salaries_data %}
                 <table class ="table">
                     <thead>
@@ -388,23 +321,22 @@
                 </table>
 
             {% else %}
-                <span class="lang-pt">
-                    <h3> Nâo existem salários associados. Pergunta ao patrão. </h3>
+                <span class="lang-pt title-container">
+                    <h2 class="title"> Nâo existem salários associados. Pergunta ao patrão. </h2>
                 </span>
-                <span class="lang-en">
-                    <h3> There are no associated salaries. Go ask your boss. </h3>
+                <span class="lang-en title-container">
+                    <h2 class="title"> There are no associated salaries. Go ask your boss. </h2>
                 </span>
                 
             {% endif %}
             
         {% else %}
-            <span class="lang-pt">
-                <h2> Não tem permissão para ver esta página. </h2>
+            <span class="lang-pt title-container">
+                <h2 class="title"> Não tem permissão para ver esta página. </h2>
             </span>
-            <span class="lang-en">
-                <h2> Sorry, you don't have permission to see this page. </h2>
+            <span class="lang-en title-container">
+                <h2 class="title"> Sorry, you don't have permission to see this page. </h2>
             </span>
-
         {% endif %}
     </div>
 
