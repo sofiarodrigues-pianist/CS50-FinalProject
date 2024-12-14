@@ -8,12 +8,14 @@
 
     {% include "search_lessons.html" %}
 
+    <br>
+
     <div id="lessons">
         {% if lessons_data %}
             {% if date_formatted %}
                 {% if user.role == "teacher" %}
-                    <span class="lang-pt" hidden> <h3> Aulas em {{ date_formatted }}: </h3> </span>
-                    <span class="lang-en"> <h3> Lessons on {{ date_formatted }}: </h3> </span>
+                    <span class="lang-pt title-container" hidden> <h3 class="title"> Aulas em {{ date_formatted }}: </h3> </span>
+                    <span class="lang-en title-container"> <h3 class="title"> Lessons on {{ date_formatted }}: </h3> </span>
 
                     <table class ="table">
                         <thead>
@@ -54,8 +56,8 @@
                     </table>
 
                 {% elif user.role == "student" %}
-                    <span class="lang-pt" hidden> <h3> Aulas em {{ date_formatted }}: </h3> </span>
-                    <span class="lang-en"> <h3> Lessons on {{ date_formatted }}: </h3> </span>
+                    <span class="lang-pt title-container" hidden> <h3 class="title"> Aulas em {{ date_formatted }} </h3> </span>
+                    <span class="lang-en title-container"> <h3 class="title"> Lessons on {{ date_formatted }} </h3> </span>
 
                     <table class ="table">
                         <thead>
@@ -91,8 +93,8 @@
                     
                 {% else %}
                     
-                    <span class="lang-pt" hidden> <h3> Aulas em {{ date_formatted }}: </h3> </span>
-                    <span class="lang-en"> <h3> Lessons on {{ date_formatted }}: </h3> </span>
+                    <span class="lang-pt title-container" hidden> <h3 class="title"> Aulas em {{ date_formatted }} </h3> </span>
+                    <span class="lang-en title-container"> <h3 class="title"> Lessons on {{ date_formatted }} </h3> </span>
 
                     <table class ="table">
                         <thead>
@@ -173,7 +175,12 @@
                                                     <div class="students-modal-body">
                                                         {% for student in students %}
                                                         <div class="student-item all-students" student-id="{{ student.id }}">
-                                                            <button type="button" onclick="addStudent(this)"> + </button>
+                                                            <button type="button" class="add-btn" onclick="addStudent(this)" >
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-plus" viewBox="0 0 16 16">
+                                                                    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                                                    <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                                                                </svg>
+                                                            </button>
                                                             <span> {{ student.name }} </span>
                                                         </div>
                                                         {% endfor %}
@@ -196,7 +203,11 @@
                                                     <div class="students-modal-body">
                                                         {% for student in item.students %}
                                                         <div class="student-item students-in-class og-student" student-id="{{ student.student_id }}">
-                                                            <button type="button" onclick="removeStudent(this)"> X </button> 
+                                                            <button type="button" class="remove-btn" onclick="removeStudent(this)"> 
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-less" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708"/>
+                                                                </svg>
+                                                            </button>
                                                             <span> {{ student.user.name }} </span>
                                                         </div>
                                                         {% endfor %}
@@ -228,25 +239,25 @@
                                 <td class="edit">
 
                                     <button class="check-btn" lesson-id="{{ item.lesson.lesson_id}}" attendance="true" onclick="lessonAttendance(this.getAttribute('lesson-id'), this.getAttribute('attendance'))"> 
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="check" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="check" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                                         </svg>
                                     </button>
 
                                     <button class="cross-btn" lesson-id="{{ item.lesson.lesson_id}}" attendance="false" onclick="lessonAttendance(this.getAttribute('lesson-id'), this.getAttribute('attendance'))">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="cross" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="cross" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
                                         </svg>
                                     </button>
 
                                     <button class="edit-btn" class-id-name="hidden-lesson{{ item.lesson.lesson_id}}" onclick=displayEdit(this)> 
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
                                         </svg> 
                                     </button>
 
                                     <button class="delete-btn" class-id-name="hidden-lesson{{ item.lesson.lesson_id}}" onclick=displayDeleteModal(this)> 
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                             <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
                                         </svg>
                                     </button>
@@ -288,8 +299,8 @@
                 {% endif %}
 
             {% else %}
-                <span class="lang-pt" hidden> <h3> Registos desta aula </h3> </span>
-                <span class="lang-en"> <h3> Lessons for this class </h3> </span>
+                <span class="lang-pt title-container" hidden> <h3 class="title"> Registos desta aula </h3> </span>
+                <span class="lang-en title-container"> <h3 class="title"> Lessons for this class </h3> </span>
 
                 <table class ="table">
                     <thead>
@@ -381,7 +392,12 @@
                                                 <div class="students-modal-body">
                                                     {% for student in students %}
                                                     <div class="student-item all-students" student-id="{{ student.id }}">
-                                                        <button type="button" onclick="addStudent(this)"> + </button>
+                                                        <button type="button" class="add-btn" onclick="addStudent(this)" >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-plus" viewBox="0 0 16 16">
+                                                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                                                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                                                            </svg>
+                                                        </button>
                                                         <span> {{ student.name }} </span>
                                                     </div>
                                                     {% endfor %}
@@ -404,7 +420,11 @@
                                                 <div class="students-modal-body">
                                                     {% for student in item.students %}
                                                     <div class="student-item students-in-class og-student" student-id="{{ student.student_id }}">
-                                                        <button type="button" onclick="removeStudent(this)"> X </button> 
+                                                        <button type="button" class="remove-btn" onclick="removeStudent(this)"> 
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-less" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708"/>
+                                                            </svg>
+                                                        </button>
                                                         <span> {{ student.user.name }} </span>
                                                     </div>
                                                     {% endfor %}
@@ -438,45 +458,46 @@
 
                             <td class="edit">
                                 {% if item.lesson.attendance == "false" and item.lesson.is_compensation != "true" %}
-                                <div class="eye-buttons">
-                                    <button class="eye-btn" user-role="{{ user.role }}" lesson-id="{{ item.lesson.lesson_id }}" comp-id ="{{ item.lesson.compensation_id }}" onclick="displayCompLesson(this.closest('div'),this.closest('tbody'),this.getAttribute('comp-id'), this.getAttribute('lesson-id'), this.getAttribute('user-role'))">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="eye" viewBox="0 0 16 16">
-                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/> 
-                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                        </svg>
-                                    </button>
-                                    <button class="hide-eye-btn" lesson-id="{{ item.lesson.lesson_id }}" onclick="hideCompLesson(this.closest('div'),this.getAttribute('lesson-id'))" hidden>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="eye-slash" viewBox="0 0 16 16">
-                                            <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
-                                            <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
-                                        </svg>
-                                    </button>
-                                </div>
+                                    <div class="eye-buttons">
+                                        <button class="eye-btn" user-role="{{ user.role }}" lesson-id="{{ item.lesson.lesson_id }}" comp-id ="{{ item.lesson.compensation_id }}" onclick="displayCompLesson(this.closest('div'),this.closest('tbody'),this.getAttribute('comp-id'), this.getAttribute('lesson-id'), this.getAttribute('user-role'))">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="eye" viewBox="0 0 16 16">
+                                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/> 
+                                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                            </svg>
+                                        </button>
+                                        <button class="hide-eye-btn" lesson-id="{{ item.lesson.lesson_id }}" onclick="hideCompLesson(this.closest('div'),this.getAttribute('lesson-id'))" hidden>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="eye-slash" viewBox="0 0 16 16">
+                                                <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
+                                                <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 {% endif %}
+
                                 {% if user.role == "admin" %}
                                     <button class="check-btn" lesson-id="{{ item.lesson.lesson_id}}" attendance="true" onclick="lessonAttendance(this.getAttribute('lesson-id'), this.getAttribute('attendance'))"> 
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="check" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="check" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                                         </svg>
                                         <span class="tooltip-text" hidden> Confirm attendance </span>
                                     </button>
                                     
                                     <button class="cross-btn" lesson-id="{{ item.lesson.lesson_id}}" attendance="false" onclick="lessonAttendance(this.getAttribute('lesson-id'), this.getAttribute('attendance'))">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="cross" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="cross" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
                                         </svg>
                                         <span class="tooltip-text" hidden> Confirm absence </span>
                                     </button>
                                     
                                     <button class="edit-btn" class-id-name="hidden-lesson{{ item.lesson.lesson_id}}" onclick="displayEdit(this)"> 
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
                                         </svg> 
                                         <span class="tooltip-text" hidden> Edit lesson </span>
                                     </button>
                                     
                                     <button class="delete-btn" class-id-name="hidden-lesson{{ item.lesson.lesson_id}}" onclick="displayDeleteModal(this)"> 
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="white" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                             <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
                                         </svg>
                                         <span class="tooltip-text" hidden> Delete lesson </span>
@@ -514,10 +535,10 @@
                                                     <input type="hidden" id="lesson-id" name="lesson_id" value="{{ item.lesson.lesson_id }}">
                                                     <table class="table">
                                                         <thead>
-                                                            <th> <label for="comp-date" translation-key="date"> Date: </label> </th>
-                                                            <th> <label for="comp-start" translation-key="start_time"> Start Time: </label> </th>
-                                                            <th> <label for="comp-duration" translation-key="duration"> Duration: </label> </th>
-                                                            <th> <label for="comp-classroom" translation-key="classroom"> Classroom: </label> </th>
+                                                            <th> <label for="comp-date" translation-key="date"> Date </label> </th>
+                                                            <th> <label for="comp-start" translation-key="start_time"> Start Time </label> </th>
+                                                            <th> <label for="comp-duration" translation-key="duration"> Duration </label> </th>
+                                                            <th> <label for="comp-classroom" translation-key="classroom"> Classroom </label> </th>
                                                         </thead>
                                                         <tbody>
                                                             <td> <input type="date" id="comp-date" name="date" required></td>
@@ -542,7 +563,7 @@
             {% endif %}
 
         {% else %}
-            <h3> No lessons to display </h3>
+            <h3 class="title"> No lessons to display </h3>
 
         {% endif %}
     </div>
@@ -1029,7 +1050,11 @@
 
             // Create new div's button and span elements
             newDiv.innerHTML = `
-                <button type="button" onclick="removeStudent(this)"> X </button>
+                <button type="button" class="remove-btn" onclick="removeStudent(this)"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-less" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </button>
                 <span> ${studentName} </span>
             `;
 

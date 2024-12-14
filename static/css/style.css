@@ -127,7 +127,7 @@
     display:flex;
     justify-content: center;
     margin: 0px;
-    padding-top: 15%;
+    padding-top: 10%;
 }
 
 
@@ -201,8 +201,9 @@ table {
 
 th, td {
     border: 1px solid grey;
-    text-align: center;
+    word-wrap: break-word;
     padding: 5px;
+    text-align: center;
 }
 
 th {
@@ -211,10 +212,11 @@ th {
     color: whitesmoke;
 }
 
-#plus-icon-column {
+/*#plus-icon-column {
     background-color: transparent;
     border: none;
-}
+}*/
+
 tbody {
     background-color: whitesmoke;
 }
@@ -228,6 +230,11 @@ ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
+}
+
+.edit-stdnts-container {
+    display: flex;
+    justify-content: center;
 }
 
 .add-comp {
@@ -253,7 +260,7 @@ ul {
     cursor: default;
 }
 
-.edit-btn, .delete-btn, .check-btn, .cross-btn, .eye-btn, .hide-eye-btn, .search-btn {
+.edit-btn, .delete-btn, .check-btn, .cross-btn, .eye-btn, .hide-eye-btn, .search-btn, .add-btn, .remove-btn {
     background-color: transparent;
     border: 0px;
     cursor: pointer;
@@ -264,7 +271,7 @@ ul {
     background-color: transparent;
 }
 
-.pencil, .bin, .check, .cross, .eye, .eye-slash, .search {
+.pencil, .bin, .check, .cross, .eye, .eye-slash, .search, .stdnt-plus, .stdnt-less {
     background-color: transparent;
     cursor: pointer;
 }
@@ -278,11 +285,11 @@ ul {
     fill: #e8120b;
 }
 
-.check:hover {
-    fill: greenyellow;
+.check:hover, .stdnt-plus:hover {
+    fill: green;
 }
 
-.cross:hover  {
+.cross:hover, .stdnt-less:hover  {
     fill: red;
 }
 
@@ -431,18 +438,19 @@ ul {
     display:none !important;
 }
 
-/*.change-buttons {
-    display: flex;
+.change-buttons {
     background-color: #FFFFF0;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
     border: none;
-    padding-right: 5%;
-    flex-direction: row;
-}*/
+}
 
-td.change-buttons {
+.change-buttons-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 5%;
+}
+
+/*td.change-buttons {
     display: flex;
     background-color: #FFFFF0;
     height: 100%;
@@ -453,7 +461,7 @@ td.change-buttons {
     flex-direction: row;
     vertical-align: middle;
     padding: 0;
-}
+}*/
 
 .students-modal-button {
     background-color: transparent;
@@ -504,8 +512,12 @@ td.change-buttons {
 }
 
 #confirm-edit, #cancel-edit {
+    display: flex;
     color: black;
     align-self: center;
+    box-sizing: border-box;
+    flex-shrink: 1;
+    flex-grow: 1;
 }
 
 #language:hover {

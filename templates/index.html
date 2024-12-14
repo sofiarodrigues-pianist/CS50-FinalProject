@@ -17,11 +17,11 @@
             {% if user.role == "teacher" %}
 
                 {% if classes_data %}
-                    <span class="lang-pt title" hidden>
-                        <h3> Este é o horário para hoje </h3>
+                    <span class="lang-pt title-container" hidden>
+                        <h3 class="title"> Este é o horário para hoje </h3>
                     </span>
-                    <span class="lang-en title">
-                        <h3> This is your schedule for today </h3>
+                    <span class="lang-en title-container">
+                        <h3 class="title"> This is your schedule for today </h3>
                     </span>
                     
                     <table class ="table">
@@ -75,11 +75,11 @@
             {% elif user.role == "student" %}
 
                 {% if classes_data %}
-                    <span class="lang-pt title" hidden>
-                        <h3> Este é o teu horário para hoje </h3>
+                    <span class="lang-pt title-container" hidden>
+                        <h3 class="title"> Este é o teu horário para hoje </h3>
                     </span>
-                    <span class="lang-en title">
-                        <h3> This is your schedule for today </h3>
+                    <span class="lang-en title-container">
+                        <h3 calss="title"> This is your schedule for today </h3>
                     </span>
                     <table class ="table">
                         <thead>
@@ -113,7 +113,7 @@
                     </table>
                     
                 {% else %}
-                    <h3> You have no classes today </h3>
+                    <h3 class="title"> You have no classes today </h3>
 
                 {% endif %}
 
@@ -176,23 +176,22 @@
                         <h3> There are no classes today </h3>
                     </span> 
                     
-
                 {% endif %}
-                    <span class="lang-pt" hidden>
-                        <div class="shortcuts-container">
-                            <a href="/lessons" class="shortcut-btn"> Faltas e Presenças </a>
-                            <a href="/tuitions" class="shortcut-btn"> Consultar Mensalidades </a>
-                            <a href="/salaries" class="shortcut-btn"> Consultar Salários </a> 
-                        </div>
-                    </span>
-                    <span class="lang-en">
-                        <div class="shortcuts-container">
-                            <a href="/lessons" class="shortcut-btn"> Check Attendances </a>
-                            <a href="/tuitions" class="shortcut-btn"> Check Tuitions </a>
-                            <a href="/salaries" class="shortcut-btn"> Check Salaries </a> 
-                        </div>
-                    </span>
-                </div>
+
+                <span class="lang-pt" hidden>
+                    <div class="shortcuts-container">
+                        <a href="/lessons" class="shortcut-btn"> Faltas e Presenças </a>
+                        <a href="/tuitions" class="shortcut-btn"> Consultar Mensalidades </a>
+                        <a href="/salaries" class="shortcut-btn"> Consultar Salários </a> 
+                    </div>
+                </span>
+                <span class="lang-en">
+                    <div class="shortcuts-container">
+                        <a href="/lessons" class="shortcut-btn"> Check Attendances </a>
+                        <a href="/tuitions" class="shortcut-btn"> Check Tuitions </a>
+                        <a href="/salaries" class="shortcut-btn"> Check Salaries </a> 
+                    </div>
+                </span>
 
             {% endif %}
 

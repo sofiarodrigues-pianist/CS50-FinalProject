@@ -7,23 +7,52 @@
 {% block main %}
 
     <div>
-        <div id="select-year">
-            <form action="/schedules" method="post">
-                <select id="select-year" name="school_year" required> 
-                    <option value="" disabled selected translation-key="school_year"> School year </option>
-                    <option value="2324"> 2023/2024 </option>
-                    <option value="2425"> 2024/2025 </option>
-                </select>
-                <button type="submit" class="button" id="see-schedule" translation-key="see_schedule"> See schedule </button>
-            </form>
+        <div class="top-options">
+            <span id="search-icon">
+                <div class="horizontal-elements">
+                    <button class="search-btn" onclick="scheduleModal(this.closest('span'))">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg> 
+                    </button> 
+                    <h3 translation-key="search"> Search </h3>
+                </div>
+                <div class="modal-overlay search-year-overlay">
+                    <div class="modal search-year-modal">
+                        <div class="modal-content search-year-content">
+                            <form action="/schedules" method="post">
+                                <select id="select-year" name="school_year" required> 
+                                    <option value="" disabled selected translation-key="school_year"> School year </option>
+                                    <option value="2324"> 2023/2024 </option>
+                                    <option value="2425"> 2024/2025 </option>
+                                </select>
+                                <button type="submit" class="button" id="see-schedule" translation-key="see_schedule"> See schedule </button>
+                            </form>
+                        </div>
+                    </div>  
+                </div>
+            </span>
+            <!--
+            <div id="select-year">
+                <form action="/schedules" method="post">
+                    <select id="select-year" name="school_year" required> 
+                        <option value="" disabled selected translation-key="school_year"> School year </option>
+                        <option value="2324"> 2023/2024 </option>
+                        <option value="2425"> 2024/2025 </option>
+                    </select>
+                    <button type="submit" class="button" id="see-schedule" translation-key="see_schedule"> See schedule </button>
+                </form>
+            </div> -->
         </div>
+        
+        <br>
 
         {% if classes_data %}
-            <span class="lang-pt" hidden>
-                <h2> Último horário de {{ school_year }} </h2>
+            <span class="lang-pt title-container" hidden>
+                <h2 class="title"> Último horário de {{ school_year }} </h2>
             </span>
-            <span class="lang-en">
-                <h2> Latest Schedule on {{ school_year }} </h2>
+            <span class="lang-en title-container">
+                <h2 class="title"> Latest Schedule on {{ school_year }} </h2>
             </span>
             
             {% if user.role == "teacher" %}
@@ -163,7 +192,21 @@
     </div>
     
     <script>
-        
+        // Display search modal
+        function scheduleModal(spanTag) {
+            let overlay = spanTag.querySelector(".search-year-overlay");
+            let modal = spanTag.querySelector(".search-year-modal");
+
+            overlay.style.display="block";
+            modal.style.display="block";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                } 
+            };
+        }
     </script>
 
     

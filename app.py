@@ -1716,8 +1716,13 @@ def remove_payment():
         tuition = db.session.query(Tuitions).filter(Tuitions.tuition_id == tuition_id).one_or_none()
 
         if tuition:
-            tuition.is_payed = False
-            tuition.payment_date = None
+            # remove "unpaid" boolean
+            if tuition.is_payed == False:
+                tuition.is_payed = None
+            # define as "unpaid"
+            else:
+                tuition.is_payed = False
+                tuition.payment_date = None
 
             db.session.commit()
             return jsonify({"status": "success"})
@@ -1730,8 +1735,13 @@ def remove_payment():
         salary = db.session.query(Salaries).filter(Salaries.salary_id == salary_id).one_or_none()
         
         if salary:
-            salary.is_payed = False
-            salary.payment_date = None
+            # remove "unpaid" boolean
+            if salary.is_payed == False:
+                salary.is_payed = None
+            # define as "unpaid"
+            else:
+                salary.is_payed = False
+                salary.payment_date = None
 
             db.session.commit()
             return jsonify({"status": "success"})

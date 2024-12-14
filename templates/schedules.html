@@ -58,14 +58,14 @@
                                 <form id="new-schedule-form" action="/new_class" method="POST">
                                     <table class="table">
                                         <thead>
-                                            <th> <label for="new-class-name" translation-key="class"> Class: </label> </th>
-                                            <th> <label for="new-class-weekday" translation-key="weekday"> Weekday: </label> </th>
-                                            <th> <label for="new-class-start" translation-key="start_time"> Start Time: </label> </th>
-                                            <th> <label for="new-class-duration" translation-key="duration"> Duration: </label> </th>
-                                            <th> <label for="new-class-teacher" translation-key="teacher"> Teacher: </label> </th>
-                                            <th> <label for="new-class-students" translation-key="students"> Students: </label> </th>
-                                            <th> <label for="new-class-classroom" translation-key="classroom"> Classroom: </label> </th>
-                                            <th> <label for="new-class-first-lesson" translation-key="first_lesson"> First Lesson: </label> </th>
+                                            <th> <label for="new-class-name" translation-key="class"> Class </label> </th>
+                                            <th> <label for="new-class-weekday" translation-key="weekday"> Weekday </label> </th>
+                                            <th> <label for="new-class-start" translation-key="start_time"> Start Time </label> </th>
+                                            <th> <label for="new-class-duration" translation-key="duration"> Duration </label> </th>
+                                            <th> <label for="new-class-teacher" translation-key="teacher"> Teacher </label> </th>
+                                            <th> <label for="new-class-students" translation-key="students"> Students </label> </th>
+                                            <th> <label for="new-class-classroom" translation-key="classroom"> Classroom </label> </th>
+                                            <th> <label for="new-class-first-lesson" translation-key="first_lesson"> First Lesson </label> </th>
                                         </thead>
                                         <tbody>
                                             <td> <input type="text" id="new-class-name" name="class_name" required></td>
@@ -83,7 +83,7 @@
                                                     
                                                     <select id="new-class-weekday" name="weekday" required>
                                                         {% set weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] %}
-                                                    
+                                                            <option selected disabled> </option>
                                                         {% for day in weekdays %}
                                                             <option value="{{ day }}" translation-key="{{ day | lower }}"> {{ day }}</option>
                                                         {% endfor %}
@@ -318,11 +318,11 @@
                                 <ul class="updated-students" hidden> 
                                 </ul>
 
-                                <span class="lang-pt" hidden>
-                                    <button type="button" class="hidden-class{{ item.class.class_id }}" class-id-name="hidden-class{{ item.class.class_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Editar lista de alunos </button>
+                                <span class="lang-pt edit-stdnts-container" hidden>
+                                    <button type="button" class="hidden-class{{ item.class.class_id }} edit-stdnts-btn" class-id-name="hidden-class{{ item.class.class_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Editar lista de alunos </button>
                                 </span>
-                                <span class="lang-en">
-                                    <button type="button" class="hidden-class{{ item.class.class_id }}" class-id-name="hidden-class{{ item.class.class_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Edit students list </button>
+                                <span class="lang-en edit-stdnts-container">
+                                    <button type="button" class="hidden-class{{ item.class.class_id }} edit-stdnts-btn" class-id-name="hidden-class{{ item.class.class_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Edit students list </button>
                                 </span>
 
                                 <!-- Edit students modal -->
@@ -343,7 +343,12 @@
                                                 <div class="students-modal-body">
                                                     {% for student in students %}
                                                     <div class="student-item all-students" student-id="{{ student.id }}">
-                                                        <button type="button" onclick="addStudent(this)" > + </button>
+                                                        <button type="button" class="add-btn" onclick="addStudent(this)" >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-plus" viewBox="0 0 16 16">
+                                                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                                                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                                                            </svg>
+                                                        </button>
                                                         <span> {{ student.name }} </span>
                                                     </div>
                                                     {% endfor %}
@@ -367,7 +372,11 @@
                                                 <div class="students-modal-body">
                                                     {% for student in item.students %}
                                                     <div class="student-item students-in-class og-student" student-id="{{ student.student_id }}">
-                                                        <button type="button" onclick="removeStudent(this)"> X </button> 
+                                                        <button type="button" class="remove-btn" onclick="removeStudent(this)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-less" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708"/>
+                                                            </svg>
+                                                        </button> 
                                                         <span> {{ student.user.name }} </span>
                                                     </div>
                                                     {% endfor %}
@@ -436,8 +445,10 @@
                                 </div>
                             </td>
                             <td class="change-buttons hidden-class{{ item.class.class_id }}" hidden>
-                                <button class="button" class-id="{{ item.class.class_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'))" translation-key="confirm"> Confirm </button>
-                                <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('data-class-id-name'))" data-class-id-name="hidden-class{{ item.class.class_id }}" id="cancel-edit" translation-key="cancel"> Cancel </button>
+                                <div class="change-buttons-container">
+                                    <button class="button" class-id="{{ item.class.class_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'))" translation-key="confirm"> Confirm </button>
+                                    <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('data-class-id-name'))" data-class-id-name="hidden-class{{ item.class.class_id }}" id="cancel-edit" translation-key="cancel"> Cancel </button>
+                                </div>
                             </td>
                             <!--
                             <td class="change-buttons hidden-class{{ item.class.class_id }}" hidden>
@@ -720,7 +731,11 @@
 
             // Create new div's button and span elements
             newDiv.innerHTML = `
-                <button type="button" onclick="removeStudent(this)"> X </button>
+                <button type="button" class="remove-btn" onclick="removeStudent(this)"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-less" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </button>
                 <span> ${studentName} </span>
             `;
 
