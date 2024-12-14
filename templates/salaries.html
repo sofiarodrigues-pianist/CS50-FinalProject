@@ -264,11 +264,10 @@
                             </td>
 
                             <td class="change-buttons hidden-salary{{ item.salary.salary_id }}" hidden>
-                                <button class="button" salary-id="{{ item.salary.salary_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('salary-id'))" translation-key="confirm"> Confirm </button>
-                               
-                            </td>
-                            <td class="change-buttons hidden-salary{{ item.salary.salary_id }}" hidden>
-                                <button class="button" salary-id-name="hidden-salary{{ item.salary.salary_id }}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('salary-id-name'))" translation-key="cancel"> Cancel </button>
+                                <div class="change-buttons-container">
+                                    <button class="button" salary-id="{{ item.salary.salary_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('salary-id'))" translation-key="confirm"> Confirm </button>
+                                    <button class="button" salary-id-name="hidden-salary{{ item.salary.salary_id }}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('salary-id-name'))" translation-key="cancel"> Cancel </button>
+                                </div>
                             </td>
 
                         </tbody>

@@ -175,11 +175,10 @@
                             </td>
 
                             <td class="change-buttons hidden-teacher{{ item.teacher.teacher_id }}" hidden>
-                                <button class="button" teacher-id="{{ item.teacher.teacher_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('teacher-id'))"> Confirm </button>
-                               
-                            </td>
-                            <td class="change-buttons hidden-teacher{{ item.teacher.teacher_id }}" hidden>
-                                <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('teacher-id-name'))" teacher-id-name="hidden-teacher{{ item.teacher.teacher_id }}" id="cancel-edit"> Cancel </button>
+                                <div class="change-buttons-container">
+                                    <button class="button" teacher-id="{{ item.teacher.teacher_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('teacher-id'))"> Confirm </button>
+                                    <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('teacher-id-name'))" teacher-id-name="hidden-teacher{{ item.teacher.teacher_id }}" id="cancel-edit"> Cancel </button>
+                                </div>
                             </td>
 
                         </tbody>

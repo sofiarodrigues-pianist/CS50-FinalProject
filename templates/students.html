@@ -110,7 +110,7 @@
                             <td class="name">
                                 <ul>
                                     <li> {{ item.student.user.name }} </li>
-                                    <li> <input type="text" class="hidden-student{{ item.student.student_id }}" placeholder="{{ item.student.user.name }}" hidden> </li>
+                                    <li> <input type="text" class="hidden-student{{ item.student.student_id }} input-long" placeholder="{{ item.student.user.name }}" hidden> </li>
                                 </ul>
                                 
                             </td>
@@ -123,7 +123,7 @@
                                             <span> ---- </span>
                                         {% endif %}
                                     </li>
-                                    <li> <input type="number" class="hidden-student{{ item.student.student_id }}" placeholder="{{ item.student.user.age }}" hidden> </li>
+                                    <li> <input type="number" class="hidden-student{{ item.student.student_id }} input-short" placeholder="{{ item.student.user.age }}" hidden> </li>
                                 </ul>  
                             </td>
                             <td class="contacts">
@@ -135,15 +135,15 @@
                                             <li class="phoneDefault"> {{data}} </li>
                                         {% endif %}
                                     {% endfor %}
-                                    <li class="email"> <input type="email" class="hidden-student{{ item.student.student_id }}" placeholder="E-mail" hidden> </li>
-                                    <li class="phone"> <input type="tel" class="hidden-student{{ item.student.student_id }}" placeholder="Phone number" hidden> </li>
+                                    <li class="email"> <input type="email" class="hidden-student{{ item.student.student_id }} input-long" placeholder="E-mail" hidden> </li>
+                                    <li class="phone"> <input type="tel" class="hidden-student{{ item.student.student_id }} input-long" placeholder="Phone number" hidden> </li>
                                 </ul>
                             </td>
                             <td class="course">
                                 <ul>
                                     <li> {{ item.student.course }} </li>
                                     <li>
-                                        <select name="courses" class="hidden-student{{ item.student.student_id }}" hidden>
+                                        <select name="courses" class="hidden-student{{ item.student.student_id }} input-long" hidden>
                                             {% set courses = ["Mini-Músico", "Mini-Músico Sociável", "Instrumentista", "Instrumentista Sociável", "Semi-Instrumentista", "Semi-Músico", "Músico"] %}
                                             
                                             {% for course in courses %}
@@ -167,7 +167,7 @@
                                             <span> ---- </span>
                                         {% endif %}
                                     </li>
-                                    <li> <input type="text" class="hidden-student{{ item.student.student_id }}" placeholder="{{ item.student.instrument }}" hidden> </li>
+                                    <li> <input type="text" class="hidden-student{{ item.student.student_id }} input-long" placeholder="{{ item.student.instrument }}" hidden> </li>
                                 </ul>
                             </td>
                             <td class="teacher">
@@ -195,7 +195,7 @@
                                             <span> ---- </span>
                                         {% endif %}
                                     </li>
-                                    <li> <input type="number" class="hidden-student{{ item.student.student_id }}" placeholder="{{ item.student.monthly_fee }}" hidden> </li>
+                                    <li> <input type="number" class="hidden-student{{ item.student.student_id }} input-short" placeholder="{{ item.student.monthly_fee }}" hidden> </li>
                                 </ul>  
                             </td>
                             <td class="enrollment">
@@ -206,25 +206,34 @@
                                 
                             </td>
                             <td class="edit">
-                                <button class="edit-btn" student-id-name="hidden-student{{ item.student.student_id }}" onclick=displayEdit(this)> <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="black" viewBox="0 0 16 16">
-                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                <button class="edit-btn" student-id-name="hidden-student{{ item.student.student_id }}" onclick=displayEdit(this)> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="pencil" width="16" height="16" fill="black" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
                                     </svg> 
                                 </button>
-                                <button class="delete-btn" student-id-name="hidden-student{{ item.student.student_id }}" onclick=displayDeleteModal(this)> <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="black" viewBox="0 0 16 16">
-                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                                  </svg>
+                                <button class="delete-btn" student-id-name="hidden-student{{ item.student.student_id }}" onclick=displayDeleteModal(this)> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="bin" width="16" height="16" fill="black" viewBox="0 0 16 16">
+                                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                    </svg>
                                 </button>
+
                                 <div class="modal-overlay delete-student-overlay">
                                     <div class="modal delete-student-modal">
                                         <div class="modal-content delete-student-content">
                                             <div class="delete-student-body">
-                                                <h2> Warning!</h2>
-                                                <h3> Are you sure you want to delete this Student? </h3>
+                                                <span class="lang-pt" hidden>
+                                                    <h2> Atenção!</h2>
+                                                    <h3> De certeza que quer remover este aluno? </h3>
+                                                </span>
+                                                <span class="lang-en">
+                                                    <h2> Warning!</h2>
+                                                    <h3> Are you sure you want to delete this Student? </h3>
+                                                </span>
                                             </div>
                                             
                                             <div class="delete-student-buttons">
-                                                <button class="button confirm-delete"> Delete </button>
-                                                <button class="button cancel-delete"> Go back </button>
+                                                <button class="button confirm-delete" translation-key="delete"> Delete </button>
+                                                <button class="button cancel-delete" translation-key="go_back"> Go back </button>
                                             </div>
                                         </div>
                                     </div>
@@ -232,11 +241,10 @@
                             </td>
 
                             <td class="change-buttons hidden-student{{ item.student.student_id }}" hidden>
-                                <button class="button" student-id="{{ item.student.student_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('student-id'))"> Confirm </button>
-                               
-                            </td>
-                            <td class="change-buttons hidden-student{{ item.student.student_id }}" hidden>
-                                <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('student-id-name'))" student-id-name="hidden-student{{ item.student.student_id }}" id="cancel-edit"> Cancel </button>
+                                <div class="change-buttons-container">
+                                    <button class="button" student-id="{{ item.student.student_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('student-id'))" translation-key="confirm"> Confirm </button>
+                                    <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('student-id-name'))" student-id-name="hidden-student{{ item.student.student_id }}" id="cancel-edit" translation-key="cancel"> Cancel </button>
+                                </div>
                             </td>
 
                         </tbody>
@@ -244,65 +252,22 @@
                 </table>
 
             {% else %}
-                <h3> There are no students yet </h3>
-                <span>
-                    <button onclick="newStudent(this.closest('span'))"> Register new student </button>
-                    <div class="modal-overlay new-student-overlay"> 
-                        <div class="modal new-student-modal">
-                            <div class="modal-content new-student-content">
-                                <form id="new-student-form" action="/new_student" method="POST">
-                                    <table class="table">
-                                        <thead>
-                                            <th> <label for="new-student-name"> Name: </label> </th>
-                                            <th> <label for="new-student-age"> Age: </label> </th>
-                                            <th> <label for="new-student-phone"> Phone: </label> </th>
-                                            <th> <label for="new-student-start"> Email: </label> </th>
-                                            <th> <label for="new-student-duration"> Instrument: </label> </th>
-                                            <th> <label for="new-student-teacher"> Teacher: </label> </th>
-                                            <th> <label for="new-student-start"> Course: </label> </th>
-                                            <th> <label for="new-student-students"> Monthly Fee: </label> </th>
-                                            <th> <label for="new-student-students"> Date of Enrollment: </label> </th>
-                                        </thead>
-                                        <tbody>
-                                            <td> <input type="text" id="new-student-name" name="name" required> </td>
-                                            <td> <input type="number" id="new-student-age" name="age" required> </td>
-                                            <td> <input type="tel" id="new-student-phone" name="phone" required> </td>
-                                            <td> <input type="email" id="new-student-email" name="email" required></td>
-                                            <td> <input type="text" id="new-student-instrument" name="instrument" required> </td>
-                                            <td>
-                                                <select name="teacher" id="new-student-teacher" required>
-                                                    <option></option>
-                                                    {% for name in teacher_names %}
-                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
-                                                    {% endfor %}
-                                                </select> 
-                                            </td>
-                                            
-                                            <td> 
-                                                <select id="new-student-course" name="course" required>
-                                                    <option></option>
-                                                    {% set courses = ["Mini-Músico", "Mini-Músico Sociável", "Instrumentista", "Instrumentista Sociável", "Semi-Instrumentista", "Semi-Músico", "Músico"] %}
-                                                    {% for course in courses %}
-                                                        <option value="{{ course }}"> {{ course }}</option>
-                                                    {% endfor %}
-                                                </select> 
-                                            </td>
-                                            <td> <input type="number" id="new-student-fee" name="monthly_fee" required> </td>
-                                            <td> <input type="date" id="new-student-enrollment" name="enrollment" required> </td>
-                                        </tbody>
-                                    </table>
-                                    <button class="button create-new-student" type="submit"> Add student </button>
-                                    <button class="button cancel-new-student"> Cancel </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                <span class="lang-pt title-container" hidden>
+                    <h2 class="title"> Não existem alunos ainda </h2>
+                </span> 
+                <span class="lang-en title-container">
+                    <h2 class="title"> There are no students yet </h2>
                 </span>
                 
             {% endif %}
 
         {% else %}
-            <h2> Sorry, you don't have permission to see this page. </h2>
+            <span class="lang-pt title-container">
+                <h2 class="title"> Não tem permissão para ver esta página. </h2>
+            </span>
+            <span class="lang-en title-container">
+                <h2 class="title"> Sorry, you don't have permission to see this page. </h2>
+            </span>
 
         {% endif %}
     </div>

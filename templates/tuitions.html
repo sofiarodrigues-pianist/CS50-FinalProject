@@ -264,11 +264,10 @@
                             </td>
 
                             <td class="change-buttons hidden-tuition{{ item.tuition.tuition_id }}" hidden>
-                                <button class="button" tuition-id="{{ item.tuition.tuition_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('tuition-id'))" translation-key="confirm"> Confirm </button>
-                               
-                            </td>
-                            <td class="change-buttons hidden-tuition{{ item.tuition.tuition_id }}" hidden>
-                                <button class="button" tuition-id-name="hidden-tuition{{ item.tuition.tuition_id }}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('tuition-id-name'))" translation-key="cancel"> Cancel </button>
+                                <div class="change-buttons-container">
+                                    <button class="button" tuition-id="{{ item.tuition.tuition_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('tuition-id'))" translation-key="confirm"> Confirm </button>
+                                    <button class="button" tuition-id-name="hidden-tuition{{ item.tuition.tuition_id }}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('tuition-id-name'))" translation-key="cancel"> Cancel </button>
+                                </div>     
                             </td>
 
                         </tbody>

@@ -238,8 +238,10 @@
                             </td>
 
                             <td class="change-buttons hidden-lesson{{ item.lesson.lesson_id}}" hidden>
-                                <button class="button" class-id="{{ item.lesson.class_id }}" lesson-id="{{ item.lesson.lesson_id}}" lesson-date="{{ item.lesson.lesson_date}}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'), this.getAttribute('lesson-id'), this.getAttribute('lesson-date'))" translation-key="confirm"> Confirm </button>
-                                <button class="button" class-id-name="hidden-lesson{{ item.lesson.lesson_id}}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('class-id-name'))" translation-key="cancel"> Cancel </button>
+                                <div class="change-buttons-container">
+                                    <button class="button" class-id="{{ item.lesson.class_id }}" lesson-id="{{ item.lesson.lesson_id}}" lesson-date="{{ item.lesson.lesson_date}}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'), this.getAttribute('lesson-id'), this.getAttribute('lesson-date'))" translation-key="confirm"> Confirm </button>
+                                    <button class="button" class-id-name="hidden-lesson{{ item.lesson.lesson_id}}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('class-id-name'))" translation-key="cancel"> Cancel </button>
+                                </div>
                             </td>
 
                             <td class="edit">
