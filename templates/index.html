@@ -12,7 +12,9 @@
             <h1 translation-key="welcome"> Welcome </h1>
             <h2>{{ user.name }}</h2>
         </div>
+
         <br>
+
         <div id = today>
             {% if user.role == "teacher" %}
 
@@ -169,12 +171,14 @@
                     </table>
                 
                 {% else %}
-                    <span class="lang-pt" hidden>
-                        <h3> Não há aulas agendadas para hoje </h3>
+                    <span class="lang-pt title-container" hidden>
+                        <h3 class="title"> Não há aulas agendadas para hoje </h3>
                     </span>
-                    <span class="lang-en">
-                        <h3> There are no classes today </h3>
+                    <span class="lang-en title-container">
+                        <h3 class="title"> There are no classes today </h3>
                     </span> 
+
+                    <br>
                     
                 {% endif %}
 

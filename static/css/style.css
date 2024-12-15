@@ -326,7 +326,6 @@ td:has(ul .input-long) {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
-    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal { 
@@ -339,8 +338,39 @@ td:has(ul .input-long) {
     width: auto;
 }
 
-.modal-content {
-    color: black;
+
+.center-modal {
+    position: fixed;
+    background-color: #FFFFF0;
+    border-radius: 5px;
+    border: 2px solid goldenrod;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2%;
+}
+
+.vertical-body{
+    display: flex;
+    flex-direction: column;
+}
+
+.vertical-body h2, .vertical-body h3, .vertical-body h6 {
+    padding: 0%;
+    margin: 0%;
+}
+
+.modal-btn {
+    padding: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: transparent;
+    border: 1px solid goldenrod;
+}
+
+.modal-btn:hover {
+    cursor: pointer;
+    background-color: #E6E6FA;
 }
 
 .exit {
@@ -377,12 +407,13 @@ td:has(ul .input-long) {
 
 /* Delete class modal */
 
+/*
 .delete-class-modal, .delete-lesson-modal {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
+}*/
 
 .delete:hover {
     background-color: transparent;
@@ -525,6 +556,11 @@ td:has(ul .input-long) {
     box-sizing: border-box;
     flex-shrink: 1;
     flex-grow: 1;
+}
+
+.confirm-delete:hover{
+    background-color: #e8120b;
+    color: whitesmoke;
 }
 
 #language:hover {

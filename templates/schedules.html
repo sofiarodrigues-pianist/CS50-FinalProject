@@ -122,6 +122,7 @@
                 </div>
             {% endif %}
         </div>
+
         <br>
         
         {% if classes_data %}
@@ -327,7 +328,7 @@
 
                                 <!-- Edit students modal -->
                                 <div class="modal-overlay edit-students-overlay hidden-class{{ item.class.class_id }}">
-                                    <div class="modal edit-students-modal hidden-class{{ item.class.class_id }}">
+                                    <div class="center-modal edit-students-modal hidden-class{{ item.class.class_id }}">
                                         <div class="modal-content edit-students-content">
                                             <!-- Left column: All students -->
                                             <div class="students-modal-left">
@@ -420,10 +421,10 @@
                             
                                 <!-- Delete modal -->
                                 <div class="modal-overlay delete-class-overlay">
-                                    <div class="modal delete-class-modal">
+                                    <div class="modal center-modal delete-class-modal">
                                         <div class="modal-content delete-class-content">
                                             <div class="delete-class-body">
-                                                <span class="lang-pt" hidden>
+                                                <span class="lang-pt vertical-body" hidden>
                                                     <h2> Atenção!</h2>
                                                     <h3> Tem a certeza que quer remover este horário? </h3>
                                                     <h6> (Aulas anteriores associadas a este horário não serão eliminadas) </h4>
@@ -435,10 +436,10 @@
                                                 </span>
                                                 
                                             </div>
-                                            
-                                            <div class="delete-class-buttons">
-                                                <button class="button confirm-delete" translation-key="delete"> Delete </button>
-                                                <button class="button cancel-delete" translation-key="go_back"> Go back </button>
+                                            <br>
+                                            <div class="center-modal-btns delete-class-buttons">
+                                                <button class="modal-btn confirm-delete" translation-key="delete"> Delete </button>
+                                                <button class="modal-btn cancel-delete" translation-key="go_back"> Go back </button>
                                             </div>
                                         </div>
                                     </div>
@@ -466,7 +467,7 @@
             {% endif %}
 
         {% else %}
-        <h3> You have no assigned schedule </h3>
+            <h3 class="title"> You have no assigned schedule </h3>
 
         {% endif %}
     </div>
