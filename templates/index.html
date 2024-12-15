@@ -9,7 +9,7 @@
 
     {% if logged_in %}
         <div id = login-welcome>
-            <h1 translation-key="welcome"> Welcome </h1>
+            <h1 translation-key="welcome"> WELCOME </h1>
             <h2>{{ user.name }}</h2>
         </div>
 
@@ -20,10 +20,10 @@
 
                 {% if classes_data %}
                     <span class="lang-pt title-container" hidden>
-                        <h3 class="title"> Este é o horário para hoje </h3>
+                        <h2 class="title"> Este é o horário para hoje </h2>
                     </span>
                     <span class="lang-en title-container">
-                        <h3 class="title"> This is your schedule for today </h3>
+                        <h2 class="title"> This is your schedule for today </h2>
                     </span>
                     
                     <table class ="table">
@@ -65,10 +65,10 @@
                     
                 {% else %}
                     <span class="lang-pt" hidden>
-                        <h3> Não há aulas hoje </h3>
+                        <h2> Não há aulas hoje </h2>
                     </span>
                     <span class="lang-en">
-                        <h3> You have no classes today </h3>
+                        <h2> You have no classes today </h2>
                     </span>
                     
 
@@ -78,10 +78,10 @@
 
                 {% if classes_data %}
                     <span class="lang-pt title-container" hidden>
-                        <h3 class="title"> Este é o teu horário para hoje </h3>
+                        <h2 class="title"> Este é o teu horário para hoje </h2>
                     </span>
                     <span class="lang-en title-container">
-                        <h3 calss="title"> This is your schedule for today </h3>
+                        <h2 class="title"> This is your schedule for today </h2>
                     </span>
                     <table class ="table">
                         <thead>
@@ -115,20 +115,26 @@
                     </table>
                     
                 {% else %}
-                    <h3 class="title"> You have no classes today </h3>
+                    <span class="lang-pt title-container" hidden>
+                        <h2 class="title"> Este é o teu horário para hoje </h2>
+                    </span>
+                    <span class="lang-en title-container">
+                        <h2 class="title"> This is your schedule for today </h2>
+                    </span> 
+
+                    <h6 class="no-info-title"> You have no classes today </h6>
 
                 {% endif %}
 
             {% else %}
+                <span class="lang-pt title-container" hidden>
+                    <h2 class="title"> Horário para hoje </h2>
+                </span>
+                <span class="lang-en title-container">
+                    <h2 class="title"> Today's schedule </h2>
+                </span> 
 
                 {% if classes_data %}
-                    <span class="lang-pt title-container" hidden>
-                        <h3 class="title"> Este é o horário para hoje </h3>
-                    </span>
-                    <span class="lang-en title-container">
-                        <h3 class="title"> This is the schedule for today </h3>
-                    </span> 
-
                     <table class ="table">
                         <thead>
                             <tr>
@@ -141,59 +147,60 @@
                             </tr>
                         </thead>
                         {% for item in classes_data %}
-                        <tbody>
-                            <td translation-key="{{ item.name | lower }}">
-                                {{ item.name }}
-                            </td>
-                            <td>
-                                {{ item.class.hour_formatted }}
-                            </td>
-                            <td>
-                                {{ item.teacher }}
-                            </td>
-                            <td>
-                                <ul>
-                                    {% for student in item.students %}
-                                        <li>
-                                            {{ student.user.name }}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td>
-                                {{ item.class.duration }} min
-                            </td>
-                            <td>
-                                {{ item.class.classroom }}
-                            </td>
-                        </tbody>
+                            <tbody>
+                                <td translation-key="{{ item.name | lower }}">
+                                    {{ item.name }}
+                                </td>
+                                <td>
+                                    {{ item.class.hour_formatted }}
+                                </td>
+                                <td>
+                                    {{ item.teacher }}
+                                </td>
+                                <td>
+                                    <ul>
+                                        {% for student in item.students %}
+                                            <li>
+                                                {{ student.user.name }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                                <td>
+                                    {{ item.class.duration }} min
+                                </td>
+                                <td>
+                                    {{ item.class.classroom }}
+                                </td>
+                            </tbody>
                         {% endfor %}
                     </table>
                 
                 {% else %}
                     <span class="lang-pt title-container" hidden>
-                        <h3 class="title"> Não há aulas agendadas para hoje </h3>
+                        <h4 class="no-info-title"> Não há aulas agendadas para hoje. </h4>
                     </span>
                     <span class="lang-en title-container">
-                        <h3 class="title"> There are no classes today </h3>
+                        <h4 class="no-info-title"> There are no classes today. </h4>
                     </span> 
-
+                    
+                    <br>
                     <br>
                     
                 {% endif %}
 
                 <span class="lang-pt" hidden>
                     <div class="shortcuts-container">
-                        <a href="/lessons" class="shortcut-btn"> Faltas e Presenças </a>
-                        <a href="/tuitions" class="shortcut-btn"> Consultar Mensalidades </a>
-                        <a href="/salaries" class="shortcut-btn"> Consultar Salários </a> 
+                        <a href="/lessons" class="shortcut-btn"> FALTAS E PRESENÇAS </a>
+                        <a href="/tuitions" class="shortcut-btn"> CONSULTAR MENSALIDADES </a>
+                        <a href="/salaries" class="shortcut-btn"> CONSULTAR SALÁRIOS </a> 
                     </div>
                 </span>
                 <span class="lang-en">
                     <div class="shortcuts-container">
-                        <a href="/lessons" class="shortcut-btn"> Check Attendances </a>
-                        <a href="/tuitions" class="shortcut-btn"> Check Tuitions </a>
-                        <a href="/salaries" class="shortcut-btn"> Check Salaries </a> 
+                        <a href="/lessons" class="shortcut-btn"> CHECK ATTENDENCES </a>
+                        <a href="/tuitions" class="shortcut-btn"> CHECK TUITIONS </a>
+                        <a href="/salaries" class="shortcut-btn"> CHECK SALARIES </a> 
                     </div>
                 </span>
 

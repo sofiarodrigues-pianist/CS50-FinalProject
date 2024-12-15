@@ -166,10 +166,10 @@
                                             <div class="students-modal-left">
                                                 <div class="students-modal-header">
                                                     <span class="lang-pt" hidden>
-                                                        <h3> Alunos disponíveis </h3>
+                                                        <h2> Alunos disponíveis </23>
                                                     </span>
                                                     <span class="lang-en">
-                                                        <h3> Available Students </h3>
+                                                        <h2> Available Students </h2>
                                                     </span>
                                                 </div>
                                                 <div class="students-modal-body">
@@ -194,10 +194,10 @@
                                             <div class="students-modal-right">
                                                 <div class="students-modal-header">
                                                     <span class="lang-pt" hidden>
-                                                        <h3> Alunos nesta aula </h3>
+                                                        <h2> Alunos nesta aula </h2>
                                                     </span>
                                                     <span class="lang-en">
-                                                        <h3> Students in this class </h3>
+                                                        <h2> Students in this class </h2>
                                                     </span>
                                                 </div>
                                                 <div class="students-modal-body">
@@ -306,12 +306,18 @@
             {% endif %}
 
         {% else %}
-            <span class="lang-en">
-                <h2> There are no lessons today </h2>
+            <span class="lang-pt title-container" hidden> 
+                <h2 class="title"> Aulas de hoje </h2> 
             </span>
-            <span class="lang-pt" hidden>
-                <h2> Não há aulas hoje </h2>
+            <span class="lang-en title-container"> 
+                <h2 class="title"> Lessons today </h2> 
             </span>
+            <span class="lang-pt title-container" hidden>
+                <h4 class="no-info-title"> Não há aulas agendadas para hoje. </h4>
+            </span>
+            <span class="lang-en title-container">
+                <h4 class="no-info-title"> There are no classes today. </h4>
+            </span> 
 
         {% endif %}
     </div>

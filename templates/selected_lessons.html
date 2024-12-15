@@ -14,8 +14,8 @@
         {% if lessons_data %}
             {% if date_formatted %}
                 {% if user.role == "teacher" %}
-                    <span class="lang-pt title-container" hidden> <h3 class="title"> Aulas em {{ date_formatted }}: </h3> </span>
-                    <span class="lang-en title-container"> <h3 class="title"> Lessons on {{ date_formatted }}: </h3> </span>
+                    <span class="lang-pt title-container" hidden> <h2 class="title"> Aulas em {{ date_formatted }}: </h2> </span>
+                    <span class="lang-en title-container"> <h2 class="title"> Lessons on {{ date_formatted }}: </h2> </span>
 
                     <table class ="table">
                         <thead>
@@ -56,8 +56,8 @@
                     </table>
 
                 {% elif user.role == "student" %}
-                    <span class="lang-pt title-container" hidden> <h3 class="title"> Aulas em {{ date_formatted }} </h3> </span>
-                    <span class="lang-en title-container"> <h3 class="title"> Lessons on {{ date_formatted }} </h3> </span>
+                    <span class="lang-pt title-container" hidden> <h2 class="title"> Aulas em {{ date_formatted }} </h3> </span>
+                    <span class="lang-en title-container"> <h2 class="title"> Lessons on {{ date_formatted }} </h3> </span>
 
                     <table class ="table">
                         <thead>
@@ -93,8 +93,8 @@
                     
                 {% else %}
                     
-                    <span class="lang-pt title-container" hidden> <h3 class="title"> Aulas em {{ date_formatted }} </h3> </span>
-                    <span class="lang-en title-container"> <h3 class="title"> Lessons on {{ date_formatted }} </h3> </span>
+                    <span class="lang-pt title-container" hidden> <h2 class="title"> Aulas em {{ date_formatted }} </h3> </span>
+                    <span class="lang-en title-container"> <h2 class="title"> Lessons on {{ date_formatted }} </h3> </span>
 
                     <table class ="table">
                         <thead>
@@ -166,10 +166,10 @@
                                                 <div class="students-modal-left">
                                                     <div class="students-modal-header">
                                                         <span class="lang-pt" hidden>
-                                                            <h3> Alunos disponíveis </h3>
+                                                            <h2> Alunos disponíveis </h3>
                                                         </span>
                                                         <span class="lang-en">
-                                                            <h3> Available Students </h3>
+                                                            <h2> Available Students </h3>
                                                         </span>
                                                     </div>
                                                     <div class="students-modal-body">
@@ -194,10 +194,10 @@
                                                 <div class="students-modal-right">
                                                     <div class="students-modal-header">
                                                         <span class="lang-pt" hidden>
-                                                            <h3> Alunos nesta aula </h3>
+                                                            <h2> Alunos nesta aula </h3>
                                                         </span>
                                                         <span class="lang-en">
-                                                            <h3> Students in this class </h3>
+                                                            <h2> Students in this class </h3>
                                                         </span>
                                                     </div>
                                                     <div class="students-modal-body">
@@ -301,8 +301,8 @@
                 {% endif %}
 
             {% else %}
-                <span class="lang-pt title-container" hidden> <h3 class="title"> Registos desta aula </h3> </span>
-                <span class="lang-en title-container"> <h3 class="title"> Lessons for this class </h3> </span>
+                <span class="lang-pt title-container" hidden> <h2 class="title"> Registos desta aula </h3> </span>
+                <span class="lang-en title-container"> <h2 class="title"> Lessons for this class </h3> </span>
 
                 <table class ="table">
                     <thead>
@@ -385,10 +385,10 @@
                                             <div class="students-modal-left">
                                                 <div class="students-modal-header">
                                                     <span class="lang-pt" hidden>
-                                                        <h3> Alunos disponíveis </h3>
+                                                        <h2> Alunos disponíveis </h3>
                                                     </span>
                                                     <span class="lang-en">
-                                                        <h3> Available Students </h3> 
+                                                        <h2> Available Students </h3> 
                                                     </span>
                                                 </div>
                                                 <div class="students-modal-body">
@@ -413,10 +413,10 @@
                                             <div class="students-modal-right">
                                                 <div class="students-modal-header">
                                                     <span class="lang-pt" hidden>
-                                                        <h3> Alunos nesta aula </h3>
+                                                        <h2> Alunos nesta aula </h3>
                                                     </span>
                                                     <span class="lang-en">
-                                                        <h3> Students in this class </h3>
+                                                        <h2> Students in this class </h3>
                                                     </span>
                                                 </div>
                                                 <div class="students-modal-body">
@@ -567,7 +567,7 @@
             {% endif %}
 
         {% else %}
-            <h3 class="title"> No lessons to display </h3>
+            <h2 class="title"> No lessons to display </h3>
 
         {% endif %}
     </div>

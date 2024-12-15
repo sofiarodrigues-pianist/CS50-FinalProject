@@ -80,7 +80,7 @@
 }
 
 .user, .translation {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Raleway', 'Nunito Sans, Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
     font-size: medium;
 }
 
@@ -111,6 +111,10 @@
     border-left: solid 2px goldenrod;
     border-right: solid 2px goldenrod;
     padding: 5px;
+}
+
+.no-info-title {
+    font-weight: 200;
 }
 
 .top-options {
@@ -167,15 +171,16 @@ body {
     border-bottom: solid 2px goldenrod;
     border-top: solid 2px goldenrod;
     border-radius: 30%;
-    /*background-color: #4682B4;*/
+    background-color: #E6E6FA; 
     color: black;
     font-size: large;
+    font-weight: 200;
     text-decoration: none;
 }
 
 .shortcut-btn:hover {
-    background-color: #E6E6FA;
-    color:black;
+    background-color: #4682B4;
+    color: whitesmoke;
 }
 
 .login-form {
@@ -195,6 +200,17 @@ table {
     table-layout: auto;
     width: 100%;
     padding: 2% 5% 5% 5%;
+}
+
+.new-info-table {
+    table-layout: auto;
+    padding: 0% 0% 5% 0%;
+    width: fit-content;
+    height: fit-content;
+}
+
+.students-cell, .students-th {
+    width: 200px;
 }
 
 th, td {
@@ -338,7 +354,6 @@ td:has(ul .input-long) {
     width: auto;
 }
 
-
 .center-modal {
     position: fixed;
     background-color: #FFFFF0;
@@ -350,9 +365,21 @@ td:has(ul .input-long) {
     padding: 2%;
 }
 
+.new-info-modal {
+    position: fixed;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    border: 2px solid #4682B4;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2%;
+}
+
 .vertical-body{
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .vertical-body h2, .vertical-body h3, .vertical-body h6 {
@@ -360,7 +387,13 @@ td:has(ul .input-long) {
     margin: 0%;
 }
 
-.modal-btn {
+.center-modal-btns, .new-info-modal-btns {
+    display: flex;
+    justify-content: center;
+}
+
+.modal-btn, .new-info-btn {
+    font-family: 'Raleway', 'Nunito Sans,';
     padding: 2%;
     margin-left: 5%;
     margin-right: 5%;
@@ -368,8 +401,9 @@ td:has(ul .input-long) {
     border: 1px solid goldenrod;
 }
 
-.modal-btn:hover {
+.modal-btn:hover, .new-info-btn:hover {
     cursor: pointer;
+    border: 1px solid #E6E6FA;
     background-color: #E6E6FA;
 }
 
@@ -385,7 +419,6 @@ td:has(ul .input-long) {
 .exit:focus {
     color: darkgrey;
 }
-
 
 /* Pencil modal */
 
@@ -405,20 +438,6 @@ td:has(ul .input-long) {
     cursor: pointer;
 }
 
-/* Delete class modal */
-
-/*
-.delete-class-modal, .delete-lesson-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}*/
-
-.delete:hover {
-    background-color: transparent;
-    color: red;
-}
 
 /* Edit students in class modal*/
 
@@ -444,6 +463,13 @@ td:has(ul .input-long) {
     align-items: center;
 }
 
+.edit-stdnts-btn, .select-students-btn {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 10px;
+    padding: 5px;
+}
+
 /* Schedule modal (lessons.html / selected-lessons.html) */
 
 .schedule-modal {
@@ -455,6 +481,7 @@ td:has(ul .input-long) {
 /* fallout lists */
 
 .fallout {
+    font-family: 'Raleway', 'Nunito Sans';
     background-color: transparent;
     color: black;
     border: 1px solid black;
@@ -560,6 +587,7 @@ td:has(ul .input-long) {
 
 .confirm-delete:hover{
     background-color: #e8120b;
+    border: 1px solid #e8120b;
     color: whitesmoke;
 }
 

@@ -53,17 +53,17 @@
                     </div> 
     
                     <div class="modal-overlay new-schedule-overlay"> 
-                        <div class="modal new-schedule-modal">
-                            <div class="modal-content new-schedule-content">
+                        <div class="modal new-info-modal new-schedule-modal">
+                            <div class="modal-content new-info-content new-schedule-content vertical-body">
                                 <form id="new-schedule-form" action="/new_class" method="POST">
-                                    <table class="table">
+                                    <table class="new-info-table">
                                         <thead>
                                             <th> <label for="new-class-name" translation-key="class"> Class </label> </th>
                                             <th> <label for="new-class-weekday" translation-key="weekday"> Weekday </label> </th>
                                             <th> <label for="new-class-start" translation-key="start_time"> Start Time </label> </th>
                                             <th> <label for="new-class-duration" translation-key="duration"> Duration </label> </th>
                                             <th> <label for="new-class-teacher" translation-key="teacher"> Teacher </label> </th>
-                                            <th> <label for="new-class-students" translation-key="students"> Students </label> </th>
+                                            <th class="students-th"> <label for="new-class-students" translation-key="students"> Students </label> </th>
                                             <th> <label for="new-class-classroom" translation-key="classroom"> Classroom </label> </th>
                                             <th> <label for="new-class-first-lesson" translation-key="first_lesson"> First Lesson </label> </th>
                                         </thead>
@@ -100,21 +100,36 @@
                                                 {% endfor %}
                                                 </select> 
                                             </td>
-                                            <td> 
-                                                <ul>
-                                                    {% for student in active_students %}
-                                                    <li>
-                                                        <input type="checkbox" name="students[]" value="{{ student.id }}"> {{ student.name }} 
-                                                    </li>
-                                                    {% endfor %}
-                                                </ul>
+                                            <td class="students-cell"> 
+                                                <ul class="selected-students"> </ul>
+
+                                                <button type="button" class="select-students-btn" onclick="selectStudents(this.closest('td'))"> Select students </button>
+                                                <div class="modal-overlay select-students-overlay">
+                                                    <div class="modal select-students-modal">
+                                                        <div class="modal-content">
+                                                            <span class="exit"> X </span>
+                                                            <ul>
+                                                                {% for student in active_students %}
+                                                                <li>
+                                                                    <input type="checkbox" name="students[]" value="{{ student.id }}"> {{ student.name }} 
+                                                                </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                            <button type="button" class="button confirm-students-btn" translation-key="confirm"> Confirm </button>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                                
                                             </td>
                                             <td> <input type="text" id="new-class-classroom" name="classroom" required> </td>
                                             <td> <input type="date" id="new-class-first-lesson" name="first_lesson" required> </td>
                                         </tbody>
                                     </table>
-                                    <button class="button create-new-schedule" type="submit" translation-key="confirm"> Confirm </button>
-                                    <button class="button cancel-new-schedule" translation-key="cancel"> Cancel </button>
+                                    <div class="new-info-modal-btns">
+                                        <button class="new-info-btn create-new-schedule" type="submit" translation-key="confirm"> Confirm </button>
+                                        <button class="new-info-btn cancel-new-schedule" translation-key="cancel"> Cancel </button>
+                                    </div>
+                                
                                 </form>
                             </div>
                         </div>
@@ -227,7 +242,6 @@
                 <span class="lang-en title-container">
                     <h2 class="title"> Current Schedule </h2>
                 </span>
-                
 
                 <table class ="table">
                     <thead>
@@ -418,47 +432,40 @@
                                         <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
                                     </svg>
                                 </button>
-                            
-                                <!-- Delete modal -->
-                                <div class="modal-overlay delete-class-overlay">
-                                    <div class="modal center-modal delete-class-modal">
-                                        <div class="modal-content delete-class-content">
-                                            <div class="delete-class-body">
-                                                <span class="lang-pt vertical-body" hidden>
-                                                    <h2> Atenção!</h2>
-                                                    <h3> Tem a certeza que quer remover este horário? </h3>
-                                                    <h6> (Aulas anteriores associadas a este horário não serão eliminadas) </h4>
-                                                </span>
-                                                <span class="lang-en">
-                                                    <h2> Warning!</h2>
-                                                    <h3> Are you sure you want to remove this Class from your Schedule? </h3>
-                                                    <h6> (This action won't delete past lessons associated to this Class) </h4>
-                                                </span>
-                                                
-                                            </div>
-                                            <br>
-                                            <div class="center-modal-btns delete-class-buttons">
-                                                <button class="modal-btn confirm-delete" translation-key="delete"> Delete </button>
-                                                <button class="modal-btn cancel-delete" translation-key="go_back"> Go back </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </td>
+
                             <td class="change-buttons hidden-class{{ item.class.class_id }}" hidden>
                                 <div class="change-buttons-container">
                                     <button class="button" class-id="{{ item.class.class_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'))" translation-key="confirm"> Confirm </button>
                                     <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('data-class-id-name'))" data-class-id-name="hidden-class{{ item.class.class_id }}" id="cancel-edit" translation-key="cancel"> Cancel </button>
                                 </div>
                             </td>
-                            <!--
-                            <td class="change-buttons hidden-class{{ item.class.class_id }}" hidden>
-                                <button class="button" class-id="{{ item.class.class_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'))" translation-key="confirm"> Confirm </button>
-                            </td>
-                            <td class="change-buttons hidden-class{{ item.class.class_id }}" hidden>
-                                <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('data-class-id-name'))" data-class-id-name="hidden-class{{ item.class.class_id }}" id="cancel-edit" translation-key="cancel"> Cancel </button>
-                            </td> -->
-                        
+                            
+                            <!-- Delete modal -->
+                            <div class="modal-overlay delete-class-overlay">
+                                <div class="modal center-modal delete-class-modal">
+                                    <div class="modal-content delete-class-content">
+                                        <div class="delete-class-body">
+                                            <span class="lang-pt vertical-body" hidden>
+                                                <h2> Atenção!</h2>
+                                                <h3> Tem a certeza que quer remover este horário? </h3>
+                                                <h6> (Aulas anteriores associadas a este horário não serão eliminadas) </h6>
+                                            </span>
+                                            <span class="lang-en vertical-body">
+                                                <h2> Warning!</h2>
+                                                <h3> Are you sure you want to remove this Class from your Schedule? </h3>
+                                                <h6> (This action won't delete past lessons associated to this Class) </h6>
+                                            </span>
+                                            
+                                        </div>
+                                        <br>
+                                        <div class="center-modal-btns delete-class-buttons">
+                                            <button class="modal-btn cancel-delete" translation-key="go_back"> Go back </button>
+                                            <button class="modal-btn confirm-delete" translation-key="delete"> Delete </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </tbody>
                      
                     {% endfor %}
@@ -467,8 +474,7 @@
             {% endif %}
 
         {% else %}
-            <h3 class="title"> You have no assigned schedule </h3>
-
+            <h2 class="title"> You have no assigned schedule </h2>
         {% endif %}
     </div>
 
@@ -514,6 +520,70 @@
                 }  
             }
         }
+
+        function selectStudents(tableRow) {
+            let overlay = tableRow.querySelector(".select-students-overlay");
+            let modal = tableRow.querySelector(".select-students-modal");
+            let exit = modal.querySelector(".exit");
+            let inputs = modal.querySelectorAll('input[type="checkbox"]');
+            let saveBtn = modal.querySelector(".confirm-students-btn");
+            let students = tableRow.querySelector(".selected-students");
+
+            overlay.style.display="block";
+            modal.style.display="flex";
+
+            overlay.onclick = function(event) {
+                if (event.target == overlay) {~
+
+                    inputs.forEach(student => {
+                        student.checked = false;
+                    });
+
+                    modal.style.display = "none";
+                    overlay.style.display = "none";
+                }
+            }
+            exit.onclick = function(event) {
+                if (event.target == exit) {
+                    // Close students list and forget checks
+                    inputs.forEach(student => {
+                        student.checked = false;
+                    });
+
+                    // Remove previous names
+                    students.innerHTML = "";
+
+                    modal.style.display="none";
+                    overlay.style.display="none";
+                }; 
+            };
+            // Close students list but save checks
+            saveBtn.onclick = function(event) {
+                if (event.target == saveBtn) {
+                    modal.style.display="none";
+                    overlay.style.display="none";
+
+                    // Remove previous names
+                    students.innerHTML = "";
+
+                    inputs.forEach(input => {
+                        if(input.checked) {  
+                            // if checked student, create new li with its name 
+                            let name = input.parentElement.textContent;
+                            let li = document.createElement("li");
+                            if (name) {
+                                li.textContent = name;
+                            } else {
+                                li.textContent = "unknown";
+                            }
+                            
+                            students.appendChild(li);
+                        }
+                    })
+                }
+            }
+        }
+
 
         // Cancel/close edit mode
         function cancelEdit(tableRow, className) {
@@ -572,6 +642,7 @@
             let modal = document.querySelector(".delete-class-modal");
             let className = deleteOption.getAttribute("data-class-id-name")
             let options = modal.querySelectorAll(".delete-class-buttons button");
+
             console.log("Delete modal triggered");
 
             let classId = className.replace("hidden-class", "");
@@ -579,6 +650,7 @@
             // make modal appear
             modal.style.display = "block";
             overlay.style.display = "block";
+            console.log("Debug after style display =block");
         
             // Actions that close modal
             options.forEach(function(option) {
