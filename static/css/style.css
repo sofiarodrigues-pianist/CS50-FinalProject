@@ -204,19 +204,20 @@ table {
 
 .new-info-table {
     table-layout: auto;
+    width: 100%;
     padding: 0% 0% 5% 0%;
-    width: fit-content;
-    height: fit-content;
 }
 
 .students-cell, .students-th {
-    width: 200px;
+    min-width: 150px;
 }
 
 th, td {
     border: 1px solid grey;
     padding: 5px;
     text-align: center;
+    width: auto;
+    white-space: nowrap;
 }
 
 th {
@@ -439,7 +440,7 @@ td:has(ul .input-long) {
 }
 
 
-/* Edit students in class modal*/
+/* Edit students modal*/
 
 .edit-students-modal {
     width: 100%;
@@ -464,10 +465,54 @@ td:has(ul .input-long) {
 }
 
 .edit-stdnts-btn, .select-students-btn {
-    display: flex;
-    flex-wrap: nowrap;
-    margin: 10px;
+    white-space: nowrap;
+    width: auto;
+    margin: 10px auto;
     padding: 5px;
+    box-sizing:border-box;
+}
+
+/* Select students modal */
+
+.students-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 20px 0 20px;
+    margin: 20% auto;
+}
+
+.student-name {
+    font-size: medium;
+}
+
+.student-name input[type="checkbox"] {
+    height: 20px;
+    width: 20px;
+}
+
+.students-btns-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.cancel-students-btn, .confirm-students-btn {
+    padding: 5%;
+    font-family: 'Raleway', 'Nunito Sans';
+    background-color: transparent;
+    border: 1px solid goldenrod;
+}
+
+.cancel-students-btn:hover {
+    cursor: pointer;
+    border: 1px solid #E6E6FA;
+    background-color: #E6E6FA;
+}
+
+.confirm-students-btn:hover {
+    cursor: pointer;
+    border: 1px solid lightgreen;
+    background-color: lightgreen;
 }
 
 /* Schedule modal (lessons.html / selected-lessons.html) */
