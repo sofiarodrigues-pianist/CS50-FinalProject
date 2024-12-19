@@ -17,6 +17,133 @@
     gap: 20px;
 }
 
+/* Buttons */
+
+.button {
+    background-color: transparent;
+    font-family: 'Raleway', 'Nunito Sans';
+    color: black;
+    border: 2px solid #C08081;
+    transition-duration: 0.2s;
+    text-decoration: none;
+    padding: 10%;
+    cursor: pointer;
+    justify-content: center;
+}
+
+.button:hover {
+    background-color: #C08081;
+    color: whitesmoke;
+}
+
+
+.new-schedule, .new-lesson, .new-student, .new-tuition, .new-teacher, .new-salary {
+    background-color: transparent;
+    border: none;
+}
+
+.edit-stdnts-btn {
+    white-space: nowrap;
+    width: auto;
+    margin: 10px auto;
+    padding: 5px;
+    box-sizing:border-box;
+    border: 1px solid #C08081;
+    background-color: white;
+    font-family: 'Raleway', 'Nunito Sans';
+}
+
+.edit-stdnts-btn:hover {
+    cursor: pointer;
+    background-color: #C08081;
+    color: whitesmoke;
+}
+
+.change-buttons[hidden] {
+    display:none !important;
+}
+
+.change-buttons {
+    background-color: #FFFFF0;
+    border: none;
+}
+
+.change-buttons-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 5%;
+}
+
+
+.user-btn, .lang-btn {
+    cursor: pointer;
+    background-color: transparent;
+    border: 0px;
+    padding: 10px;
+    margin-right: 30px;
+}
+
+.user-icon, .translate-icon {
+    background-color: transparent;
+}
+
+.user-btn:hover {
+    background-color: #E6E6FA;
+    border-radius: 40%;
+}
+
+#plus-icon-btn {
+    background-color: transparent;
+}
+
+#plus-icon-btn:hover {
+    cursor: pointer;
+    fill: lightgreen;
+}
+
+#see-schedule {
+    color: whitesmoke;
+    font-size: medium;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#select-date, #select-school-year, #see-tuition {
+    border-radius: 5px;
+    padding: 5px;
+    font-size: small;
+    cursor: pointer;
+}
+
+/*#confirm-edit, #cancel-edit {
+    display: flex;
+    color: black;
+    align-self: center;
+    box-sizing: border-box;
+    flex-shrink: 1;
+    flex-grow: 1;
+}*/
+
+.cancel-delete:hover {
+    cursor: pointer;
+    background-color: lightgoldenrodyellow;
+    border: 1px solid lightgoldenrodyellow;
+    color: black;
+}
+
+.confirm-delete:hover{
+    cursor: pointer;
+    background-color: #e8120b;
+    border: 1px solid #e8120b;
+    color: whitesmoke;
+}
+
+#language:hover {
+    cursor: pointer;
+    background-color: rgb(17, 17, 17);;
+    color: whitesmoke;
+}
 
 /* Header organization */
 
@@ -72,7 +199,8 @@
 
 .active-tab {
     /*color: #002E74;*/
-    padding: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
     border-bottom: solid 2px goldenrod;
     border-top: solid 2px goldenrod;
     border-radius: 30%;
@@ -92,6 +220,7 @@
 #logout:hover {
     color: grey;
 }
+
 
 /* Main design */
 
@@ -137,6 +266,7 @@ body {
     margin:0px;
     color: black;
 }
+
 
 /* Homepage */ 
 
@@ -202,11 +332,6 @@ table {
     padding: 2% 5% 5% 5%;
 }
 
-.new-info-table {
-    table-layout: auto;
-    width: 100%;
-    padding: 0% 0% 5% 0%;
-}
 
 .students-cell, .students-th {
     min-width: 150px;
@@ -267,7 +392,7 @@ td:has(ul .input-long) {
     min-width: fit-content;
 }
 
-/* edit buttons */
+/* Edit buttons */
 
 .edit-stdnts-container {
     display: flex;
@@ -288,8 +413,10 @@ td:has(ul .input-long) {
 /* Edit icons */
 
 .edit {
+    width: 150px;
     border: none;
     background-color: #FFFFF0;
+    text-align: left;
 }
 
 .edit:hover {
@@ -355,6 +482,14 @@ td:has(ul .input-long) {
     width: auto;
 }
 
+.vertical-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Specific modals */
+
 .center-modal {
     position: fixed;
     background-color: #FFFFF0;
@@ -366,27 +501,10 @@ td:has(ul .input-long) {
     padding: 2%;
 }
 
-.new-info-modal {
-    position: fixed;
-    background-color: whitesmoke;
-    border-radius: 5px;
-    border: 2px solid #4682B4;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 2%;
-}
 
-.vertical-body{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
-.vertical-body h2, .vertical-body h3, .vertical-body h6 {
-    padding: 0%;
-    margin: 0%;
-}
+
+/* Modal buttons */
 
 .center-modal-btns, .new-info-modal-btns {
     display: flex;
@@ -396,17 +514,18 @@ td:has(ul .input-long) {
 .modal-btn, .new-info-btn {
     font-family: 'Raleway', 'Nunito Sans,';
     padding: 2%;
-    margin-left: 5%;
-    margin-right: 5%;
+    margin-left: 2%;
+    margin-right: 2%;
     background-color: transparent;
     border: 1px solid goldenrod;
 }
 
-.modal-btn:hover, .new-info-btn:hover {
+.modal-btn:hover {
     cursor: pointer;
     border: 1px solid #E6E6FA;
     background-color: #E6E6FA;
 }
+
 
 .exit {
     align-self: flex-start;
@@ -421,58 +540,112 @@ td:has(ul .input-long) {
     color: darkgrey;
 }
 
-/* Pencil modal */
+/* User modal */
 
-.pencil-content, .user-content {
+.user-content {
     display: flex;
     justify-content: space-between;
     color: black;
     z-index: 2;
 }
 
-.options {
+.user-options {
     margin: 10px;
 }
 
-.options li:hover {
+.user-options li:hover {
     color: grey;
     cursor: pointer;
 }
 
+/* Delete modal */
 
-/* Edit students modal*/
-
-.edit-students-modal {
-    width: 100%;
-    max-width: 800px;
+.delete-modal {
+    border: 2px solid rgb(41, 0, 0);
+    background-color: #2a2a2af8;
+    color: whitesmoke;
 }
 
-.edit-students-content {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    grid-template-rows: auto auto;
-}
-
-.students-modal-middle {
+.delete-modal-body {
     display: flex;
     flex-direction: column;
-    align-self: center;
-}
-
-.student-item {
-    display: flex;
     align-items: center;
 }
 
-.edit-stdnts-btn, .select-students-btn {
+.delete-btns {
+    justify-content: center;
+}
+
+.delete-modal-btn {
+    font-family: 'Raleway', 'Nunito Sans';
+    background-color: whitesmoke;
+    border: 1px solid rgba(0, 0, 0, 0.516);
+    padding: 3%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+/* New info modal */
+
+.new-info-modal {
+    position: fixed;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    border: 2px solid #7474a6;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2%;
+}
+
+.new-info-table {
+    table-layout: auto;
+    width: 100%;
+    padding: 0% 0% 5% 0%;
+    border: 1px solid lightgoldenrodyellow;
+}
+
+.new-info-table th {
+    background-color: #E6E6FA;
+    color: black;
+}
+
+.new-info-table tr:hover {
+    background-color: whitesmoke;
+}
+
+.select-students-btn {
     white-space: nowrap;
     width: auto;
     margin: 10px auto;
-    padding: 5px;
+    padding: 5%;
     box-sizing:border-box;
+    border: 1px solid #7474a6;
+    background-color: white;
+    font-family: 'Raleway', 'Nunito Sans';
+}
+
+.select-students-btn:hover {
+    cursor: pointer;
+    background-color: #E6E6FA;
+}
+
+.new-info-btn {
+    border: 1px solid #7474a6;
+}
+
+.new-info-btn:hover {
+    background-color: #7474a6;
+    color: whitesmoke;
+    cursor: pointer;
 }
 
 /* Select students modal */
+
+.select-students-modal {
+    background-color: whitesmoke;
+    border: 2px solid #7474a6;
+}
 
 .students-list {
     display: flex;
@@ -496,24 +669,76 @@ td:has(ul .input-long) {
     justify-content: space-evenly;
 }
 
-.cancel-students-btn, .confirm-students-btn {
+.select-students-modal-btn {
     padding: 5%;
     font-family: 'Raleway', 'Nunito Sans';
     background-color: transparent;
-    border: 1px solid goldenrod;
+    border: 1px solid #7474a6;
 }
 
-.cancel-students-btn:hover {
+.select-students-modal-btn:hover {
+    background-color: #7474a6;
+    color: whitesmoke;
     cursor: pointer;
-    border: 1px solid #E6E6FA;
-    background-color: #E6E6FA;
 }
 
-.confirm-students-btn:hover {
-    cursor: pointer;
-    border: 1px solid lightgreen;
-    background-color: lightgreen;
+/* Edit students modal*/
+
+.edit-students-modal {
+    width: 100%;
+    max-width: 800px;
+    border: 2px solid #C08081;
 }
+
+.edit-students-content {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto;
+}
+
+.students-modal-header {
+    display: flex;
+    border-bottom: 1px solid #C08081;
+    align-items: center;
+    justify-content: center;
+    color: #C08081;
+}
+
+.students-modal-body {
+    padding-top: 10%;    
+}
+
+.students-modal-middle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.student-item {
+    display: flex;
+    align-items: center;
+    padding: 1%;
+}
+
+.students-modal-button {
+    padding: 5%;
+    margin: 10px;
+    width: 80%;
+    align-self: center;
+    color: black;
+    background-color: transparent;
+    border: 1px solid #C08081;
+    font-family: 'Raleway', 'Nunito Sans';
+}
+
+.students-modal-button:hover {
+    cursor: pointer;
+    background-color: #C08081;
+    border: 1px solid #C08081;
+    color: whitesmoke;
+}
+
+
 
 /* Schedule modal (lessons.html / selected-lessons.html) */
 
@@ -532,115 +757,4 @@ td:has(ul .input-long) {
     border: 1px solid black;
     padding: 5px;
 }
-
-/* buttons */
-
-.button {
-    background-color: transparent;
-    font-family: "Nunito Sans";
-    color: black;
-    border: 2px solid #E6E6FA;
-    transition-duration: 0.2s;
-    text-decoration: none;
-    padding:10%;
-    cursor: pointer;
-}
-
-.button:hover {
-    background-color: #E6E6FA;
-    color: black;
-}
-
-
-.new-schedule, .new-lesson, .new-student, .new-tuition, .new-teacher, .new-salary {
-    background-color: transparent;
-    border: none;
-}
-
-.change-buttons[hidden] {
-    display:none !important;
-}
-
-.change-buttons {
-    background-color: #FFFFF0;
-    border: none;
-}
-
-.change-buttons-container {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    gap: 5%;
-}
-
-.students-modal-button {
-    background-color: transparent;
-    gap: 5px;
-    padding: 5px;
-    color: black;
-    margin: 10px;
-}
-
-.user-btn, .lang-btn {
-    cursor: pointer;
-    background-color: transparent;
-    border: 0px;
-    padding: 10px;
-    margin-right: 30px;
-}
-
-.user-icon, .translate-icon {
-    background-color: transparent;
-}
-
-.user-btn:hover {
-    background-color: #E6E6FA;
-    border-radius: 40%;
-}
-
-#plus-icon-btn {
-    background-color: transparent;
-}
-
-#plus-icon-btn:hover {
-    cursor: pointer;
-    fill: lightgreen;
-}
-
-#see-schedule {
-    color: whitesmoke;
-    font-size: medium;
-    border-radius: 10px;
-    padding: 10px;
-}
-
-#select-date, #select-school-year, #see-tuition {
-    border-radius: 5px;
-    padding: 5px;
-    font-size: small;
-    cursor: pointer;
-}
-
-#confirm-edit, #cancel-edit {
-    display: flex;
-    color: black;
-    align-self: center;
-    box-sizing: border-box;
-    flex-shrink: 1;
-    flex-grow: 1;
-}
-
-.confirm-delete:hover{
-    background-color: #e8120b;
-    border: 1px solid #e8120b;
-    color: whitesmoke;
-}
-
-#language:hover {
-    cursor: pointer;
-    background-color: rgb(17, 17, 17);;
-    color: whitesmoke;
-}
-
-
 
