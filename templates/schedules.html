@@ -12,17 +12,33 @@
         <div class="top-options">
             <span id="search-icon">
                 <div class="horizontal-elements">
-                    <button class="search-btn" onclick="scheduleModal(this.closest('span'))">
+                    <!-- <button class="search-btn" onclick="scheduleModal(this.closest('span'))">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                         </svg> 
                     </button> 
-                    <h3 translation-key="search"> Search </h3>
+                    <h3 translation-key="search"> Search </h3> -->
+            
+                    <form action="/schedules" id="select-year-form" method="post">
+                        <button type="submit" class="search-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg> 
+                        </button> 
+                        <select id="select-year" name="school_year" required> 
+                            <option value="" disabled selected translation-key="school_year"> School year </option>
+                            <option value="2324"> 2023/2024 </option>
+                            <option value="2425"> 2024/2025 </option>
+                        </select>
+                    </form>
+                
                 </div>
-                <div class="modal-overlay search-year-overlay">
-                    <div class="modal search-year-modal">
+
+                
+                <!-- <div class="modal-overlay search-year-overlay">
+                    <div class="modal center-modal search-year-modal">
                         <div class="modal-content search-year-content">
-                            <form action="/schedules" method="post">
+                            <form action="/schedules" id="select-year-form" method="post">
                                 <select id="select-year" name="school_year" required> 
                                     <option value="" disabled selected translation-key="school_year"> School year </option>
                                     <option value="2324"> 2023/2024 </option>
@@ -32,7 +48,7 @@
                             </form>
                         </div>
                     </div>  
-                </div>
+                </div> -->
             </span>
     
             {% if user.role == "admin" %}
@@ -338,9 +354,9 @@
                                                     </span>
                                                     <span class="lang-en">
                                                         <h3> Available Students </h3>
-                                                    </span>
-                                                   
+                                                    </span> 
                                                 </div>
+
                                                 <div class="students-modal-body">
                                                     {% for student in students %}
                                                     <div class="student-item all-students" student-id="{{ student.id }}">
@@ -359,6 +375,7 @@
                                                 <button type="button" class="students-modal-button" onclick="saveStudents(this.closest('.edit-students-modal'), this.closest('.edit-students-overlay'))" translation-key="save"> Save </button>
                                                 <button type="button" class="students-modal-button" onclick="resetStudents(this.closest('.edit-students-modal'), this.closest('.edit-students-overlay'))" translation-key="cancel"> Cancel </button>
                                             </div>
+                                            
                                             <!-- Right column: students in class -->                                                  
                                             <div class="students-modal-right">
                                                 <div class="students-modal-header">
@@ -422,8 +439,8 @@
 
                             <td class="change-buttons hidden-class{{ item.class.class_id }}" hidden>
                                 <div class="change-buttons-container">
-                                    <button class="button" class-id="{{ item.class.class_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'))" translation-key="confirm"> Confirm </button>
                                     <button class="button" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('data-class-id-name'))" data-class-id-name="hidden-class{{ item.class.class_id }}" id="cancel-edit" translation-key="cancel"> Cancel </button>
+                                    <button class="button" class-id="{{ item.class.class_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'))" translation-key="confirm"> Confirm </button>
                                 </div>
                             </td>
                             
@@ -468,12 +485,14 @@
     <script>
 
         // Display search modal
-        function scheduleModal(spanTag) {
+        
+
+        /*function scheduleModal(spanTag) {
             let overlay = spanTag.querySelector(".search-year-overlay");
             let modal = spanTag.querySelector(".search-year-modal");
 
             overlay.style.display="block";
-            modal.style.display="block";
+            modal.style.display="flex";
 
             overlay.onclick = function(event) {
                 if (event.target == overlay) {
@@ -481,7 +500,7 @@
                     overlay.style.display = "none";
                 } 
             };
-        }
+        }*/
 
         // Create new schedule
         function newSchedule() {
@@ -643,7 +662,7 @@
                 option.onclick = function() {
 
                     // delete class
-                    if (this.innerText === "Delete") {
+                    if (this.innerText === "Delete" || this.innerText === "Eliminar") {
                         console.log("Delete button activated");
                         console.log(classId);
 

@@ -149,29 +149,30 @@
 
                                 <ul class="updated-students" hidden> 
                                 </ul>
-                                
-                                <span class="lang-pt" hidden>
-                                    <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }}" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Editar alunos </button>
+                        
+                                <span class="lang-pt edit-stdnts-container" hidden>
+                                    <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }} edit-stdnts-btn" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Editar lista de alunos </button>
                                 </span>
-                                <span class="lang-en">
-                                    <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }}" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Edit students list </button>
+                                <span class="lang-en edit-stdnts-container">
+                                    <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }} edit-stdnts-btn" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Edit students list </button>
                                 </span>
                                 
 
                                 <!-- Edit students modal -->
                                 <div class="modal-overlay edit-students-overlay hidden-lesson{{ item.lesson.lesson_id }}">
-                                    <div class="modal edit-students-modal hidden-lesson{{ item.lesson.lesson_id }}">
+                                    <div class="center-modal edit-students-modal hidden-lesson{{ item.lesson.lesson_id }}">
                                         <div class="modal-content edit-students-content">
                                             <!-- Left column: All students -->
                                             <div class="students-modal-left">
                                                 <div class="students-modal-header">
                                                     <span class="lang-pt" hidden>
-                                                        <h2> Alunos disponíveis </23>
+                                                        <h2> Alunos disponíveis </h2>
                                                     </span>
                                                     <span class="lang-en">
                                                         <h2> Available Students </h2>
                                                     </span>
                                                 </div>
+
                                                 <div class="students-modal-body">
                                                     {% for student in students %}
                                                     <div class="student-item all-students" student-id="{{ student.id }}">
@@ -190,6 +191,7 @@
                                                 <button type="button" class="button students-modal-button" onclick="saveStudents(this.closest('.edit-students-modal'), this.closest('.edit-students-overlay'))" translation-key="save"> Save </button>
                                                 <button type="button" class="button students-modal-button" onclick="resetStudents(this.closest('.edit-students-modal'), this.closest('.edit-students-overlay'))" translation-key="cancel"> Cancel </button>
                                             </div>
+
                                             <!-- Right column: students in class -->                                                  
                                             <div class="students-modal-right">
                                                 <div class="students-modal-header">
@@ -239,8 +241,8 @@
 
                             <td class="change-buttons hidden-lesson{{ item.lesson.lesson_id}}" hidden>
                                 <div class="change-buttons-container">
-                                    <button class="button" class-id="{{ item.lesson.class_id }}" lesson-id="{{ item.lesson.lesson_id}}" lesson-date="{{ item.lesson.lesson_date}}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'), this.getAttribute('lesson-id'), this.getAttribute('lesson-date'))" translation-key="confirm"> Confirm </button>
                                     <button class="button" class-id-name="hidden-lesson{{ item.lesson.lesson_id}}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('class-id-name'))" translation-key="cancel"> Cancel </button>
+                                    <button class="button" class-id="{{ item.lesson.class_id }}" lesson-id="{{ item.lesson.lesson_id}}" lesson-date="{{ item.lesson.lesson_date}}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'), this.getAttribute('lesson-id'), this.getAttribute('lesson-date'))" translation-key="confirm"> Confirm </button>     
                                 </div>
                             </td>
 
@@ -275,23 +277,23 @@
  
                                 <!-- Delete modal -->
                                 <div class="modal-overlay delete-lesson-overlay">
-                                    <div class="modal delete-lesson-modal">
+                                    <div class="modal center-modal delete-modal delete-lesson-modal">
                                         <div class="modal-content delete-lesson-content">
                                             <div class="delete-lesson-body">
-                                                <span class="lang-en">
+                                                <span class="lang-en delete-modal-body">
                                                     <h2> Warning!</h2>
                                                     <h3> Are you sure you want to remove this Lesson? </h3>
                                                 </span>
-                                                <span class="lang-pt" hidden>
+                                                <span class="lang-pt delete-modal-body" hidden>
                                                     <h2> Atenção! </h2>
                                                     <h3> Tem a certeza que quer eliminar esta aula? </h3>
                                                 </span>
                                                 
                                             </div>
-                                            
-                                            <div class="delete-lesson-buttons">
-                                                <button class="button confirm-delete" translation-key="delete"> Delete </button>
-                                                <button class="button cancel-delete" translation-key="go_back"> Go back </button>
+                                            <br>
+                                            <div class="center-modal-btns delete-btns delete-lesson-buttons">
+                                                <button class="delete-modal-btn cancel-delete" translation-key="cancel"> Cancel </button>
+                                                <button class="delete-modal-btn confirm-delete" translation-key="delete"> Delete </button>          
                                             </div>
                                         </div>
                                     </div>
@@ -536,7 +538,7 @@
                 option.onclick = function() {
 
                     // delete class
-                    if (this.innerText === "Delete") {
+                    if (this.innerText === "Delete" || this.innerText === "Eliminar") {
                         console.log("Delete button activated");
                         console.log(classId);
 

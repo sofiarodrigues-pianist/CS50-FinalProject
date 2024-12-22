@@ -17,6 +17,24 @@
     gap: 20px;
 }
 
+.search-options {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+    padding-bottom: 2%;
+    padding-top: 2%;
+}
+
+.search-input {
+    width: 200px;
+}
+
+.search-elements {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
 /* Buttons */
 
 .button {
@@ -102,12 +120,7 @@
     fill: lightgreen;
 }
 
-#see-schedule {
-    color: whitesmoke;
-    font-size: medium;
-    border-radius: 10px;
-    padding: 10px;
-}
+
 
 #select-date, #select-school-year, #see-tuition {
     border-radius: 5px;
@@ -263,7 +276,7 @@
 
 body {
     width: 100%;
-    margin:0px;
+    margin: 0px;
     color: black;
 }
 
@@ -501,9 +514,6 @@ td:has(ul .input-long) {
     padding: 2%;
 }
 
-
-
-
 /* Modal buttons */
 
 .center-modal-btns, .new-info-modal-btns {
@@ -556,6 +566,56 @@ td:has(ul .input-long) {
 .user-options li:hover {
     color: grey;
     cursor: pointer;
+}
+
+/* Search modal */
+
+.search-year-modal {
+    background-color: rgba(245, 245, 245, 0.582);
+    border: 1px solid goldenrod;
+    position: relative;
+    flex-direction: row;
+    padding: 20px 10px 20px 10px;
+    width: 250px;
+}
+
+.search-year-content {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+#select-year-form {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+}
+
+#select-year {
+    font-family: 'Nunito Sans', 'Raleway';
+    padding: 5px;
+    background-color: transparent;
+}
+
+#select-year:hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+}
+
+#select-year option {
+    font-family: 'Nunito Sans', 'Raleway';
+}
+
+#see-schedule {
+    color: whitesmoke;
+    font-size: medium;
+    border: 1px solid goldenrod;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#see-schedule:hover {
+    background-color: rgb(216, 180, 88);
 }
 
 /* Delete modal */
@@ -743,9 +803,58 @@ td:has(ul .input-long) {
 /* Schedule modal (lessons.html / selected-lessons.html) */
 
 .schedule-modal {
+    background-color: #FFFFF0;
+    border: solid 1px gold;
     display: none;
     color: black;
     font-size: small;
+    max-height: 90%;
+    width: 80%;
+    overflow-y: scroll;
+    padding: 0%;
+}
+
+.schedule-modal-content {
+    padding: 5px;
+}
+
+.select-schedule-table {
+    border-spacing: 0px;
+}
+
+.select-schedule-table tbody {
+    background-color: transparent;
+}
+
+.select-schedule-table th {
+    background-color: goldenrod;
+    border-right: none;
+}
+
+.select-schedule-table td {
+    border-right: none;
+}
+
+.select-btn-td {
+    background-color: transparent;
+    border: none;
+    border-left: 1px solid gray;
+}
+
+.select-btn-td:hover {
+    background-color: #FFFFF0;
+}
+
+.select-schedule-btn {
+    background-color: transparent;
+    border: 1px solid goldenrod;
+    padding: 5%;
+}
+
+.select-schedule-btn:hover {
+    cursor: pointer;
+    background-color: goldenrod;
+    color: whitesmoke;
 }
 
 /* fallout lists */

@@ -1131,10 +1131,10 @@ def change_teacher():
 @app.route("/delete_teacher", methods=["POST"])
 def delete_teacher():
     """Delete teacher"""
-    #TODO: Adjust function to teacher
-
+    
     data = request.get_json()
-    teacher_id = data.get('teacherId')
+    teacher_id = int(data["teacherId"])
+    print("teacher id:", teacher_id)
     today = datetime.today().date()
 
     if teacher_id:
@@ -1143,6 +1143,7 @@ def delete_teacher():
         if teacher:
             schedules = db.session.query(Schedules).filter(Schedules.teacher_id == teacher_id).all()
             lessons = db.session.query(Lessons).filter(and_(Lessons.teacher_id == teacher_id, Lessons.lesson_date > today)).all()
+
             lessons_to_delete = []
             salaries_to_delete = []
             
@@ -1160,7 +1161,6 @@ def delete_teacher():
 
             # Delete entries from Lessons and lesson_students
             for lesson in lessons_to_delete:
-                print("lesson to delete:", lesson)
                 lesson.students.clear()
                 db.session.delete(lesson)
             # Delete entries from Salaries and teacher_salaries
@@ -1337,7 +1337,8 @@ def delete_student():
 
     if student_id:
         student = db.session.query(Students).filter(Students.student_id == student_id).one_or_none()
-
+        print("student:", student)
+        
         if student:
             schedules_to_remove = []
             lessons_to_remove = []
