@@ -6,31 +6,45 @@
 
 
 {% block main %}
+    <div class = "homepage"> 
+        <div class="homepage-container">
+            <span class="lang-pt homepage-text" hidden>
+                <h1> Software de Gestão Interna</h1>
+            </span>
+            <span class="lang-en homepage-text">
+                <h1> Internal Management App</h1>
+            </span> 
+        </div>
+    </div>
+
     <div class="login-form">
-        <form action="/login" method="post">
-            <div class="login-fields">
-                <div class="login-id">
-                    <span lang="en">
-                        <input autocomplete="off" name="user" placeholder="school_ID" type="text">
+        <form id="login" action="/login" method="post">
+            <input type="hidden" name="saved_lang" id="savedLanguage">
+            <div class="input-containers">
+                    <span class="lang-en">
+                        <input class="login-user" autocomplete="off" name="user_en" placeholder="school_ID" type="text">
+                        <input class="login-password" name="password_en" placeholder="Password" type="password">
                     </span>
-                    <span lang="pt" style="display: none;">
-                        <input autocomplete="off" name="user" placeholder="ID da escola" type="text">
-                    </span>
-                </div>
-                <div class="login-password">
-                    <span lang="en">
-                        <input name="password" placeholder="Password" type="password">
-                    </span>
-                    <span lang="pt" style="display: none;">
-                        <input name="password" placeholder="Palavra-chave" type="password">
+                    <span class="lang-pt" hidden>
+                        <input class="login-user" autocomplete="off" name="user_pt" placeholder="ID da escola" type="text">
+                        <input class="login-password" name="password_pt" placeholder="Palavra-chave" type="password">
                     </span>   
-                </div>
-                <button type="submit">
-                    <span lang="en">Login</span>
-                    <span lang="pt" style="display: none;">Iniciar sessão</span>
-                </button>
+            </div>
+            <div class="btn-container">
+                <button class="lang-en login-btn" type="submit"> Login </button>
+                <button class="lang-pt login-btn" type="submit" hidden> Iniciar Sessão </button>
             </div>
         </form>
     </div>
+
+    <script>
+
+        // Get savedLang value and set it to input value
+        let lang = localStorage.getItem("selectedLanguage");
+        let input = document.getElementById("savedLanguage");
+        input.value = lang;
+
+    </script>
    
 {% endblock %}
+

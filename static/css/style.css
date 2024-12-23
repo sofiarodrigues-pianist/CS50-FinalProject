@@ -83,6 +83,7 @@
     font-weight: 300;
 }
 
+
 /* Buttons */
 
 .button {
@@ -275,7 +276,6 @@
 }
 
 
-
 /* Main design */
 
 .main {
@@ -331,17 +331,48 @@ body {
 
 /* Homepage */ 
 
-#homepage {
+.homepage-container {
+    padding-top: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.homepage-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: larger;
+    padding: 20px 100px 20px 100px;
+    border-top: 3px solid goldenrod;
+    border-bottom: 3px solid goldenrod;
+}
+
+.index-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 50px;
+    align-self: flex-end;
+    padding-top: 40px;
+}
+
+.index-btn {
+    border-bottom: solid 2px goldenrod;
+    border-top: solid 2px goldenrod;
+    border-radius: 30%;
+    background-color: #E6E6FA; 
+    padding: 20px;
+    text-decoration: none;
+    color: black;
+    width: 150px;
     text-align: center;
+}
+
+.index-btn:hover {
+    background-color: #4682B4;
     color: whitesmoke;
-    font-size: 20px;
 }
-
-#index_buttons {
-    text-align: center;
-    font-size: 30px;
-}
-
 
 #login-welcome {
     text-align: center;
@@ -374,16 +405,64 @@ body {
     color: whitesmoke;
 }
 
-.login-form {
-    display: flex;
-    align-content: center;
-    justify-content: space-around;
+/* REGISTER and LOGIN */
+
+.login-form, .register-form {
+    padding-top: 30px;
 }
 
-.login-id, .login-password {
-    margin: 5px;
-    font-size: large;
+#login, #register {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
 }
+
+.input-containers{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+}
+
+.regist-user, .regist-password, .login-user, .login-password {
+    background-color: white;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid rgba(19, 18, 18, 0.284);
+    border-radius: 2px;
+    font-family: 'Raleway', 'Nunito Sans';
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+}
+.error-container {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+.error-text {
+    color:rgb(145, 5, 5);
+}
+
+.login-btn, .register-btn {
+    width: fit-content;
+    padding: 10px 30px 10px 30px;
+    background-color: #c0808144;
+    border: 1px solid #C08081;
+    font-family: 'Raleway', 'Nunito Sans';
+}
+
+.login-btn:hover, .register-btn:hover {
+    background-color: #C08081;
+    color: whitesmoke;
+    cursor: pointer;
+}
+
+
+
 
 /* TABLES */
 
@@ -636,7 +715,7 @@ td:has(ul .input-long) {
     padding: 5px;
 }
 
-.user-exit {
+.exit {
     align-self: flex-end;
     font-weight: bold;
     color: black;
@@ -659,6 +738,33 @@ td:has(ul .input-long) {
 #logout:hover {
     color: goldenrod;
     cursor: pointer;
+}
+
+/* Language modal */
+
+.lang-modal {
+    position: fixed;
+    top: 15%;
+    right: 2px;
+    border: 1px solid #C08081;
+    border-radius: 2px;
+    height: fit-content;
+    width: fit-content;
+}
+
+.lang-content {
+    display: flex;
+    flex-direction: column;
+    color: black;
+    padding: 5px;
+}
+
+.lang-options {
+    padding: 10px 0 0 0;
+}
+
+.lang-exit {
+    align-self: flex-start;
 }
 
 
@@ -998,6 +1104,18 @@ tbody:hover {
     cursor: pointer;
     background-color: goldenrod;
     color: whitesmoke;
+}
+
+.no-comp {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    justify-self: center;
+}
+
+.warning {
+    align-self: center;
+    margin-right: 5px;
 }
 
 /* fallout lists */

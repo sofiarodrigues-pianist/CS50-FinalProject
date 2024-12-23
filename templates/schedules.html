@@ -115,12 +115,6 @@
             
             <div class="search-icon-div">
                 <div class="horizontal-elements">
-                    <!-- <button class="search-btn" onclick="scheduleModal(this.closest('span'))">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                        </svg> 
-                    </button> 
-                    <h3 translation-key="search"> Search </h3> -->
             
                     <form action="/schedules" id="select-year-form" method="post">
                         <button type="button" class="search-btn">
@@ -136,25 +130,7 @@
                     </form>
                 
                 </div>
-
-                
-                <!-- <div class="modal-overlay search-year-overlay">
-                    <div class="modal center-modal search-year-modal">
-                        <div class="modal-content search-year-content">
-                            <form action="/schedules" id="select-year-form" method="post">
-                                <select id="select-year" name="school_year" required> 
-                                    <option value="" disabled selected translation-key="school_year"> School year </option>
-                                    <option value="2324"> 2023/2024 </option>
-                                    <option value="2425"> 2024/2025 </option>
-                                </select>
-                                <button type="submit" class="button" id="see-schedule" translation-key="see_schedule"> See schedule </button>
-                            </form>
-                        </div>
-                    </div>  
-                </div> -->
-            </div>
-    
-            
+            </div>            
         </div>
 
         <br>
@@ -232,17 +208,17 @@
 
                     {% for item in classes_data %}
                         <tbody>
-                            <td translation-key="{{ item.weekday }} | lower">
+                            <td translation-key="{{ item.weekday | lower }}">
                                 {{ item.weekday }}
                             </td>
                             <td>
-                                {{ item.class.hour }}
+                                {{ item.class.hour_formatted }}
                             </td>
-                            <td translation-key="{{ item.class.name }} | lower">
+                            <td translation-key="{{ item.class.name | lower }}">
                                 {{ item.class.name }}
                             </td>
                             <td>
-                                {{ item.teacher }}
+                                {{ item.teacher[0] }}
                             </td>
                             <td>
                                 {{ item.class.duration }} min
@@ -480,7 +456,12 @@
             {% endif %}
 
         {% else %}
-            <h2 class="title"> You have no assigned schedule </h2>
+            <span class="lang-pt title-container" hidden> 
+                <h4 class="no-info-title"> Ainda não existe nenhum horário. </h4> 
+            </span>
+            <span class="lang-en title-container"> 
+                <h4 class="no-info-title"> There are no schedules yet. </h4> 
+            </span>
         {% endif %}
     </div>
 
@@ -492,24 +473,6 @@
         document.getElementById("select-year").addEventListener("change", function() {
                 document.getElementById("select-year-form").submit();
             })
-
-
-        // Display search modal
-        
-        /*function scheduleModal(spanTag) {
-            let overlay = spanTag.querySelector(".search-year-overlay");
-            let modal = spanTag.querySelector(".search-year-modal");
-
-            overlay.style.display="block";
-            modal.style.display="flex";
-
-            overlay.onclick = function(event) {
-                if (event.target == overlay) {
-                    modal.style.display = "none";
-                    overlay.style.display = "none";
-                } 
-            };
-        }*/
 
         // Create new schedule
         function newSchedule() {
@@ -892,8 +855,6 @@
 
             // Get rest of inputs
             let weekday = tableRow.querySelector(".weekday select");
-            //TODO: maybe delete className from data
-            // let className = tableRow.querySelector(".class-name");
             let teacher = tableRow.querySelector(".teacher-name select");
             let duration = tableRow.querySelector(".class-duration input");
             let classroom = tableRow.querySelector(".classroom input");
@@ -938,7 +899,6 @@
                     classId: classId,
                     weekday: weekday,
                     startTime: startTime,
-                    //className: className,
                     teacher: teacher,
                     students: students,
                     duration: duration,

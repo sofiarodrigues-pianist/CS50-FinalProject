@@ -17,15 +17,15 @@
 
         <div id = today>
             {% if user.role == "teacher" %}
-
+                <span class="lang-pt title-container" hidden>
+                    <h2 class="title"> Este é o horário para hoje </h2>
+                </span>
+                <span class="lang-en title-container">
+                    <h2 class="title"> This is your schedule for today </h2>
+                </span>
+                
                 {% if classes_data %}
-                    <span class="lang-pt title-container" hidden>
-                        <h2 class="title"> Este é o horário para hoje </h2>
-                    </span>
-                    <span class="lang-en title-container">
-                        <h2 class="title"> This is your schedule for today </h2>
-                    </span>
-                    
+        
                     <table class ="table">
                         <thead>
                             <tr>
@@ -64,25 +64,25 @@
                     </table>
                     
                 {% else %}
-                    <span class="lang-pt" hidden>
-                        <h2> Não há aulas hoje </h2>
+                    <span class="lang-pt title-container" hidden>
+                        <h4 class="no-info-title"> Não tem aulas agendadas para hoje. </h4>
                     </span>
-                    <span class="lang-en">
-                        <h2> You have no classes today </h2>
-                    </span>
+                    <span class="lang-en title-container">
+                        <h4 class="no-info-title"> You have no classes today. </h4>
+                    </span> 
                     
-
                 {% endif %}
 
             {% elif user.role == "student" %}
+                <span class="lang-pt title-container" hidden>
+                    <h2 class="title"> Este é o teu horário para hoje </h2>
+                </span>
+                <span class="lang-en title-container">
+                    <h2 class="title"> This is your schedule for today </h2>
+                </span>
 
                 {% if classes_data %}
-                    <span class="lang-pt title-container" hidden>
-                        <h2 class="title"> Este é o teu horário para hoje </h2>
-                    </span>
-                    <span class="lang-en title-container">
-                        <h2 class="title"> This is your schedule for today </h2>
-                    </span>
+      
                     <table class ="table">
                         <thead>
                             <tr>
@@ -116,13 +116,11 @@
                     
                 {% else %}
                     <span class="lang-pt title-container" hidden>
-                        <h2 class="title"> Este é o teu horário para hoje </h2>
+                        <h4 class="no-info-title"> Não tens aulas agendadas para hoje. </h4>
                     </span>
                     <span class="lang-en title-container">
-                        <h2 class="title"> This is your schedule for today </h2>
+                        <h4 class="no-info-title"> You have no classes today. </h4>
                     </span> 
-
-                    <h6 class="no-info-title"> You have no classes today </h6>
 
                 {% endif %}
 
@@ -209,19 +207,19 @@
         </div>
 
     {% else %}
-        <div id = "homepage"> 
-            <span class="lang-pt" hidden>
-                <h1> Bem-vindo à G&S Music Academy </h1>
-                <h2> Gestão Interna </h2>
-            </span>
-            <span class="lang-en">
-                <h1> Welcome to G&S Music Academy </h1>
-                <h2> Internal Management</h2>
-            </span> 
+        <div class = "homepage"> 
+            <div class="homepage-container">
+                <span class="lang-pt homepage-text" hidden>
+                    <h1> Software de Gestão Interna </h1>
+                </span>
+                <span class="lang-en homepage-text">
+                    <h1> Internal Management App </h1>
+                </span> 
+            </div>
         </div>
-        <div id = "index_buttons">
-            <a class="button" href="/login" translation-key="login" >Login</a>
-            <a class="button" href="/register" translation-key="register">Register</a>
+        <div class="index-buttons">
+            <a class="index-btn" href="/register" translation-key="register">REGISTER</a>
+            <a class="index-btn" href="/login" translation-key="login">LOGIN</a>
         </div>
     {% endif %}
 

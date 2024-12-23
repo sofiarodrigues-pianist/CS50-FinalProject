@@ -16,6 +16,7 @@ app = Flask(__name__)
 
 # Configure session (default using cookies instead of filesystem)
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['SESSION_PERMANENT'] = False
 Session(app)
 
 # Configure databases
@@ -214,33 +215,69 @@ def login():
 
     # clear session data
     session.clear()
-
+  
     # user reaches via POST method
     if request.method == "POST":
-        # get inputs
-        user = request.form.get("user")
-        password = request.form.get("password")
+
+        # Get correct inputs
+        saved_lang = request.form.get("saved_lang")
+        print("saved_lang =", saved_lang)
+
+        if saved_lang == "pt":
+            user = request.form.get("user_pt").strip()
+            password = request.form.get("password_pt")
+
+        elif saved_lang == "en":
+            user = request.form.get("user_en").strip()
+            password = request.form.get("password_en")
+        else:
+            if saved_lang == "pt":
+                error = "Oops, utilizador não encontrado!"
+            else:
+                error = "Sorry, user not found!"
+
+            return render_template("login_error", error=error, register=True)
+
+        print("user input:", user)
+        print("password", password)
 
         # check if user in database and registered
         user_table = db.session.query(Users).filter(Users.id == user).one_or_none()
 
         if user_table:
             check_regist = user_table.is_registered
-        else:
-            return NotFound("User not found")
-        
-        if not check_regist:
-            return NotFound(description="User not registered")
-        else:
-            # check password
-            hash_password = user_table.hash_password
-            if not password or not check_password_hash(hash_password, password):
-                return BadRequestKeyError(arg="Password not valid")
-            else:
-                # save user_id in session and redirect to homepage
-                session["user_id"] = user
-                return redirect("/")
 
+            if not check_regist:
+                if saved_lang == "pt":
+                    error = "Ainda não está registado!"
+                else:
+                    error = "You are not yet registered!"
+
+                return render_template("login_error.html", error=error, register=False)
+            else:
+                # check password
+                hash_password = user_table.hash_password
+
+                if not password or not check_password_hash(hash_password, password):
+                    if saved_lang == "pt":
+                        error = "Oops, palavra-chave inválida!"
+                    else:
+                        error = "Sorry, password not valid!"
+
+                    return render_template("login_error.html", error=error, register=True)
+                else:
+                    # save user_id in session and redirect to homepage
+                    session["user_id"] = user
+                    print(user)
+                    return redirect("/")
+        else:
+            if saved_lang == "pt":
+                error = "Oops, utilizador não encontrado!"
+            else:
+                error = "Sorry, user not found!"
+
+            return render_template("login_error.html", error=error, register=True)
+        
     # user reaches via GET method
     else:
         return render_template("login.html")
@@ -249,8 +286,12 @@ def login():
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
     """Log user out"""
+    print("Session type:", app.config["SESSION_TYPE"])
 
+    print("session before clear:", session)
     session.clear()
+    print("session after clear", session)
+
     return redirect("/")
 
 
@@ -875,30 +916,12 @@ def edit_lesson():
     new_duration = lesson_data["duration"]
     new_classroom = lesson_data["classroom"]
     comp_check = lesson_data["isCompensation"]
-    date_format = lesson_data["dateFormat"].strip()
 
     # Adjust variable types
     new_teacher_id = db.session.query(Users.id).filter(Users.name == new_teacher).scalar()
     new_time = datetime.strptime(new_time_str, '%H:%M').time()
 
-    """OLD WAY
-    if date_format == "dd-mm-yyyy":
-        print("date format: ", date_format)
-        parsed_date = parser.parse(lesson_date_str, dayfirst=True)
-    else:
-        print("Date format: ", date_format)
-        parsed_date = parser.parse(lesson_date_str)
-
-    lesson_date = parsed_date.date()
-
-    print("Lesson date str:", lesson_date_str)
-    print("Parsed date:", parsed_date)
-    print("Lesson date:", lesson_date, "Type: ", type(lesson_date))"""
-
-    # NEW WAY
-    print("Lesson_date_str: ", lesson_date_str)
     lesson_date = datetime.strptime(lesson_date_str, "%Y-%m-%d").date()
-    print("Lesson_date: ", lesson_date)
 
     # Lesson is compensation
     if comp_check == "true":
@@ -977,11 +1000,31 @@ def lesson_attendance():
     if lesson:
         if attendance == "true" and lesson.attendance != "true":
             lesson.attendance = "true"
+            # Check if a comp lesson was already assigned/attended
+            if lesson.is_compensation == "false":
+                comp_lesson_id = lesson.compensation_id
+            
+                if comp_lesson_id:
+                    comp_lesson = db.session.query(Lessons).filter(Lessons.lesson_id == comp_lesson_id).one_or_none()
+
+                    if comp_lesson:
+                        # Make comp lesson NOT a comp lesson
+                        comp_lesson.is_compensation = "false"
+                        comp_lesson.compensation_id = None
+                        # Unassign comp lesson to og lesson
+                        lesson.compensation_id = None
+                        db.session.commit()
+                    else:
+                        print("no comp_lesson found")
+                else:
+                    print("comp_lesson_id not found")
+
         elif attendance == "false" and lesson.attendance != "false":
             lesson.attendance = "false"
         else:
             lesson.attendance = None
-    
+
+        
         db.session.commit()
         return jsonify({"status": "success"})
     else:

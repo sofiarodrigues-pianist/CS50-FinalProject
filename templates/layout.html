@@ -121,7 +121,11 @@
                         </div>
                     </div>
                 {% else %}
-                    <div class="navbar"> </div>
+                    <div class="navbar"> 
+                        <div class="nav-icon">
+                            <a href="/"> <img src="/static/SS_logo.png" width="200" height="180"> </a>
+                        </div>
+                    </div>
                     <div class="right">
                         <div class="nav-item translation">
                             <button class="lang-btn" onclick="displayModal(this.closest('div'))"> 
@@ -133,14 +137,18 @@
                             <div class="modal-overlay lang-overlay"> 
                                 <div class="modal lang-modal">
                                     <div class="modal-content lang-content">
-                                        <label for="language" translation-key="language"> Language: </label>
-                                        <select class="fallout language" aria-label="Choose language" onchange="switchLang(this.value)">
-                                            <option disabled selected></option>
-                                            <option value="en">English</option>
-                                            <option value="pt">Português</option>
-                                        </select> 
-    
-                                        <span class="exit lang-exit"> X </span>
+                                        <div class="options lang-options">
+                                            <span> 
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="earth" viewBox="0 0 16 16">
+                                                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484q-.121.12-.242.234c-.416.396-.787.749-.758 1.266.035.634.618.824 1.214 1.017.577.188 1.168.38 1.286.983.082.417-.075.988-.22 1.52-.215.782-.406 1.48.22 1.48 1.5-.5 3.798-3.186 4-5 .138-1.243-2-2-3.5-2.5-.478-.16-.755.081-.99.284-.172.15-.322.279-.51.216-.445-.148-2.5-2-1.5-2.5.78-.39.952-.171 1.227.182.078.099.163.208.273.318.609.304.662-.132.723-.633.039-.322.081-.671.277-.867.434-.434 1.265-.791 2.028-1.12.712-.306 1.365-.587 1.579-.88A7 7 0 1 1 2.04 4.327Z"/>
+                                                </svg>
+                                                <select class="fallout language" aria-label="Choose language" onchange="switchLang(this.value)">
+                                                    <option disabled selected></option>
+                                                    <option value="en">English</option>
+                                                    <option value="pt">Português</option>
+                                                </select> 
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -159,13 +167,13 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="copyright" viewBox="0 0 16 16">
                         <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.146 4.992c-1.212 0-1.927.92-1.927 2.502v1.06c0 1.571.703 2.462 1.927 2.462.979 0 1.641-.586 1.729-1.418h1.295v.093c-.1 1.448-1.354 2.467-3.03 2.467-2.091 0-3.269-1.336-3.269-3.603V7.482c0-2.261 1.201-3.638 3.27-3.638 1.681 0 2.935 1.054 3.029 2.572v.088H9.875c-.088-.879-.768-1.512-1.729-1.512"/>
                     </svg>
-                    <h5> MasterElite911  </h5>
+                    <h5> MasterElite911</h5>
                 </div>
             </div>
 
             <script>
-                // Change active tab
 
+                // Change active tab
                 document.addEventListener('DOMContentLoaded', () => {
                     // Get the current path from the URL
                     const currentPath = window.location.pathname;
@@ -195,78 +203,30 @@
                     overlay.style.display="block";
                     modal.style.display="block";
 
-                    exit.onclick = function() {
-                        overlay.style.display="none";
-                        modal.style.display="none";
+                    if (exit) {
+                        exit.onclick = function() {
+                            overlay.style.display="none";
+                            modal.style.display="none";
+                        }
                     }
-
+                  
                     overlay.onclick = function(event) {
                         if(event.target == overlay) {
                             modal.style.display="none";
                             overlay.style.display="none";
                         }
                     }
-
-                    /* old way
-                    let userOverlay = document.querySelector(".user-overlay");
-                    let userModal = document.querySelector(".user-modal");
-                    let userExit = document.querySelector(".user-exit");
-                    let userButton = document.querySelector(".user-btn");
-
-                    let langOverlay = document.querySelector(".lang-overlay");
-                    let langModal = document.querySelector(".lang-modal");
-                    let langExit = document.querySelector(".lang-exit");
-                    let langButton = document.querySelector(".lang-btn");
-                                   
-                    // place modal below icon, aligned right
-                    let userBtnRect = userButton.getBoundingClientRect();
-                    userModal.style.top = `${userBtnRect.bottom + window.scrollY}px`;
-                    userModal.style.right = `${window.innerWidth - userBtnRect.right}px`;
-
-                    let langBtnRect = langButton.getBoundingClientRect();
-                    langModal.style.top = `${langBtnRect.bottom + window.scrollY}px`;
-                    langModal.style.right = `${window.innerWidth - langBtnRect.right}px`;
-
-                    userButton.onclick = function() {
-                        userModal.style.display = "block";
-                        userOverlay.style.display = "block";
-                    }
-                    langButton.onclick=function() {
-                        langModal.style.display = "block";
-                        langOverlay.style.display = "block";
-                    }
-
-                    userExit.onclick = function() {
-                        userModal.style.display = "none";
-                        userOverlay.style.display = "none";
-                    }  
-                    langExit.onclick = function() {
-                        langModal.style.display = "none";
-                        langOverlay.style.display = "none";
-                    }   
-
-                    userOverlay.onclick = function(event) {
-                        if (event.target == userOverlay) {
-                            userModal.style.display = "none";
-                            userOverlay.style.display = "none";
-                        } 
-                    }
-                    langOverlay.onclick = function(event) {
-                        if (event.target == langOverlay) {
-                            langModal.style.display = "none";
-                            langOverlay.style.display = "none";
-                        } 
-                    } */
                 };
                 
                 // Save language preference
                 function saveLanguage(lang) {
-                    //let language = parentDiv.querySelector(".language").value;
+                    console.log("saveLanguage function activated");
+
                     localStorage.setItem("selectedLanguage", lang);
                     console.log("storage language:", lang)
 
-                    overlay = document.querySelector(".user-overlay, .lang-overlay");
-                    modal = document.querySelector(".user-modal, .lang-modal");
+                    overlay = document.querySelector(".user-overlay");
+                    modal = document.querySelector(".user-modal");
 
                     if (overlay && modal) {
                         overlay.style.display="none";
@@ -280,7 +240,7 @@
                      
                     if (savedLang) {
                         document.querySelector(".language").value = savedLang;
-                        switchLang(savedLang)
+                        switchLang(savedLang);
                     }
                 }
 
@@ -290,9 +250,9 @@
                     const translations = {
                         en: {
                             welcome:"WELCOME",
-                            login:"Login",
+                            login:"LOGIN",
                             logout:"Logout",
-                            register:"Register",
+                            register:"REGISTER",
                             language:"Language",
                             check:"Check",
                             cancel:"Cancel",
@@ -301,7 +261,6 @@
                             save:"Save",
                             add:"Add",
                             delete:"Delete",
-                            go_back:"Go Back",
                             search:"Search",
                             select:"Select",
                             see_schedule:"See Schedule",
@@ -362,9 +321,9 @@
 
                         pt: {
                             welcome:"BEM-VINDO",
-                            login:"Iniciar sessão",
+                            login:"INICIAR SESSÃO",
                             logout:"Terminar sessão",
-                            register:"Registar",
+                            register:"REGISTAR",
                             language:"Idioma",
                             check:"Consultar",
                             cancel:"Cancelar",
@@ -373,7 +332,6 @@
                             save:"Guardar",
                             add:"Adicionar",
                             delete:"Eliminar",
-                            go_back:"Retroceder",
                             search:"Pesquisar",
                             select:"Selecionar",
                             see_schedule:"Ver horário",
@@ -440,15 +398,11 @@
                     // Dictionary translation
                     let keys = document.querySelectorAll("[translation-key]");
 
-                    //let overlay = parentDiv.querySelector(".modal-overlay");
-                    //let modal = parentDiv.querySelector(".modal");
-
                     if (lang == "pt") {
                         ptSpans.forEach(function(span) {
                             span.hidden = false;
                             span.required = true;
                             span.style.display = "flex";
-                            console.log(span)
                         })
                         enSpans.forEach(function(span) {
                             span.hidden = true;
@@ -465,11 +419,7 @@
                             // Translate using key from dictionary || if translation not found, display key
                             element.textContent = translations [lang][key] || key;
                         })
-
-                        saveLanguage(lang)
-                
-                        //overlay.style.display = "none";
-                        //modal.style.display = "none";
+                   
                     }
                     else if (lang == "en") {
                         ptSpans.forEach(function(span) {
@@ -491,14 +441,11 @@
                             // Translate using key from dictionary || if translation not found, display key
                             element.textContent = translations [lang][key] || key 
                         })
-
-                        saveLanguage(lang)
-                        
-                        //overlay.style.display = "none";
-                        //modal.style.display = "none";
                     }
+
+                    saveLanguage(lang);
+        
                 }
-                
 
             </script>
 

@@ -3,7 +3,6 @@
 <div class="top-options">
     <span id="search-icon">
 
-        <!-- NEW WAY -->
         <div class="search-options">
 
             <div>
@@ -90,9 +89,9 @@
                                                 </td>
                                                 <td class="activeness">
                                                     {% if item.schedule.active %}
-                                                        Active
+                                                        <span style="color: green;"> Active </span>
                                                     {% else %}
-                                                        Inactive
+                                                        <span style="color: red;"> Inactive </span>
                                                     {% endif %}
                                                 </td>
                                                 <td class="select-btn-td">
@@ -110,422 +109,175 @@
                 </div>
             {% elif user.role == "teacher" %}
                 <div id="select-schedule">
-                    <label for="select-school-year"> 
-                        <span class="lang-pt" hidden> Pesquisar por horário: </span>
-                        <span class="lang-en">  Search by schedule: </span>
-                    </label>
-                    <select id="select-school-year" aria-label="Choose school-year" onchange="selectSchedule(this.value, this.parentElement)">
-                        <option disabled selected> </option>
+                    <div class="search-elements">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                        <label for="select-school-year"> 
+                            <span class="lang-pt" hidden> Pesquisar por horário </span>
+                            <span class="lang-en">  Search by schedule </span>                                   
+                        </label>
+                    </div>
+                    <br>
+                    <select class="search-input" id="select-school-year" aria-label="Choose school-year" onchange="selectSchedule(this.value, this.parentElement)">
+                        <option disabled selected translation-key="school_year"> School Year </option>
                         <option value="2024/2025"> 2024/2025 </option>
                         <option value="2023/2024"> 2023/2024 </option>
-                    </select> 
+                    </select>    
             
                     <div class="modal-overlay schedule-overlay">
-                        <div class="modal schedule-modal">   
-                            <form action="/lessons" method="post">
-            
-                                <table class ="table">
-                                    <thead>
-                                        <tr>
-                                            <th translation-key="school_year"> School Year </th>
-                                            <th translation-key="weekday"> Weekday </th>
-                                            <th translation-key="start_time"> Start Time </th>
-                                            <th translation-key="class"> Class </th>
-                                            <th translation-key="students"> Students </th>
-                                            <th translation-key="duration"> Duration </th>
-                                            <th translation-key="classroom"> Classroom </th>
-                                        </tr>
-                                    </thead>
-                                    {% for item in schedules %}
-                                        <tbody class="schedule-item" data-school-year="{{ item.school_year }}"> 
-            
-                                            <td class="school-year">
-                                                {{ item.school_year }}
-                                            </td>
-                                            <td class="weekday" translation-key="{{ item.weekday | lower }}">
-                                                {{ item.weekday }}
-                                            </td>
-                                            <td class="start-time">
-                                                {{ item.schedule.hour_formatted }}
-                                            </td>
-                                            <td class="class-name" translation-key="{{ item.schedule.name | lower }}">
-                                                {{ item.schedule.name }}
-                                            </td>
-                                            <td class="student-names">
-                                                <ul>
-                                                    {% for name in item.students %} 
-                                                    <li> {{ name }} </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </td>
-                                            <td class="duration">
-                                                {{ item.schedule.duration }}
-                                            </td>
-                                            <td class="classroom">
-                                                {{ item.schedule.classroom }}
-                                            </td>
-                                            <td class="activeness">
-                                                {% if item.schedule.active %}
-                                                    Active
-                                                {% else %}
-                                                    Inactive
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                <button type="submit" name="schedule" value="{{ item.schedule.class_id }}" translation-key="select"> Select </button>
-                                            </td>
-            
-                                        </tbody>
-                                    {% endfor %}
-                                    
-                                </table>
-                            </form>
+                        <div class="modal center-modal schedule-modal">   
+                            <div class="schedule-modal-content"> 
+                                <form action="/lessons" method="post">
+                                    <table class ="table select-schedule-table">
+                                        <thead>
+                                            <tr>
+                                                <th translation-key="school_year"> School Year </th>
+                                                <th translation-key="weekday"> Weekday </th>
+                                                <th translation-key="start_time"> Start Time </th>
+                                                <th translation-key="class"> Class </th>
+                                                <th translation-key="students"> Students </th>
+                                                <th translation-key="duration"> Duration </th>
+                                                <th translation-key="classroom"> Classroom </th>
+                                            </tr>
+                                        </thead>
+                                        {% for item in schedules %}
+                                            <tbody class="schedule-item" data-school-year="{{ item.school_year }}"> 
+                
+                                                <td class="school-year">
+                                                    {{ item.school_year }}
+                                                </td>
+                                                <td class="weekday" translation-key="{{ item.weekday | lower }}">
+                                                    {{ item.weekday }}
+                                                </td>
+                                                <td class="start-time">
+                                                    {{ item.schedule.hour_formatted }}
+                                                </td>
+                                                <td class="class-name" translation-key="{{ item.schedule.name | lower }}">
+                                                    {{ item.schedule.name }}
+                                                </td>
+                                                <td class="student-names">
+                                                    <ul>
+                                                        {% for name in item.students %} 
+                                                        <li> {{ name }} </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </td>
+                                                <td class="duration">
+                                                    {{ item.schedule.duration }}
+                                                </td>
+                                                <td class="classroom">
+                                                    {{ item.schedule.classroom }}
+                                                </td>
+                                                <td class="activeness">
+                                                    {% if item.schedule.active %}
+                                                        <span style="color: green;"> Active </span>
+                                                    {% else %}
+                                                        <span style="color: red;"> Inactive </span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="select-btn-td">
+                                                    <button type="submit" name="schedule" class="select-schedule-btn" value="{{ item.schedule.class_id }}" translation-key="select"> Select </button>
+                                                </td>
+                
+                                            </tbody>
+                                        {% endfor %}
+                                        
+                                    </table>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             {% else %}
                 <div id="select-schedule">
-                    <label for="select-school-year">
-                        <span class="lang-pt" hidden> Pesquisar por horário: </span>
-                        <span class="lang-en">  Search by schedule: </span>
-                    </label>
-                    <select id="select-school-year" aria-label="Choose school-year" onchange="selectSchedule(this.value, this.parentElement)">
-                        <option disabled selected> </option>
+                    <div class="search-elements">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                        <label for="select-school-year"> 
+                            <span class="lang-pt" hidden> Pesquisar por horário </span>
+                            <span class="lang-en">  Search by schedule </span>                                   
+                        </label>
+                    </div>
+                    <br>
+                    <select class="search-input" id="select-school-year" aria-label="Choose school-year" onchange="selectSchedule(this.value, this.parentElement)">
+                        <option disabled selected translation-key="school_year"> School Year </option>
                         <option value="2024/2025"> 2024/2025 </option>
                         <option value="2023/2024"> 2023/2024 </option>
-                    </select> 
+                    </select>    
             
                     <div class="modal-overlay schedule-overlay">
-                        <div class="modal schedule-modal">   
-                            <form action="/lessons" method="post">
-            
-                                <table class ="table">
-                                    <thead>
-                                        <tr>
-                                            <th translation-key="school_year"> School Year </th>
-                                            <th translation-key="weekday"> Weekday </th>
-                                            <th translation-key="start_time"> Start Time </th>
-                                            <th translation-key="class"> Class </th>
-                                            <th translation-key="teachers"> Teachers </th>
-                                            <th translation-key="students"> Students </th>
-                                            <th translation-key="duration"> Duration </th>
-                                            <th translation-key="classroom"> Classroom </th>
-                                        </tr>
-                                    </thead>
-                                    {% for item in schedules %}
-                                        <tbody class="schedule-item" data-school-year="{{ item.school_year }}"> 
-            
-                                            <td class="school-year">
-                                                {{ item.school_year }}
-                                            </td>
-                                            <td class="weekday" translation-key="{{ item.weekday | lower }}">
-                                                {{ item.weekday }}
-                                            </td>
-                                            <td class="start-time">
-                                                {{ item.schedule.hour_formatted }}
-                                            </td>
-                                            <td class="class-name" translation-key="{{ item.schedule.name | lower}}" >
-                                                {{ item.schedule.name }}
-                                            </td>
-                                            <td class="teacher">
-                                                {{ item.teacher }}
-                                            </td>
-                                            <td class="student-names">
-                                                <ul>
-                                                    {% for name in item.students %} 
-                                                    <li> {{ name }} </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </td>
-                                            <td class="duration">
-                                                {{ item.schedule.duration }}
-                                            </td>
-                                            <td class="classroom">
-                                                {{ item.schedule.classroom }}
-                                            </td>
-                                            <td class="activeness">
-                                                {% if item.schedule.active %}
-                                                    Active
-                                                {% else %}
-                                                    Inactive
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                <button type="submit" name="schedule" value="{{ item.schedule.class_id }}" translation-key="select"> Select </button>
-                                            </td>
-            
-                                        </tbody>
-                                    {% endfor %}
-                                    
-                                </table>
-                            </form>
+                        <div class="modal center-modal schedule-modal">   
+                            <div class="schedule-modal-content"> 
+                                <form action="/lessons" method="post">
+                                    <table class ="table select-schedule-table">
+                                        <thead>
+                                            <tr>
+                                                <th translation-key="school_year"> School Year </th>
+                                                <th translation-key="weekday"> Weekday </th>
+                                                <th translation-key="start_time"> Start Time </th>
+                                                <th translation-key="class"> Class </th>
+                                                <th translation-key="teachers"> Teachers </th>
+                                                <th translation-key="students"> Students </th>
+                                                <th translation-key="duration"> Duration </th>
+                                                <th translation-key="classroom"> Classroom </th>
+                                            </tr>
+                                        </thead>
+                                        {% for item in schedules %}
+                                            <tbody class="schedule-item" data-school-year="{{ item.school_year }}"> 
+                
+                                                <td class="school-year">
+                                                    {{ item.school_year }}
+                                                </td>
+                                                <td class="weekday" translation-key="{{ item.weekday | lower }}">
+                                                    {{ item.weekday }}
+                                                </td>
+                                                <td class="start-time">
+                                                    {{ item.schedule.hour_formatted }}
+                                                </td>
+                                                <td class="class-name" translation-key="{{ item.schedule.name | lower}}" >
+                                                    {{ item.schedule.name }}
+                                                </td>
+                                                <td class="teacher">
+                                                    {{ item.teacher }}
+                                                </td>
+                                                <td class="student-names">
+                                                    <ul>
+                                                        {% for name in item.students %} 
+                                                        <li> {{ name }} </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </td>
+                                                <td class="duration">
+                                                    {{ item.schedule.duration }}
+                                                </td>
+                                                <td class="classroom">
+                                                    {{ item.schedule.classroom }}
+                                                </td>
+                                                <td class="activeness">
+                                                    {% if item.schedule.active %}
+                                                        <span style="color: green;"> Active </span>
+                                                    {% else %}
+                                                        <span style="color: red;"> Inactive </span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="select-btn-td">
+                                                    <button type="submit" name="schedule" class="select-schedule-btn" value="{{ item.schedule.class_id }}" translation-key="select"> Select </button>
+                                                </td>
+                
+                                            </tbody>
+                                        {% endfor %}
+                                        
+                                    </table>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             {% endif %}
         </div>
-
-        <!-- OLD WAY-->
-        <!-- <div class="horizontal-elements">
-            <button class="search-btn" onclick="searchLessons(this.closest('span'))">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                </svg> 
-            </button> 
-            <h2 translation-key="search"> Search </h3>
-        </div>
-    
-        <div class="modal-overlay search-overlay">
-            <div class="modal search-modal">
-                <div class="modal-content search-content">
-                    <div id="select-day">
-                        <form action="/lessons" method="post">
-                            <label for="select-date">
-                                <span class="lang-pt" hidden> Pesquisar por data: </span>
-                                <span class="lang-en">  Search by date: </span>  
-                            </label>
-                            <input id="select-date" name="date" type="date" required> 
-                            <button type="submit" class="button" id="see-lesson" translation-key="search"> Search </button>
-                        </form>
-                    </div>
-                    {% if user.role == "admin" %}
-                        <div id="select-schedule">
-                            <label for="select-school-year"> 
-                                <span class="lang-pt" hidden> Pesquisar por horário: </span>
-                                <span class="lang-en">  Search by schedule: </span>                                   
-                            </label>
-                            <select id="select-school-year" aria-label="Choose school-year" onchange="selectSchedule(this.value, this.parentElement)">
-                                <option disabled selected> </option>
-                                <option value="2024/2025"> 2024/2025 </option>
-                                <option value="2023/2024"> 2023/2024 </option>
-                            </select> 
-                    
-                            <div class="modal-overlay schedule-overlay">
-                                <div class="modal center-modal schedule-modal">
-                                    <div class="schedule-modal-content"> 
-                                        <form action="/lessons" method="post">
-                                            <table class ="table select-schedule-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th translation-key="school_year"> School Year </th>
-                                                        <th translation-key="weekday"> Weekday </th>
-                                                        <th translation-key="start_time"> Start Time </th>
-                                                        <th translation-key="class"> Class </th>
-                                                        <th translation-key="teacher"> Teacher </th>
-                                                        <th translation-key="students"> Students </th>
-                                                        <th translation-key="duration"> Duration </th>
-                                                        <th translation-key="classroom"> Classroom </th>
-                                                    </tr>
-                                                </thead>
-                                                {% for item in schedules %}
-                                                    <tbody class="schedule-item" data-school-year="{{ item.school_year }}"> 
-                        
-                                                        <td class="school-year">
-                                                            {{ item.school_year }}
-                                                        </td>
-                                                        <td class="weekday" translation-key="{{item.weekday | lower}}">
-                                                            {{ item.weekday }}
-                                                        </td>
-                                                        <td class="start-time">
-                                                            {{ item.schedule.hour_formatted }}
-                                                        </td>
-                                                        <td class="class-name" translation-key="{{item.schedule.name | lower}}">
-                                                            {{ item.schedule.name }}
-                                                        </td>
-                                                        <td class="teacher">
-                                                            {{ item.teacher }}
-                                                        </td>
-                                                        <td class="student-names">
-                                                            <ul>
-                                                                {% for name in item.students %} 
-                                                                <li> {{ name }} </li>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        </td>
-                                                        <td class="duration">
-                                                            {{ item.schedule.duration }} min
-                                                        </td>
-                                                        <td class="classroom">
-                                                            {{ item.schedule.classroom }}
-                                                        </td>
-                                                        <td class="activeness">
-                                                            {% if item.schedule.active %}
-                                                                Active
-                                                            {% else %}
-                                                                Inactive
-                                                            {% endif %}
-                                                        </td>
-                                                        <td class="select-btn-td">
-                                                            <button type="submit" name="schedule" class="select-schedule-btn" value="{{ item.schedule.class_id }}" translation-key="select"> Select </button>
-                                                        </td>
-                        
-                                                    </tbody>
-                                                {% endfor %}
-                                                
-                                            </table>
-                                        </form>
-                                    </div>  
-                                </div>
-                            </div>
-                        </div>
-                    {% elif user.role == "teacher" %}
-                        <div id="select-schedule">
-                            <label for="select-school-year"> 
-                                <span class="lang-pt" hidden> Pesquisar por horário: </span>
-                                <span class="lang-en">  Search by schedule: </span>
-                            </label>
-                            <select id="select-school-year" aria-label="Choose school-year" onchange="selectSchedule(this.value, this.parentElement)">
-                                <option disabled selected> </option>
-                                <option value="2024/2025"> 2024/2025 </option>
-                                <option value="2023/2024"> 2023/2024 </option>
-                            </select> 
-                    
-                            <div class="modal-overlay schedule-overlay">
-                                <div class="modal schedule-modal">   
-                                    <form action="/lessons" method="post">
-                    
-                                        <table class ="table">
-                                            <thead>
-                                                <tr>
-                                                    <th translation-key="school_year"> School Year </th>
-                                                    <th translation-key="weekday"> Weekday </th>
-                                                    <th translation-key="start_time"> Start Time </th>
-                                                    <th translation-key="class"> Class </th>
-                                                    <th translation-key="students"> Students </th>
-                                                    <th translation-key="duration"> Duration </th>
-                                                    <th translation-key="classroom"> Classroom </th>
-                                                </tr>
-                                            </thead>
-                                            {% for item in schedules %}
-                                                <tbody class="schedule-item" data-school-year="{{ item.school_year }}"> 
-                    
-                                                    <td class="school-year">
-                                                        {{ item.school_year }}
-                                                    </td>
-                                                    <td class="weekday" translation-key="{{ item.weekday | lower }}">
-                                                        {{ item.weekday }}
-                                                    </td>
-                                                    <td class="start-time">
-                                                        {{ item.schedule.hour_formatted }}
-                                                    </td>
-                                                    <td class="class-name" translation-key="{{ item.schedule.name | lower }}">
-                                                        {{ item.schedule.name }}
-                                                    </td>
-                                                    <td class="student-names">
-                                                        <ul>
-                                                            {% for name in item.students %} 
-                                                            <li> {{ name }} </li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </td>
-                                                    <td class="duration">
-                                                        {{ item.schedule.duration }}
-                                                    </td>
-                                                    <td class="classroom">
-                                                        {{ item.schedule.classroom }}
-                                                    </td>
-                                                    <td class="activeness">
-                                                        {% if item.schedule.active %}
-                                                            Active
-                                                        {% else %}
-                                                            Inactive
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>
-                                                        <button type="submit" name="schedule" value="{{ item.schedule.class_id }}" translation-key="select"> Select </button>
-                                                    </td>
-                    
-                                                </tbody>
-                                            {% endfor %}
-                                            
-                                        </table>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div id="select-schedule">
-                            <label for="select-school-year">
-                                <span class="lang-pt" hidden> Pesquisar por horário: </span>
-                                <span class="lang-en">  Search by schedule: </span>
-                            </label>
-                            <select id="select-school-year" aria-label="Choose school-year" onchange="selectSchedule(this.value, this.parentElement)">
-                                <option disabled selected> </option>
-                                <option value="2024/2025"> 2024/2025 </option>
-                                <option value="2023/2024"> 2023/2024 </option>
-                            </select> 
-                    
-                            <div class="modal-overlay schedule-overlay">
-                                <div class="modal schedule-modal">   
-                                    <form action="/lessons" method="post">
-                    
-                                        <table class ="table">
-                                            <thead>
-                                                <tr>
-                                                    <th translation-key="school_year"> School Year </th>
-                                                    <th translation-key="weekday"> Weekday </th>
-                                                    <th translation-key="start_time"> Start Time </th>
-                                                    <th translation-key="class"> Class </th>
-                                                    <th translation-key="teachers"> Teachers </th>
-                                                    <th translation-key="students"> Students </th>
-                                                    <th translation-key="duration"> Duration </th>
-                                                    <th translation-key="classroom"> Classroom </th>
-                                                </tr>
-                                            </thead>
-                                            {% for item in schedules %}
-                                                <tbody class="schedule-item" data-school-year="{{ item.school_year }}"> 
-                    
-                                                    <td class="school-year">
-                                                        {{ item.school_year }}
-                                                    </td>
-                                                    <td class="weekday" translation-key="{{ item.weekday | lower }}">
-                                                        {{ item.weekday }}
-                                                    </td>
-                                                    <td class="start-time">
-                                                        {{ item.schedule.hour_formatted }}
-                                                    </td>
-                                                    <td class="class-name" translation-key="{{ item.schedule.name | lower}}" >
-                                                        {{ item.schedule.name }}
-                                                    </td>
-                                                    <td class="teacher">
-                                                        {{ item.teacher }}
-                                                    </td>
-                                                    <td class="student-names">
-                                                        <ul>
-                                                            {% for name in item.students %} 
-                                                            <li> {{ name }} </li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </td>
-                                                    <td class="duration">
-                                                        {{ item.schedule.duration }}
-                                                    </td>
-                                                    <td class="classroom">
-                                                        {{ item.schedule.classroom }}
-                                                    </td>
-                                                    <td class="activeness">
-                                                        {% if item.schedule.active %}
-                                                            Active
-                                                        {% else %}
-                                                            Inactive
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>
-                                                        <button type="submit" name="schedule" value="{{ item.schedule.class_id }}" translation-key="select"> Select </button>
-                                                    </td>
-                    
-                                                </tbody>
-                                            {% endfor %}
-                                            
-                                        </table>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div> -->
     </span>
     
 </div>

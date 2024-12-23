@@ -6,28 +6,48 @@
 
 
 {% block main %}
-    <form action="/register" method="post">
-        <div>
-            <span lang="en">
-                <input autocomplete="off" name="user" placeholder="school_ID" type="text">
+    <div class = "homepage"> 
+        <div class="homepage-container">
+            <span class="lang-pt homepage-text" hidden>
+                <h1> Software de Gestão Interna</h1>
             </span>
-            <span lang="pt" style="display: none;">
-                <input autocomplete="off" name="user" placeholder="ID da escola" type="text">
-            </span>
+            <span class="lang-en homepage-text">
+                <h1> Internal Management App</h1>
+            </span> 
         </div>
-        <div>
-            <span lang="en">
-                <input name="password" placeholder="Password" type="password">
-                <input name="confirmation" placeholder="Confirm Password" type="password">
-            </span>
-            <span lang="pt" style="display: none;">
-                <input name="password" placeholder="Palavra-chave" type="password">
-                <input name="confirmation" placeholder="Confirme a palavra-chave" type="password">
-            </span>   
-        </div>
-        <button type="submit">
-            <span lang="en">Register</span>
-            <span lang="pt" style="display: none;">Registar</span>
-        </button>
-    </form>
+    </div>
+
+    <div class="register-form">
+        <form id="register" action="/register" method="post">
+            <input type="hidden" name="saved_lang" id="savedLanguage">
+            <div class="input-containers">
+                <span class="lang-en">
+                    <input class="regist-user" autocomplete="off" name="user_en" placeholder="school_ID" type="text">
+                    <br>
+                    <input class="regist-password" name="password_en" placeholder="Password" type="password">
+                    <input class="regist-password" name="confirmation_en" placeholder="Confirm Password" type="password">
+                </span>
+                <span class="lang-pt" hidden>
+                    <input class="regist-user" autocomplete="off" name="user_pt" placeholder="ID da escola" type="text">
+                    <br>
+                    <input class="regist-password" name="password_pt" placeholder="Palavra-chave" type="password">
+                    <input class="regist-password" name="confirmation_pt" placeholder="Confirme a palavra-chave" type="password">
+                </span>     
+            </div>
+            <div class="btn-container">
+                <button class="lang-en register-btn" type="submit">  Register </button>
+                <button class="lang-pt register-btn" type="submit" hidden> Registar </button>
+            </div>
+           
+        </form>
+    </div>
+
+    <script>
+
+        // Get savedLang value and set it to input value
+        let lang = localStorage.getItem("selectedLanguage");
+        let input = document.getElementById("savedLanguage");
+        input.value = lang;
+
+    </script>
 {% endblock %}

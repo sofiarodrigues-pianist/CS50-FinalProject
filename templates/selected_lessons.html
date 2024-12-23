@@ -14,8 +14,8 @@
         {% if lessons_data %}
             {% if date_formatted %}
                 {% if user.role == "teacher" %}
-                    <span class="lang-pt title-container" hidden> <h2 class="title"> Aulas em {{ date_formatted }}: </h2> </span>
-                    <span class="lang-en title-container"> <h2 class="title"> Lessons on {{ date_formatted }}: </h2> </span>
+                    <span class="lang-pt title-container" hidden> <h2 class="title"> As suas aulas a {{ date_formatted }} </h2> </span>
+                    <span class="lang-en title-container"> <h2 class="title"> Your lessons on {{ date_formatted }} </h2> </span>
 
                     <table class ="table">
                         <thead>
@@ -56,8 +56,8 @@
                     </table>
 
                 {% elif user.role == "student" %}
-                    <span class="lang-pt title-container" hidden> <h2 class="title"> Aulas em {{ date_formatted }} </h3> </span>
-                    <span class="lang-en title-container"> <h2 class="title"> Lessons on {{ date_formatted }} </h3> </span>
+                    <span class="lang-pt title-container" hidden> <h2 class="title"> As tuas aulas a {{ date_formatted }} </h3> </span>
+                    <span class="lang-en title-container"> <h2 class="title"> Your lessons on {{ date_formatted }} </h3> </span>
 
                     <table class ="table">
                         <thead>
@@ -93,7 +93,7 @@
                     
                 {% else %}
                     
-                    <span class="lang-pt title-container" hidden> <h2 class="title"> Aulas em {{ date_formatted }} </h3> </span>
+                    <span class="lang-pt title-container" hidden> <h2 class="title"> Aulas a {{ date_formatted }} </h3> </span>
                     <span class="lang-en title-container"> <h2 class="title"> Lessons on {{ date_formatted }} </h3> </span>
 
                     <table class ="table">
@@ -578,7 +578,12 @@
             {% endif %}
 
         {% else %}
-            <h2 class="title"> No lessons to display </h3>
+            <span class="lang-pt title-container" hidden> 
+                <h4 class="no-info-title"> Não há aulas para mostrar. </h4> 
+            </span>
+            <span class="lang-en title-container"> 
+                <h4 class="no-info-title"> No lessons to display. </h4> 
+            </span>
 
         {% endif %}
     </div>
@@ -727,9 +732,12 @@
                 // If student or teacher: inform there is no componsation lesson yet
                 } else {
                     addCompLesson.innerHTML = `
-                        <div class="no-comp">   
-                            <span class="no-comp lang-pt" hidden> Aula de reposição ainda por agendar </span>
-                            <span class="no-comp lang-en"> No compensation Lesson yet </span>
+                        <div class="no-comp">  
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="warning" viewBox="0 0 16 16">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                            </svg>
+                            <span class="no-comp-text lang-pt" hidden>Aula de reposição ainda por agendar</span>
+                            <span class="no-comp-text lang-en">No compensation lesson yet</span>
                         </div>
                     `;
                 }
@@ -749,8 +757,6 @@
                 // Switch eye buttons
                 showBtn.hidden = true;
                 hideBtn.hidden = false;
-
-    
             }
             else {
                 console.log("Error: neither compLesson or ogLesson found");
@@ -1141,7 +1147,6 @@
             let lessonDateDefault = tableRow.querySelector(".lesson-date");
             let lessonDateEdit = tableRow.querySelector(".lesson-date input");
             let lessonDate;
-            let dateFormat;
 
             // Get startTime
             let startTimeDefault = tableRow.querySelector(".start-time-default");
@@ -1170,44 +1175,20 @@
                 startTime = startTimeEdit.value;
                 console.log("startTimeEdit assigned");
             }
-        
-            // Correct date and date format
-            /* OLD WAY
-            if (lessonDateDefault) {
-                if (lessonDateEdit.value == "") {
-                    lessonDate = lessonDateDefault.textContent;
-                    compensation = "";
-                    dateFormat = "dd-mm-yyyy";
-                    console.log("lessonDateDefault assigned");
-                } else {
-                    lessonDate = lessonDateEdit.value;
-                    compensation = "true";
-                    dateFormat = "datetime";
-                    console.log("lessonDateEdit assigned");
-                }
-            } else {
-                lessonDate = dataLessonDate;
-                dateFormat = "datetime";
-                console.log("datalessonDate assigned");
-            }*/ 
-
-            // NEW WAY
+            // Lesson date
             if (lessonDateEdit) {
                 if (lessonDateEdit.value) {
                     lessonDate = lessonDateEdit.value;
                     compensation = "true";
-                    dateFormat = "datetime"
                     console.log("lessonDateEdit value assigned; comp true");
                 } else {
                     lessonDate = dataLessonDate;
                     compensation = "true";
-                    dateFormat = "datetime";
                     console.log("dataLessonDate assigned; comp true");
                 }
             } else {
                 lessonDate = dataLessonDate;
                 compensation = "false";
-                dateFormat = "datetime";
                 console.log("datalessonDate assigned; comp false");
             }
 
@@ -1255,7 +1236,6 @@
                     duration: duration,
                     classroom: classroom,
                     isCompensation: compensation,
-                    dateFormat: dateFormat
                 })
             })
             .then(response => {

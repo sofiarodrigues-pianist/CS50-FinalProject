@@ -191,70 +191,6 @@
                         
                     </div>
                 </div>
-
-
-                <!-- OLD WAY 
-                <span id="search-icon">
-                    <div class="horizontal-elements">
-                        <button class="search-btn" onclick="searchSalary(this.closest('span'))">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                            </svg>
-                        </button>
-                        <h5 translation-key="search"> Search </h5>  
-                    </div>
-                    
-                    <div class="modal-overlay search-overlay">
-                        <div class="modal search-modal">
-                            <div class="modal-content search-content">
-                                <div id="select-teacher">
-                                    <form action="/salaries" method="post">
-                                        <select class="select-teacher lang-en" name="teacher" placeholder="Search by teacher"> 
-                                            <option value="" disabled selected > Search by teacher </option>
-                                            {% for name in teachers_names %}
-                                                <option value="{{ name[0] }}"> {{ name[0] }} </option>
-                                            {% endfor %}
-                                        </select>
-                                        <select class="select-teacher lang-pt" name="teacher" placeholder="Procurar por professor" hidden> 
-                                            <option value="" disabled selected > Procurar por professor </option>
-                                            {% for name in teachers_names %}
-                                                <option value="{{ name[0] }}"> {{ name[0] }} </option>
-                                            {% endfor %}
-                                        </select>
-                                        <button type="submit" class="button" id="see-salary" translation-key="search"> Search </button>
-                                    </form>
-
-                                    <form action="/salaries" method="post">
-                                        <select class="select-month lang-en" name="month" placeholder="Search by month"> 
-                                            <option value="" disabled selected > Search by month </option>
-                                            {% set months = {
-                                                9: "September", 10: "October", 11: "November", 12: "December", 
-                                                1: "January", 2: "February", 3: "March", 4: "April",
-                                                5: "May", 6: "June", 7: "July"
-                                            } %} 
-                                            {% for number, name in months.items() %}
-                                                <option value="{{ number }}"> {{ name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <select class="select-month lang-pt" name="month" placeholder="Procurar por mês" hidden> 
-                                            <option value="" disabled selected > Procurar por mês </option>
-                                            {% set months = {
-                                                9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro", 
-                                                1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
-                                                5: "Maio", 6: "Junho", 7: "Julho"
-                                            } %} 
-                                            {% for number, name in months.items() %}
-                                                <option value="{{ number }}"> {{ name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <button type="submit" class="button" id="see-salary" translation-key="search"> Search </button>
-                                    </form>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </span> -->
             </div>
             
             <br>
@@ -388,10 +324,10 @@
 
             {% else %}
                 <span class="lang-pt title-container" hidden>
-                    <h2 class="title"> Não existem salários ainda </h2>
+                    <h4 class="no-info-title"> Ainda não existem salários. </h4>
                 </span>
                 <span class="lang-en title-container">
-                    <h2 class="title"> There are no salaries yet </h2>
+                    <h4 class="no-info-title"> There are no salaries yet. </h4>
                 </span>
 
             {% endif %}
@@ -435,10 +371,10 @@
 
             {% else %}
                 <span class="lang-pt title-container">
-                    <h2 class="title"> Nâo existem salários associados. Pergunta ao patrão. </h2>
+                    <h4 class="no-info-title">  Nâo existem salários associados. Pergunta ao patrão. </h4>
                 </span>
                 <span class="lang-en title-container">
-                    <h2 class="title"> There are no associated salaries. Go ask your boss. </h2>
+                    <h4 class="no-info-title"> There are no associated salaries. Go ask your boss. </h4>
                 </span>
                 
             {% endif %}

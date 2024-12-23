@@ -252,14 +252,12 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="check" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                                     </svg>
-                                    <span class="tooltip-text" hidden> Confirm attendance </span>
                                 </button>
                                 
                                 <button class="cross-btn" lesson-id="{{ item.lesson.lesson_id}}" attendance="false" onclick="lessonAttendance(this.getAttribute('lesson-id'), this.getAttribute('attendance'))">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="cross" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
                                     </svg>
-                                    <span class="tooltip-text" hidden> Confirm absence </span>
                                 </button>
 
                                 <button class="edit-btn" class-id-name="hidden-lesson{{ item.lesson.lesson_id}}" onclick="displayEdit(this)"> 
@@ -398,76 +396,38 @@
 
         // Check attendances and change row color
         document.addEventListener("DOMContentLoaded", function() {
-            let lessonAttendances = document.querySelectorAll(".lesson-attend-true");
-            let dateAttendances = document.querySelectorAll(".date-attend-true");
-            let lessonCompensation = document.querySelectorAll(".lesson-comp-true");
-            let dateCompensation = document.querySelectorAll(".date-comp-true");
-
-            let lessonMisses = document.querySelectorAll(".lesson-attend-false");
-            let dateMisses = document.querySelectorAll(".date-attend-false");
-
+            let ogDateAttend = document.querySelectorAll(".date-attend-true.date-comp-None, .date-attend-true.date-comp-false");
+            let ogDateMiss = document.querySelectorAll(".date-attend-false.date-comp-None, .date-attend-false.date-comp-false");
+            let compDate = document.querySelectorAll(".date-comp-true.date-attend-None");
+            let compDateAttend = document.querySelectorAll(".date-comp-true.date-attend-true");
+            let compDateMiss = document.querySelectorAll(".date-comp-true.date-attend-false");
             
-            if (lessonAttendances) {
-                lessonAttendances.forEach(function(row) {
+            if (ogDateAttend) {
+                //light green
+                ogDateAttend.forEach(function(row) {
                     row.style.backgroundColor = "rgba(144, 238, 144, 0.35)";
                     row.style.color = "black";
                 });
             }
-            if (dateAttendances) {
-                dateAttendances.forEach(function(row) {
-                    row.style.backgroundColor = "rgba(144, 238, 144, 0.35)";
-                    row.style.color = "black";
+            if (ogDateMiss) {
+                // light orange
+                ogDateMiss.forEach(function(row) {
+                    row.style.backgroundColor = "rgba(255, 120, 9, 0.7)";
                 });
             }
-
-            if (dateCompensation) {
-                dateCompensation.forEach(function(row) {
-                    row.style.backgroundColor ="Green";
-                    row.hidden = false;
-                });
-            }  
-            if (lessonCompensation) {
-                lessonCompensation.forEach(function(row) {
-                    row.style.backgroundColor = "Green";
-                    row.hidden = true;
+            if (compDateAttend) {
+                // slightly darker green
+                compDateAttend.forEach(function(row) {
+                    row.style.backgroundColor = "rgba(144, 238, 144, 0.85)";
                 });
             }
-            
-            if(lessonMisses) {
-                lessonMisses.forEach(function(row) {
-                    row.style.backgroundColor = "rgba(255, 0, 0, 0.75)";
-                });
-            }
-            if(dateMisses) {
-                dateMisses.forEach(function(row) {
-                    row.style.backgroundColor = "rgba(255, 0, 0, 0.75)";
+            if (compDateMiss) {
+                // red
+                compDateMiss.forEach(function(row) {
+                    row.style.backgroundColor = "rgba(255, 0, 0, 1)";
                 });
             }
         });
-
-        // Create new lesson
-        /*function newLesson(headerCell) {
-            let overlay = headerCell.querySelector(".new-lesson-overlay");
-            let modal = headerCell.querySelector(".new-lesson-modal");
-            let exit = modal.querySelector(".cancel-new-lesson");
-
-            overlay.style.display="block";
-            modal.style.display="block";
-
-            overlay.onclick = function(event) {
-                if (event.target == overlay) {
-                    modal.style.display = "none";
-                    overlay.style.display = "none";
-                } 
-            };
-
-            exit.onclick = function(event) {
-                if (event.target == exit) {
-                    modal.style.display = "none";
-                    overlay.style.display="none";
-                }  
-            };
-        }*/
 
         // Cancel/close edit mode
         function cancelEdit(tableRow, className) {
@@ -740,11 +700,7 @@
 
         // Handle new data after edit
         function SubmitChanges(tableRow, classId, lessonId, lessonDate) {
-            
-            // TODO: Confirm what this function is doing
-
-            console.log("classId:", classId);
-
+        
             // Get startTime
             let startTimeDefault = tableRow.querySelector(".start-time-default");
             let startTimeEdit = tableRow.querySelector(".start-time input");
@@ -756,34 +712,33 @@
             let students = [];
 
             // Get rest of inputs
-            let weekday = tableRow.querySelector(".weekday select");
             let teacher = tableRow.querySelector(".teacher-name select");
             let duration = tableRow.querySelector(".class-duration input");
             let classroom = tableRow.querySelector(".classroom input");
 
             // Assign correct values to each input
-            weekday = weekday.value;
-            //className = className.textContent.trim();
             teacher = teacher.value;
 
+            // Correct start time
             if (startTimeEdit.value === "") {
                 startTime = startTimeDefault.textContent;
             } else {
                 startTime = startTimeEdit.value;
             }
 
+            // Correct students list
             if (studentsOriginal.hidden === true) {
                 students = Array.from(studentsUpdated.querySelectorAll("li")).map(li => li.textContent.trim());
             } else {
                 students = Array.from(studentsOriginal.querySelectorAll("li")).map(li => li.textContent.trim());
             }
-
+            // Correct duration
             if (duration.value === "") {
                 duration = duration.placeholder;
             } else {
                 duration = duration.value;
             }
-
+            // Correct classroom
             if (classroom.value === "") {
                 classroom = classroom.placeholder;
             } else {
@@ -791,7 +746,7 @@
             }
 
             // Send data to app.py via fetch
-            fetch("/change_lesson", {
+            fetch("/edit_lesson", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json" // Lets the server know what kind of data to handle
@@ -799,23 +754,23 @@
                 // Convert every variable to only one data object
                 body: JSON.stringify({
                     classId: classId,
-                    weekday: weekday,
+                    lessonId: lessonId,
+                    lessonDate: lessonDate,
                     startTime: startTime,
-                    //className: className,
                     teacher: teacher,
                     students: students,
                     duration: duration,
-                    classroom: classroom
+                    classroom: classroom,
+                    isCompensation: "false"
                 })
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.statusText);
+                if (response.ok) {
+                    window.location.reload();
                 }
-                return response.json();
-            })
-            .then(data => {
-                window.location.href = data.redirect;
+                else {
+                    console.error("Failed to submit changes");
+                }
             })
             .catch(error => {
                 console.error("There was a problem with fetch:", error);
