@@ -846,13 +846,17 @@ def new_lesson():
             db.session.commit()
 
             print("New compensation lesson was added to db")
+
+            lessons_url = url_for("lessons")
+            return redirect(lessons_url)
+        
         else:
             print("Compensation lesson not found")
+            return redirect("/lessons")
 
     else:
         print("Original lesson not found")
-
-    return redirect("/lessons")
+        return redirect("lessons")
 
 
 
@@ -995,6 +999,12 @@ def delete_lesson():
         lesson = db.session.query(Lessons).filter(Lessons.lesson_id == lesson_id).one_or_none()
 
         if lesson:
+            if lesson.is_compensation == "true":
+                og_lesson = db.session.query(Lessons).filter(Lessons.compensation_id == lesson_id).one_or_none()
+                og_lesson.compensation_id = None
+
+                db.session.commit()
+       
             # Delete lesson
             db.session.delete(lesson)
 
@@ -1462,7 +1472,7 @@ def tuitions():
                 tuitions_data.append(data)
             
             students_names = db.session.query(Users.name).filter(Users.role == "student").order_by(Users.name).all()
-            return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students_names=students_names)
+            return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students_names=students_names, student_name=student_name)
         
         elif month_str:
 
@@ -1507,7 +1517,7 @@ def tuitions():
                     tuitions_data.append(data)
                     
                 students_names = db.session.query(Users.name).filter(Users.role == "student").order_by(Users.name).all()
-                return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students_names=students_names)
+                return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students_names=students_names, month=month)
             
             elif user.role == "student":
                 tuitions = db.session.query(Tuitions).filter(and_(Tuitions.tuition_date >= start_date, Tuitions.tuition_date <= end_date, Tuitions.student_id == user.id)).all()
@@ -1819,7 +1829,7 @@ def salaries():
 
                 salaries_data.append(data)
             
-            return render_template("salaries.html", user=user, salaries_data=salaries_data, teachers_names=teachers_names)
+            return render_template("salaries.html", user=user, salaries_data=salaries_data, teachers_names=teachers_names, teacher_name=teacher_name)
         
         elif month_str:
 
@@ -1861,7 +1871,7 @@ def salaries():
 
                 salaries_data.append(data)
 
-            return render_template("salaries.html", user=user, salaries_data=salaries_data, teachers_names=teachers_names)
+            return render_template("salaries.html", user=user, salaries_data=salaries_data, teachers_names=teachers_names, month=month)
 
 
 @app.route("/change_salary", methods=["POST"])

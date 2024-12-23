@@ -281,11 +281,11 @@
                                         <div class="modal-content delete-lesson-content">
                                             <div class="delete-lesson-body">
                                                 <span class="lang-en delete-modal-body">
-                                                    <h2> Warning!</h2>
+                                                    <h2> WARNING!</h2>
                                                     <h3> Are you sure you want to remove this Lesson? </h3>
                                                 </span>
                                                 <span class="lang-pt delete-modal-body" hidden>
-                                                    <h2> Atenção! </h2>
+                                                    <h2> ATENÇÃO! </h2>
                                                     <h3> Tem a certeza que quer eliminar esta aula? </h3>
                                                 </span>
                                                 
@@ -409,13 +409,13 @@
             
             if (lessonAttendances) {
                 lessonAttendances.forEach(function(row) {
-                    row.style.backgroundColor = "lightGreen";
+                    row.style.backgroundColor = "rgba(144, 238, 144, 0.35)";
                     row.style.color = "black";
                 });
             }
             if (dateAttendances) {
                 dateAttendances.forEach(function(row) {
-                    row.style.backgroundColor = "lightGreen";
+                    row.style.backgroundColor = "rgba(144, 238, 144, 0.35)";
                     row.style.color = "black";
                 });
             }
@@ -435,12 +435,12 @@
             
             if(lessonMisses) {
                 lessonMisses.forEach(function(row) {
-                    row.style.backgroundColor = "red";
+                    row.style.backgroundColor = "rgba(255, 0, 0, 0.75)";
                 });
             }
             if(dateMisses) {
                 dateMisses.forEach(function(row) {
-                    row.style.backgroundColor = "red";
+                    row.style.backgroundColor = "rgba(255, 0, 0, 0.75)";
                 });
             }
         });

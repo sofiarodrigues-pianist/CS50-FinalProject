@@ -15,6 +15,15 @@
     display: flex;
     flex-direction: row;
     gap: 20px;
+    align-items: center;
+}
+
+/* Top options section */
+
+/* Search*/ 
+
+.search-icon-div {
+    padding-bottom: 2%;
 }
 
 .search-options {
@@ -22,17 +31,56 @@
     flex-direction: row;
     gap: 100px;
     padding-bottom: 2%;
-    padding-top: 2%;
 }
 
 .search-input {
     width: 200px;
+    background-color: transparent;
+    border: 1px solid black;
+    font-family: 'Raleway', 'Ninito Sans';
+}
+
+.search-input:hover {
+    background-color: whitesmoke;
 }
 
 .search-elements {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 20px;
+}
+
+#select-year-form {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+}
+
+#select-year {
+    font-family: 'Nunito Sans', 'Raleway';
+    padding: 5px;
+    background-color: transparent;
+}
+
+#select-year:hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+}
+
+#select-year option {
+    font-family: 'Nunito Sans', 'Raleway';
+}
+
+
+/* Plus icon */
+
+.plus-icon-div {
+    padding-bottom: 2%;
+}
+
+.plus-icon-text h3 {
+    margin: 0px;
+    font-weight: 300;
 }
 
 /* Buttons */
@@ -56,8 +104,11 @@
 
 
 .new-schedule, .new-lesson, .new-student, .new-tuition, .new-teacher, .new-salary {
+    display: flex;
     background-color: transparent;
     border: none;
+    height: auto;
+    padding: 0px;
 }
 
 .edit-stdnts-btn {
@@ -106,9 +157,8 @@
     background-color: transparent;
 }
 
-.user-btn:hover {
-    background-color: #E6E6FA;
-    border-radius: 40%;
+.user-icon:hover {
+    fill: lightgoldenrodyellow;
 }
 
 #plus-icon-btn {
@@ -121,8 +171,7 @@
 }
 
 
-
-#select-date, #select-school-year, #see-tuition {
+#select-date, #select-school-year, #select-month-en,  #select-month-pt, #select-student, #select-teacher {
     border-radius: 5px;
     padding: 5px;
     font-size: small;
@@ -147,8 +196,8 @@
 
 .confirm-delete:hover{
     cursor: pointer;
-    background-color: #e8120b;
-    border: 1px solid #e8120b;
+    background-color: rgba(255, 0, 0, 0.75);
+    border: 1px solid rgba(255, 0, 0, 0.75);
     color: whitesmoke;
 }
 
@@ -225,14 +274,6 @@
     font-size: medium;
 }
 
-#logout {
-    text-decoration: none;
-    color: black;
-}
-
-#logout:hover {
-    color: grey;
-}
 
 
 /* Main design */
@@ -273,6 +314,13 @@
     padding-top: 10%;
 }
 
+.footer-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    font-family: 'Ninito Sans';
+}
 
 body {
     width: 100%;
@@ -365,11 +413,6 @@ th {
 }
 
 
-/*#plus-icon-column {
-    background-color: transparent;
-    border: none;
-}*/
-
 tbody {
     background-color: whitesmoke;
 }
@@ -384,6 +427,8 @@ ul {
     margin: 0;
     padding: 0;
 }
+
+
 
 /* INPUT tags */
 
@@ -412,16 +457,26 @@ td:has(ul .input-long) {
     justify-content: center;
 }
 
+.comp-container {
+    width: 100%;
+}
+
 .add-comp {
-    background-color: black;
-    padding: 20px;
-    gap: 10px;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+.comp-btn {
+    font-family: 'Raleway', 'Ninito Sans';
+    background-color: whitesmoke;
+    border: 1px solid black;
+    padding: 10px;
 }
 
-.add-comp:hover, .comp.btn:hover{
-    background-color: black;
+.comp-btn:hover {
+    background-color: rgb(233, 231, 231);
+    cursor: pointer;
 }
-
 
 /* Edit icons */
 
@@ -437,10 +492,21 @@ td:has(ul .input-long) {
     cursor: default;
 }
 
-.edit-btn, .delete-btn, .check-btn, .cross-btn, .eye-btn, .hide-eye-btn, .search-btn, .add-btn, .remove-btn {
+.edit-btn, .delete-btn, .check-btn, .cross-btn, .eye-btn, .hide-eye-btn, .add-btn, .remove-btn {
     background-color: transparent;
     border: 0px;
     cursor: pointer;
+}
+
+.disabled-btn {
+    background-color: transparent;
+    border: 0px;
+}
+
+.search-btn {
+    background-color: transparent;
+    border: 0px;
+    padding: 0px;
 }
 
 .edit-btn:hover, .delete-btn:hover, .check-btn:hover, .cross-btn:hover, .eye-btn:hover, .hide-eye-btn:hover {
@@ -448,18 +514,22 @@ td:has(ul .input-long) {
     background-color: transparent;
 }
 
-.pencil, .bin, .check, .cross, .eye, .eye-slash, .search, .stdnt-plus, .stdnt-less {
+.pencil, .bin, .check, .cross, .eye, .eye-slash, .stdnt-plus, .stdnt-less {
     background-color: transparent;
     cursor: pointer;
 }
 
-.pencil:hover, .eye:hover, .eye-slash:hover, .search:hover {
+.pencil:hover {
     background-color: transparent;
     fill: goldenrod;
 }
 
+.eye:hover, .eye-slash:hover {
+    fill: #C08081;
+}
+
 .bin:hover {
-    fill: #e8120b;
+    fill: rgba(255, 0, 0, 0.75);
 }
 
 .check:hover, .stdnt-plus:hover {
@@ -537,40 +607,115 @@ td:has(ul .input-long) {
 }
 
 
-.exit {
-    align-self: flex-start;
-    margin-right: 5px;
-    font-weight: bold;
-    color: black;
-    cursor: pointer;
-}
-
-.exit:hover,
-.exit:focus {
-    color: darkgrey;
-}
 
 /* User modal */
 
+.user-modal {
+    position: fixed;
+    top: 15%;
+    right: 2px;
+    border: 1px solid #C08081;
+    border-radius: 2px;
+    height: 100px;
+    width: 200px;
+}
+
 .user-content {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     color: black;
-    z-index: 2;
+    padding: 5px;
 }
 
 .user-options {
-    margin: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
-.user-options li:hover {
-    color: grey;
+.user-options span{
+    padding: 5px;
+}
+
+.user-exit {
+    align-self: flex-end;
+    font-weight: bold;
+    color: black;
+}
+
+.exit-x:hover {
+    fill: rgb(154, 154, 154);
     cursor: pointer;
+}
+
+.earth, .logout-icon {
+    padding-right: 10px;
+}
+
+#logout {
+    text-decoration: none;
+    color: black;
+}
+
+#logout:hover {
+    color: goldenrod;
+    cursor: pointer;
+}
+
+
+/* Confirm payment modal */
+
+.confirm-payment-modal {
+    background-color: whitesmoke;
+    border: 1px solid rgb(21, 29, 22);
+    width: 400px;
+    height: 300px;
+}
+
+.confirm-payment-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-around;
+}
+
+.confirm-payment-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.confirm-payment-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20%;
+}
+
+.payment-modal-btn {
+    padding: 20px;
+    background-color: rgba(245, 245, 245, 0.203);
+    border: 1px solid rgba(0, 0, 0, 0.525);
+    border-radius: 2px;
+    font-family: 'Raleway', 'Ninito Sans';
+}
+
+.payment-modal-btn:hover{
+    background-color: #FFFFF0;
+    cursor: pointer;
+}
+
+.payment-date-input {
+    border-radius: 5px;
+    border: 1px solid rgba(181, 181, 181, 0.564);
+    padding: 5px 0px 5px 5px;
+    cursor: pointer;
+    width: 100%;
 }
 
 /* Search modal */
 
-.search-year-modal {
+/* .search-year-modal {
     background-color: rgba(245, 245, 245, 0.582);
     border: 1px solid goldenrod;
     position: relative;
@@ -583,30 +728,10 @@ td:has(ul .input-long) {
     display: flex;
     width: 100%;
     justify-content: center;
-}
+}*/
 
-#select-year-form {
-    width: 100%;
-    display: flex;
-    gap: 20px;
-}
 
-#select-year {
-    font-family: 'Nunito Sans', 'Raleway';
-    padding: 5px;
-    background-color: transparent;
-}
-
-#select-year:hover {
-    cursor: pointer;
-    background-color: whitesmoke;
-}
-
-#select-year option {
-    font-family: 'Nunito Sans', 'Raleway';
-}
-
-#see-schedule {
+/*#see-schedule {
     color: whitesmoke;
     font-size: medium;
     border: 1px solid goldenrod;
@@ -616,7 +741,7 @@ td:has(ul .input-long) {
 
 #see-schedule:hover {
     background-color: rgb(216, 180, 88);
-}
+}*/
 
 /* Delete modal */
 
@@ -630,6 +755,7 @@ td:has(ul .input-long) {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-weight: 100 !important;
 }
 
 .delete-btns {
@@ -640,7 +766,8 @@ td:has(ul .input-long) {
     font-family: 'Raleway', 'Nunito Sans';
     background-color: whitesmoke;
     border: 1px solid rgba(0, 0, 0, 0.516);
-    padding: 3%;
+    border-radius: 2px;
+    padding: 20px;
     margin-left: 5%;
     margin-right: 5%;
 }
@@ -649,6 +776,7 @@ td:has(ul .input-long) {
 
 .new-info-modal {
     position: fixed;
+    max-width: 95%;
     background-color: whitesmoke;
     border-radius: 5px;
     border: 2px solid #7474a6;
@@ -656,13 +784,22 @@ td:has(ul .input-long) {
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 2%;
+    margin: 20px;
+}
+
+.new-info-content {
+    overflow-x: scroll;
+    padding: 10px;
+}
+
+.new-info-form {
+    width: 100%;
 }
 
 .new-info-table {
-    table-layout: auto;
     width: 100%;
+    table-layout: auto;
     padding: 0% 0% 5% 0%;
-    border: 1px solid lightgoldenrodyellow;
 }
 
 .new-info-table th {
@@ -822,9 +959,6 @@ td:has(ul .input-long) {
     border-spacing: 0px;
 }
 
-.select-schedule-table tbody {
-    background-color: transparent;
-}
 
 .select-schedule-table th {
     background-color: goldenrod;
@@ -832,11 +966,20 @@ td:has(ul .input-long) {
 }
 
 .select-schedule-table td {
+    background-color: whitesmoke;
     border-right: none;
 }
 
+.select-schedule-table tbody:hover {
+    background-color: lightgoldenrodyellow;
+}
+
+tbody:hover {
+    background-color: lightgoldenrodyellow;
+}
+
 .select-btn-td {
-    background-color: transparent;
+    background-color: #FFFFF0 !important;
     border: none;
     border-left: 1px solid gray;
 }
@@ -848,7 +991,7 @@ td:has(ul .input-long) {
 .select-schedule-btn {
     background-color: transparent;
     border: 1px solid goldenrod;
-    padding: 5%;
+    padding: 10%;
 }
 
 .select-schedule-btn:hover {

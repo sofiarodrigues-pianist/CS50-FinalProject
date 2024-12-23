@@ -12,26 +12,27 @@
         {% if user.role == "admin" %}
 
             <div class="top-options">
-                <span id="plus-icon-column"> 
+                <div class="plus-icon-div"> 
                     <div class="horizontal-elements">
-                        <button class="new-salary" onclick="newSalary(this.closest('span'))">
+                        <button class="new-salary" onclick="newSalary()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" viewBox="0 0 16 16" id="plus-icon-btn">
                                 <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
                             </svg> 
                         </button>
-                        <span class="lang-pt" hidden>
-                            <h2> Novo salário </h3>
+
+                        <span class="lang-pt plus-icon-text" hidden>
+                            <h3> Novo salário </h3>
                         </span>
-                        <span class="lang-en"> 
-                            <h2> New Salary </h3>
+                        <span class="lang-en plus-icon-text"> 
+                            <h3> New salary </h3>
                         </span>
                     </div>
 
                     <div class="modal-overlay new-salary-overlay"> 
-                        <div class="modal new-salary-modal">
-                            <div class="modal-content new-salary-content">
-                                <form id="new-salary-form" action="/new_salary" method="POST">
-                                    <table class="table">
+                        <div class="modal new-info-modal new-salary-modal">
+                            <div class="modal-content new-info-content new-salary-content vertical-body">
+                                <form id="new-salary-form" class="new-info-form" action="/new_salary" method="POST">
+                                    <table class="new-info-table">
                                         <thead>
                                             <th> <label for="new-salary-month" translation-key="month"> Month </label> </th>
                                             <th> <label for="new-salary-teacher" translation-key="teacher"> Teacher </label> </th>
@@ -75,14 +76,124 @@
                                             <td> <input type="date" id="new-salary-payment" name="payment" > </td>
                                         </tbody>
                                     </table>
-                                    <button class="button create-new-salary" type="submit" translation-key="add"> Add </button>
-                                    <button class="button cancel-new-salary" translation-key="cancel"> Cancel </button>
+                                    <div class="new-info-modal-btns">
+                                        <button class="new-info-btn cancel-new-salary" translation-key="cancel"> Cancel </button>
+                                        <button class="new-info-btn create-new-salary" type="submit" translation-key="confirm"> Confirm </button>
+                                    </div>
                                 </form> 
                             </div>
                         </div>
                     </div>
-                </span>
+                </div>
                 
+                <div class="search-options">
+                    <!-- NEW WAY -->
+                    <div>
+                        <form action="/salaries" method="post" id="teacher-form">
+                            <div class="search-elements">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                </svg>
+                                <label for="select-teacher">
+                                    <span class="lang-pt" hidden> Pesquisar por professor </span>
+                                    <span class="lang-en">  Search by teacher </span>                                   
+                                </label>
+                            </div>
+                            <br>
+                        
+                            <select class="search-input" id="select-teacher" name="teacher"> 
+                                {% if teacher_name %}
+                                    <option value="" disabled selected> {{ teacher_name }}</option>
+                                {% else %}
+                                    <option value="" disabled selected> </option>
+                                {% endif %}
+                                
+                                {% for name in teachers_names %}
+                                    <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                {% endfor %}
+                            </select>
+                            
+                        </form>
+                    </div>
+
+                    <div>
+                        <div class="lang-en">
+                            <form action="/salaries" method="post" id="month-form-en">
+                                <div class="search-elements">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                    </svg>
+                                    <label for="select-month-en">
+                                        <span>  Search by month </span>                                   
+                                    </label>
+                                </div>
+                                <br>
+                                <select class="search-input" id="select-month-en" name="month"> 
+                                    {% set months = {
+                                        9: "September", 10: "October", 11: "November", 12: "December", 
+                                        1: "January", 2: "February", 3: "March", 4: "April",
+                                        5: "May", 6: "June", 7: "July"
+                                    } %} 
+    
+                                    {% if month %}
+                                        {% for number, name in months.items() %}
+                                            {% if month == number %}
+                                                <option value="" disabled selected> {{ name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+    
+                                    {% else %}
+                                        <option value="" disabled selected> </option>
+                                    {% endif %}
+    
+                                    {% for number, name in months.items() %}
+                                        <option value="{{ number }}"> {{ name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </div>
+                     
+                        <div class="lang-pt" hidden>
+                            <form action="/salaries" method="post" id="month-form-pt">
+                                <div class="search-elements">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                    </svg>
+                                    <label for="select-month-pt">
+                                        <span> Pesquisar por mês </span>                             
+                                    </label>
+                                </div>
+                                <br>
+                                <select class="search-input" id="select-month-pt" name="month"> 
+                                    {% set months = {
+                                        9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro", 
+                                        1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
+                                        5: "Maio", 6: "Junho", 7: "Julho"
+                                    } %} 
+    
+                                    {% if month %}
+                                        {% for number, name in months.items() %}
+                                            {% if month == number %}
+                                                <option value="" disabled selected> {{ name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+    
+                                    {% else %}
+                                        <option value="" disabled selected> </option>
+                                    {% endif %}
+    
+                                    {% for number, name in months.items() %}
+                                        <option value="{{ number }}"> {{ name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+
+
+                <!-- OLD WAY 
                 <span id="search-icon">
                     <div class="horizontal-elements">
                         <button class="search-btn" onclick="searchSalary(this.closest('span'))">
@@ -143,7 +254,7 @@
 
                         </div>
                     </div>
-                </span>
+                </span> -->
             </div>
             
             <br>
@@ -201,10 +312,9 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="check" width="16" height="16" fill="black" viewBox="0 0 16 16">
                                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                                     </svg>
-                                    <span class="tooltip-text" hidden> Confirm payment </span>
                                 </button>
                                 <div class="modal-overlay confirm-payment-overlay">
-                                    <div class="modal confirm-payment-modal">
+                                    <div class="modal center-modal confirm-payment-modal">
                                         <div class="modal-content confirm-payment-content">
                                             <div class="confirm-payment-body">
                                                 <span class="lang-pt">
@@ -214,12 +324,12 @@
                                                     <h2> Select a payment date:</h2>
                                                 </span>
 
-                                                <input type="date" required>
+                                                <input type="date" class="payment-date-input" required>
                                             </div>
                                             
-                                            <div class="confirm-payment-buttons">
-                                                <button class="button confirm-payment" translation-key="confirm"> Confirm </button>
-                                                <button class="button cancel-payment" translation-key="go_back"> Go back </button>
+                                            <div class="center-modal-btns confirm-payment-buttons">
+                                                <button class="payment-modal-btn cancel-payment" translation-key="cancel"> Cancel </button>
+                                                <button class="payment-modal-btn confirm-payment" translation-key="confirm"> Confirm </button>
                                             </div>
                                         </div>
                                     </div>
@@ -240,23 +350,25 @@
                                     <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
                                   </svg>
                                 </button>
+
+                                <!--Delete modal-->
                                 <div class="modal-overlay delete-salary-overlay">
-                                    <div class="modal delete-salary-modal">
+                                    <div class="modal center-modal delete-modal delete-salary-modal">
                                         <div class="modal-content delete-salary-content">
                                             <div class="delete-salary-body">
-                                                <span class="lang-pt">
-                                                    <h2> Atenção!</h2>
+                                                <span class="lang-pt delete-modal-body">
+                                                    <h2> ATENÇÃO!</h2>
                                                     <h2> Tem a certeza que quer remover este salário? </h3>
                                                 </span>
-                                                <span class="lang-en">
-                                                    <h2> Warning!</h2>
+                                                <span class="lang-en delete-modal-body">
+                                                    <h2> WARNING!</h2>
                                                     <h2> Are you sure you want to delete this salary? </h3>
                                                 </span>
                                             </div>
                                             
-                                            <div class="delete-salary-buttons">
-                                                <button class="button confirm-delete" translation-key="delete"> Delete </button>
-                                                <button class="button cancel-delete" translation-key="go_back"> Go back </button>
+                                            <div class="center-modal-btns delete-btns delete-salary-buttons">
+                                                <button class="delete-modal-btn cancel-delete" translation-key="cancel"> Cancel </button>
+                                                <button class="delete-modal-btn confirm-delete" translation-key="delete"> Delete </button>
                                             </div>
                                         </div>
                                     </div>
@@ -265,8 +377,8 @@
 
                             <td class="change-buttons hidden-salary{{ item.salary.salary_id }}" hidden>
                                 <div class="change-buttons-container">
-                                    <button class="button" salary-id="{{ item.salary.salary_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('salary-id'))" translation-key="confirm"> Confirm </button>
                                     <button class="button" salary-id-name="hidden-salary{{ item.salary.salary_id }}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('salary-id-name'))" translation-key="cancel"> Cancel </button>
+                                    <button class="button" salary-id="{{ item.salary.salary_id }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('salary-id'))" translation-key="confirm"> Confirm </button>
                                 </div>
                             </td>
 
@@ -342,6 +454,20 @@
     </div>
 
     <script>
+
+        // Submit search data
+        document.getElementById("select-teacher").addEventListener("change", function() {
+            document.getElementById("teacher-form").submit();
+        })
+
+        document.getElementById("select-month-en").addEventListener("change", function() {
+            document.getElementById("month-form-en").submit();
+        })
+        
+        document.getElementById("select-month-pt").addEventListener("change", function() {
+            document.getElementById("month-form-pt").submit();
+        })
+
         // Check payments and change row color
         document.addEventListener("DOMContentLoaded", function() {
             let payed = document.querySelectorAll(".salary-payed-True");
@@ -349,14 +475,14 @@
 
             if (payed) {
                 payed.forEach(function(row) {
-                    row.style.backgroundColor = "lightGreen";
+                    row.style.backgroundColor = "rgba(144, 238, 144, 0.35)";
                     row.style.color = "black";
                 });
             };
 
             if(notPayed) {
                 notPayed.forEach(function(row) {
-                    row.style.backgroundColor = "red";
+                    row.style.backgroundColor = "rgba(255, 0, 0, 0.75)";
                 });
             };
         });
@@ -453,9 +579,9 @@
         }
 
         // Display "Add new salary" modal
-        function newSalary(spanTag) {
-            let overlay = spanTag.querySelector(".new-salary-overlay");
-            let modal = spanTag.querySelector(".new-salary-modal");
+        function newSalary() {
+            let overlay = document.querySelector(".new-salary-overlay");
+            let modal = document.querySelector(".new-salary-modal");
             let exit = modal.querySelector(".cancel-new-salary");
 
             overlay.style.display="block";
@@ -476,7 +602,7 @@
             }
         }
 
-        function searchSalary(spanTag) {
+        /*function searchSalary(spanTag) {
             let overlay = spanTag.querySelector(".search-overlay");
             let modal = spanTag.querySelector(".search-modal");
 
@@ -489,7 +615,7 @@
                     overlay.style.display = "none";
                 } 
             };
-        }
+        }*/
 
         // Display edit fields inline
         function displayEdit(button) {

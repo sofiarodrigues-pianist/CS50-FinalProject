@@ -150,17 +150,17 @@
                                     <ul class="updated-students" hidden> 
                                     </ul>
 
-                                    <span class="lang-pt" hidden>
-                                        <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }}" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Editar alunos </button>
+                                    <span class="lang-pt edit-stdnts-container" hidden>
+                                        <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }} edit-stdnts-btn" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Editar lista de alunos </button>
                                     </span>
-                                    <span class="lang-en">
-                                        <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }}" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Edit students list </button>
+                                    <span class="lang-en edit-stdnts-container">
+                                        <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }} edit-stdnts-btn" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Edit students list </button>
                                     </span>
 
                                     <!-- Edit students modal -->
               
                                     <div class="modal-overlay edit-students-overlay hidden-lesson{{ item.lesson.lesson_id }}">
-                                        <div class="modal edit-students-modal hidden-lesson{{ item.lesson.lesson_id }}">
+                                        <div class="center-modal edit-students-modal hidden-lesson{{ item.lesson.lesson_id }}">
                                             <div class="modal-content edit-students-content">
                                                 <!-- Left column: All students -->
                                                 <div class="students-modal-left">
@@ -265,22 +265,22 @@
 
                                     <!-- Delete modal -->
                                     <div class="modal-overlay delete-lesson-overlay">
-                                        <div class="modal center-modal delete-lesson-modal">
+                                        <div class="modal center-modal delete-modal delete-lesson-modal">
                                             <div class="modal-content delete-lesson-content">
                                                 <div class="delete-lesson-body">
-                                                    <span class="lang-en">
-                                                        <h2> Warning!</h2>
+                                                    <span class="lang-en delete-modal-body">
+                                                        <h2> WARNING!</h2>
                                                         <h3> Are you sure you want to remove this Lesson? </h3>
                                                     </span>
-                                                    <span class="lang-pt" hidden>
-                                                        <h2> Atenção! </h2>
+                                                    <span class="lang-pt delete-modal-body" hidden>
+                                                        <h2> ATENÇÃO! </h2>
                                                         <h3> Tem a certeza que quer eliminar esta aula? </h3>
                                                     </span>
                                                 </div>
-                                                
-                                                <div class="delete-lesson-buttons">
-                                                    <button class="button confirm-delete" translation-key="delete"> Delete </button>
-                                                    <button class="button cancel-delete" translation-key="go_back"> Go back </button>
+                                                <br>
+                                                <div class="center-modal-btns delete-btns delete-lesson-buttons">
+                                                    <button class="delete-modal-btn cancel-delete" translation-key="cancel"> Cancel </button>
+                                                    <button class="delete-modal-btn confirm-delete" translation-key="delete"> Delete </button>    
                                                 </div>
                                             </div>
                                         </div>
@@ -289,8 +289,8 @@
                                          
                                 <td class="change-buttons hidden-lesson{{ item.lesson.lesson_id}}" hidden>
                                     <div class="change-buttons-container">
-                                        <button class="button" class-id="{{ item.lesson.class_id }}" lesson-id="{{ item.lesson.lesson_id}}" lesson-date="{{ item.lesson.lesson_date }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'), this.getAttribute('lesson-id'), this.getAttribute('lesson-date'))" translation-key="confirm"> Confirm </button>
                                         <button class="button" class-id-name="hidden-lesson{{ item.lesson.lesson_id}}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('class-id-name'))" translation-key="cancel"> Cancel </button>
+                                        <button class="button" class-id="{{ item.lesson.class_id }}" lesson-id="{{ item.lesson.lesson_id}}" lesson-date="{{ item.lesson.lesson_date }}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'), this.getAttribute('lesson-id'), this.getAttribute('lesson-date'))" translation-key="confirm"> Confirm </button>
                                     </div>
                                 </td>
 
@@ -301,8 +301,8 @@
                 {% endif %}
 
             {% else %}
-                <span class="lang-pt title-container" hidden> <h2 class="title"> Registos desta aula </h3> </span>
-                <span class="lang-en title-container"> <h2 class="title"> Lessons for this class </h3> </span>
+                <span class="lang-pt title-container" hidden> <h2 class="title"> Registos desta aula </h2> </span>
+                <span class="lang-en title-container"> <h2 class="title"> Lessons for this class </h2> </span>
 
                 <table class ="table">
                     <thead>
@@ -370,16 +370,17 @@
                                 <ul class="updated-students" hidden> 
                                 </ul>
 
-                                <span class="lang-pt" hidden>
-                                    <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }}" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Editar alunos </button>
+                                <span class="lang-pt edit-stdnts-container" hidden>
+                                    <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }} edit-stdnts-btn" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Editar lista de alunos </button>
                                 </span>
-                                <span class="lang-en">
-                                    <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }}" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Edit students list </button>
+                                <span class="lang-en edit-stdnts-container">
+                                    <button type="button" class="hidden-lesson{{ item.lesson.lesson_id }} edit-stdnts-btn" class-id-name="hidden-lesson{{ item.lesson.lesson_id }}" onclick="editStudents(this); checkStudents(this);" hidden> Edit students list </button>
                                 </span>
+
 
                                 <!-- Edit students modal -->
                                 <div class="modal-overlay edit-students-overlay hidden-lesson{{ item.lesson.lesson_id }}">
-                                    <div class="modal edit-students-modal hidden-lesson{{ item.lesson.lesson_id }}">
+                                    <div class="center-modal edit-students-modal hidden-lesson{{ item.lesson.lesson_id }}">
                                         <div class="modal-content edit-students-content">
                                             <!-- Left column: All students -->
                                             <div class="students-modal-left">
@@ -455,27 +456,34 @@
                                         
                             <td class="change-buttons hidden-lesson{{ item.lesson.lesson_id}}" hidden>
                                 <div class="change-buttons-container">
-                                    <button class="button" class-id="{{ item.lesson.class_id }}" lesson-id="{{ item.lesson.lesson_id}}" lesson-date="{{ item.lesson.lesson_date}}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'), this.getAttribute('lesson-id'), this.getAttribute('lesson-date'))" translation-key="confirm"> Confirm </button>
                                     <button class="button" class-id-name="hidden-lesson{{ item.lesson.lesson_id}}" id="cancel-edit" onclick="cancelEdit(this.closest('tbody'), this.getAttribute('class-id-name'))" translation-key="cancel"> Cancel </button>
+                                    <button class="button" class-id="{{ item.lesson.class_id }}" lesson-id="{{ item.lesson.lesson_id}}" lesson-date="{{ item.lesson.lesson_date}}" id="confirm-edit" onclick="SubmitChanges(this.closest('tbody'), this.getAttribute('class-id'), this.getAttribute('lesson-id'), this.getAttribute('lesson-date'))" translation-key="confirm"> Confirm </button>    
                                 </div>
                             </td>
 
                             <td class="edit">
                                 {% if item.lesson.attendance == "false" and item.lesson.is_compensation != "true" %}
-                                    <div class="eye-buttons">
-                                        <button class="eye-btn" user-role="{{ user.role }}" lesson-id="{{ item.lesson.lesson_id }}" comp-id ="{{ item.lesson.compensation_id }}" onclick="displayCompLesson(this.closest('div'),this.closest('tbody'),this.getAttribute('comp-id'), this.getAttribute('lesson-id'), this.getAttribute('user-role'))">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="eye" viewBox="0 0 16 16">
-                                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/> 
-                                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                                            </svg>
-                                        </button>
-                                        <button class="hide-eye-btn" lesson-id="{{ item.lesson.lesson_id }}" onclick="hideCompLesson(this.closest('div'),this.getAttribute('lesson-id'))" hidden>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="eye-slash" viewBox="0 0 16 16">
-                                                <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
-                                                <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
-                                            </svg>
-                                        </button>
-                                    </div>
+
+                                    <button class="eye-btn" user-role="{{ user.role }}" lesson-id="{{ item.lesson.lesson_id }}" comp-id ="{{ item.lesson.compensation_id }}" onclick="displayCompLesson(this.closest('tbody'),this.getAttribute('comp-id'), this.getAttribute('lesson-id'), this.getAttribute('user-role'))">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="eye" viewBox="0 0 16 16">
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/> 
+                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                        </svg>
+                                    </button>
+                                    <button class="hide-eye-btn" lesson-id="{{ item.lesson.lesson_id }}" onclick="hideCompLesson(this.closest('tbody'),this.getAttribute('lesson-id'))" hidden>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="eye-slash" viewBox="0 0 16 16">
+                                            <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
+                                            <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
+                                        </svg>
+                                    </button>
+                               
+                                {% else %}
+                                    <button type="button" class="disabled-btn" disabled>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="lightgray" viewBox="0 0 16 16">
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/> 
+                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                        </svg>
+                                    </button>
                                 {% endif %}
 
                                 {% if user.role == "admin" %}
@@ -509,22 +517,22 @@
 
                                     <!-- Delete modal -->
                                     <div class="modal-overlay delete-lesson-overlay">
-                                        <div class="modal delete-lesson-modal">
+                                        <div class="modal center-modal delete-modal delete-lesson-modal">
                                             <div class="modal-content delete-lesson-content">
                                                 <div class="delete-lesson-body">
-                                                    <span class="lang-en">
-                                                        <h2> Warning!</h2>
+                                                    <span class="lang-en delete-modal-body">
+                                                        <h2> WARNING!</h2>
                                                         <h3> Are you sure you want to remove this Lesson? </h3>
                                                     </span>
-                                                    <span class="lang-pt" hidden>
-                                                        <h2> Atenção! </h2>
+                                                    <span class="lang-pt delete-modal-body" hidden>
+                                                        <h2> ATENÇÃO! </h2>
                                                         <h3> Tem a certeza que quer eliminar esta aula? </h3>
                                                     </span>
                                                 </div>
-                                                
-                                                <div class="delete-lesson-buttons">
-                                                    <button class="button confirm-delete" translation-key="delete"> Delete </button>
-                                                    <button class="button cancel-delete" translation-key="go_back"> Go back </button>
+                                                <br>
+                                                <div class="center-modal-btns delete-btns delete-lesson-buttons">
+                                                    <button class="delete-modal-btn cancel-delete" translation-key="cancel"> Cancel </button>
+                                                    <button class="delete-modal-btn confirm-delete" translation-key="delete"> Delete </button>    
                                                 </div>
                                             </div>
                                         </div>
@@ -532,12 +540,12 @@
 
                                     <!-- New lesson modal -->
                                     <div class="modal-overlay new-lesson-overlay"> 
-                                        <div class="modal new-lesson-modal">
-                                            <div class="modal-content new-lesson-content">
+                                        <div class="modal new-info-modal new-lesson-modal">
+                                            <div class="modal-content new-info-content new-lesson-content vertical-body">
                                                 <form id="new-lesson-form" action="/new_lesson" method="POST">
                                                     <!-- Send lesson-id by hidden input field -->
                                                     <input type="hidden" id="lesson-id" name="lesson_id" value="{{ item.lesson.lesson_id }}">
-                                                    <table class="table">
+                                                    <table class="new-info-table">
                                                         <thead>
                                                             <th> <label for="comp-date" translation-key="date"> Date </label> </th>
                                                             <th> <label for="comp-start" translation-key="start_time"> Start Time </label> </th>
@@ -551,8 +559,11 @@
                                                             <td> <input type="text" id="new-class-classroom" name="classroom" required> </td>
                                                         </tbody>
                                                     </table>
-                                                    <button class="button create-new-lesson" type="submit" translation-key="create"> Create </button>
-                                                    <button class="button cancel-new-lesson" translation-key="cancel"> Cancel </button>
+                                                    <div class="new-info-modal-btns">
+                                                        <button class="new-info-btn cancel-new-lesson" translation-key="cancel"> Cancel </button>
+                                                        <button class="new-info-btn create-new-lesson" type="submit" translation-key="confirm"> Confirm </button>
+                                                    </div>
+                          
                                                 </form>
                                             </div>
                                         </div>
@@ -595,51 +606,55 @@
             console.log(ogLessonAttend);
             
             if (ogLessonAttend || ogDateAttend) {
+                //light green
                 ogLessonAttend.forEach(function(row) {
-                    row.style.backgroundColor = "lightGreen";
+                    row.style.backgroundColor = "rgba(144, 238, 144, 0.35)"; 
                     row.style.color = "black";
                     console.log(row);
                 });
                 ogDateAttend.forEach(function(row) {
-                    row.style.backgroundColor = "lightGreen";
+                    row.style.backgroundColor = "rgba(144, 238, 144, 0.35)";
                     row.style.color = "black";
                 });
             }
             if (ogLessonMiss || ogDateMiss) {
+                // light orange
                 ogLessonMiss.forEach(function(row) {
-                    row.style.backgroundColor = "red";
+                    row.style.backgroundColor = "rgba(255, 120, 9, 0.7)";
                 });
                 ogDateMiss.forEach(function(row) {
-                    row.style.backgroundColor = "red";
+                    row.style.backgroundColor = "rgba(255, 120, 9, 0.7)";
                 });
             }
             if (compLesson || compDate) {
                 compLesson.forEach(function(row) {
-                    row.style.backgroundColor = "grey";
+                    row.style.backgroundColor = "whitesmoke";
                     row.hidden = true;
                 })
                 compDate.forEach(function (row) {
-                    row.style.backgroundColor = "grey";
+                    row.style.backgroundColor = "whitesmoke";
                     row.hidden = false;
                 })
             }
             if (compLessonAttend || compDateAttend) {
+                // slightly darker green
                 compLessonAttend.forEach(function(row) {
-                    row.style.backgroundColor = "Green"
+                    row.style.backgroundColor = "rgba(144, 238, 144, 0.85)";
                     row.hidden = true;
                 });
                 compDateAttend.forEach(function(row) {
-                    row.style.backgroundColor = "Green"
+                    row.style.backgroundColor = "rgba(144, 238, 144, 0.85)";
                     row.hidden = false;
                 });
             }
             if (compLessonMiss || compDateMiss) {
+                // red
                 compLessonMiss.forEach(function(row) {
-                    row.style.backgroundColor = "salmon"
+                    row.style.backgroundColor = "rgba(255, 0, 0, 1)";
                     row.hidden = true;
                 });
                 compDateMiss.forEach(function(row) {
-                    row.style.backgroundColor = "salmon"
+                    row.style.backgroundColor = "rgba(255, 0, 0, 1)";
                     row.hidden = false;
                 });
             }
@@ -672,12 +687,12 @@
         };
 
         // Display compensation lesson
-        function displayCompLesson(eyeBtns, lessonRow, compId, lessonId, userRole) {
+        function displayCompLesson(lessonRow, compId, lessonId, userRole) {
 
             let ogLesson = lessonRow;
             let compLesson = document.getElementById("lesson" + compId);
-            let hideBtn = eyeBtns.querySelector(".hide-eye-btn");
-            let showBtn = eyeBtns.querySelector(".eye-btn");
+            let hideBtn = lessonRow.querySelector(".hide-eye-btn");
+            let showBtn = lessonRow.querySelector(".eye-btn");
 
             console.log("ogLesson:", ogLesson);
             console.log("compLesson:", compLesson);
@@ -686,8 +701,10 @@
             if (compLesson && ogLesson) {
                 // Show compLesson
                 compLesson.hidden = false;
+                
                 // Place it below original lesson
                 ogLesson.insertAdjacentElement("afterend", compLesson);
+
                 // Switch eye buttons
                 showBtn.hidden = true;
                 hideBtn.hidden = false;
@@ -697,19 +714,23 @@
             // If there isn't yet a comp lesson
             else if(ogLesson && !compLesson) {
                 let addCompLesson = document.createElement("div");
-                addCompLesson.classList.add("add-comp");
+                addCompLesson.classList.add("comp-container");
 
                 // Create button to add new lesson if admin
                 if (userRole == "admin") {
                     addCompLesson.innerHTML = `
-                        <span class="lang-pt" hidden> <button type="button" class="comp-btn" onclick="newLesson('${lessonId}')"> Adicionar Aula de Reposição </button> </span>
-                        <span class="lang-en"> <button type="button" class="comp-btn" onclick="newLesson('${lessonId}')"> Add Compensation Lesson </button> </span>
+                        <div class="add-comp">   
+                            <span class="lang-pt" hidden> <button type="button" class="comp-btn" onclick="newLesson('${lessonId}')"> Adicionar Aula de Reposição </button> </span>
+                            <span class="lang-en"> <button type="button" class="comp-btn" onclick="newLesson('${lessonId}')"> Add Compensation Lesson </button> </span>
+                        </div>
                     `;
                 // If student or teacher: inform there is no componsation lesson yet
                 } else {
                     addCompLesson.innerHTML = `
-                        <span class="no-comp lang-pt" hidden> Aula de reposição ainda por agendar </span>
-                        <span class="no-comp lang-en"> No compensation Lesson yet </span>
+                        <div class="no-comp">   
+                            <span class="no-comp lang-pt" hidden> Aula de reposição ainda por agendar </span>
+                            <span class="no-comp lang-en"> No compensation Lesson yet </span>
+                        </div>
                     `;
                 }
 
@@ -738,10 +759,10 @@
         };
 
         // Hide compensation lessons
-        function hideCompLesson(eyeBtns, lessonId) {
+        function hideCompLesson(lessonRow, lessonId) {
 
-            let hideBtn = eyeBtns.querySelector(".hide-eye-btn");
-            let showBtn = eyeBtns.querySelector(".eye-btn");
+            let hideBtn = lessonRow.querySelector(".hide-eye-btn");
+            let showBtn = lessonRow.querySelector(".eye-btn");
             let ogLesson = document.getElementById("lesson" + lessonId);
 
             if (ogLesson) {
