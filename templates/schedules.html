@@ -47,7 +47,6 @@
                                             <td> <input type="text" id="new-class-name" name="class_name" required></td>
                                             <td> 
                                                 <span>
-                                                    
                                                     <select id="new-class-weekday" name="weekday" required>
                                                         {% set weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] %}
                                                             <option selected disabled> </option>
@@ -62,8 +61,8 @@
                                             <td>
                                                 <select name="teacher" id="new-class-teacher" required>
                                                     <option selected disabled> </option>
-                                                {% for name in teacher_names %}
-                                                    <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                {% for teacher in active_teachers %}
+                                                    <option value="{{ teacher.name }}"> {{ teacher.name }} </option>
                                                 {% endfor %}
                                                 </select> 
                                             </td>
@@ -290,11 +289,11 @@
                                     <li> {{ item.teacher[0] }} </li>
                                     <li> 
                                         <select name="teachers" class="hidden-class{{ item.class.class_id }} input-long" hidden>
-                                            {% for name in teacher_names %}
-                                                {% if name[0] == item.teacher[0] %}
-                                                    <option value="{{ name[0] }}" selected> {{ name[0] }} </option>
+                                            {% for teacher in teachers %}
+                                                {% if teacher.name == item.teacher[0] %}
+                                                    <option value="{{ teacher.name }}" selected> {{ teacher.name }} </option>
                                                 {% else %}
-                                                    <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    <option value="{{ teacher.name }}"> {{ teacher.name }} </option>
                                                 {% endif %}
                                             {% endfor %}
                                         </select>
@@ -337,7 +336,7 @@
                                                 </div>
 
                                                 <div class="students-modal-body">
-                                                    {% for student in students %}
+                                                    {% for student in active_students %}
                                                     <div class="student-item all-students" student-id="{{ student.id }}">
                                                         <button type="button" class="add-btn" onclick="addStudent(this)" >
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-plus" viewBox="0 0 16 16">
@@ -810,7 +809,6 @@
             // clear old changes before updating
             updatedStudents.innerHTML = "";
 
-            
             studentsInClass.forEach(function(element) {
                 element.classList.remove("added-student");
 
@@ -836,9 +834,7 @@
 
         // Handle new data after edit
         function SubmitChanges(tableRow, dataClassId) {
-            
-            // TODO: Confirm if classId is still working correctly
-            // Previsouly, I had class-id-name and trimmed "class" from string, getting just the Id number)
+
             let classId = dataClassId
 
             console.log(classId);

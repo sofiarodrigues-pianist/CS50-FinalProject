@@ -19,7 +19,7 @@
 
     <div class="register-form">
         <form id="register" action="/register" method="post">
-            <input type="hidden" name="saved_lang" id="savedLanguage">
+            <input type="hidden" name="saved_lang" id="saved-lang-input-form">
             <div class="input-containers">
                 <span class="lang-en">
                     <input class="regist-user" autocomplete="off" name="user_en" placeholder="school_ID" type="text">
@@ -46,7 +46,7 @@
 
         // Get savedLang value and set it to input value
         let lang = localStorage.getItem("selectedLanguage");
-        let input = document.getElementById("savedLanguage");
+        let input = document.getElementById("saved-lang-input-form");
         input.value = lang;
 
     </script>

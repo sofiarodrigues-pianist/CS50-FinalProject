@@ -224,13 +224,20 @@
 
                     localStorage.setItem("selectedLanguage", lang);
                     console.log("storage language:", lang)
+                    
+                    document.querySelector(".language").value = lang;
 
-                    overlay = document.querySelector(".user-overlay");
-                    modal = document.querySelector(".user-modal");
+                    overlay = document.querySelector(".modal-overlay");
+                    modal = document.querySelector(".modal");
+                    langForm = document.querySelector(".saved-lang-input-form");
 
                     if (overlay && modal) {
                         overlay.style.display="none";
                         modal.style.display="none";
+                    }
+
+                    if (langForm) {
+                        langForm.value = lang;
                     }
                 }
 
@@ -240,7 +247,13 @@
                      
                     if (savedLang) {
                         document.querySelector(".language").value = savedLang;
+                        let langForm = document.querySelector(".saved-lang-input-form")
+                        if (langForm) {
+                            langForm.value = savedLang; 
+                        }
+                        
                         switchLang(savedLang);
+                        console.log("after switch lang call");
                     }
                 }
 
@@ -316,7 +329,14 @@
                             voice:"Voice",
                             combo:"Combo",
                             group_class:"Group Class",
-                            music_production:"Music Production"
+                            music_production:"Music Production",
+                            mini_musician:"Mini-Musician",
+                            sociable_mini_musician:"Sociable Mini-Musician",
+                            musician:"Musician",
+                            semi_musician:"Semi-Musician",
+                            instrumentalist:"Instrumentalist",
+                            semi_instrumentalist:"Semi-Instrumentalist",
+                            sociable_instrumentalist:"Sociable Instrumentalist"
                         },
 
                         pt: {
@@ -387,7 +407,14 @@
                             voice:"Canto",
                             combo:"Combo",
                             group_class:"Aula de Grupo",
-                            music_production:"Produção Musical"
+                            music_production:"Produção Musical",
+                            mini_musician:"Mini-Músico",
+                            sociable_mini_musician:"Mini-Músico Sociável",
+                            musician:"Músico",
+                            semi_musician:"Semi-Músico",
+                            instrumentalist:"Instrumentista",
+                            semi_instrumentalist:"Semi-Instrumentista",
+                            sociable_instrumentalist:"Instrumentista Sociável"
                         }
                     };
 

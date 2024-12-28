@@ -52,20 +52,25 @@
                                             <td>
                                                 <select name="teacher" id="new-student-teacher" required>
                                                     <option></option>
-                                                    {% for name in teacher_names %}
-                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    {% for teacher in active_teachers %}
+                                                        <option value="{{ teacher.name }}"> {{ teacher.name }} </option>
                                                     {% endfor %}
                                                 </select> 
                                             </td>
                                             
                                             <td> 
-                                                <select id="new-student-course" name="course" required>
-                                                    <option></option>
-                                                    {% set courses = ["Mini-Músico", "Mini-Músico Sociável", "Instrumentista", "Instrumentista Sociável", "Semi-Instrumentista", "Semi-Músico", "Músico"] %}
-                                                    {% for course in courses %}
-                                                        <option value="{{ course }}"> {{ course }}</option>
+                                                <select class="new-student-course" name="course"> 
+                                                    <option value="" disabled selected > </option>
+                                                    {% set courses = {
+                                                        "mini_musician":"Mini-Musician", "sociable_mini_musician":"Sociable Mini-Musician",
+                                                        "musician":"Musician", "semi_musician":"Semi-Musician",
+                                                        "instrumentalist":"Instrumentalist", "semi_instrumentalist":"Semi-Instrumentalist",
+                                                        "sociable_instrumentalist":"Sociable Instrumentalist"
+                                                    } %} 
+                                                    {% for value, name in courses.items() %}
+                                                        <option value="{{ name }}" translation-key="{{ value }}"> {{ name }}</option>
                                                     {% endfor %}
-                                                </select> 
+                                                </select>
                                             </td>
                                             <td> <input type="number" id="new-student-fee" name="monthly_fee" required> </td>
                                             <td> <input type="date" id="new-student-enrollment" name="enrollment" required> </td>
@@ -146,13 +151,18 @@
                                     <li> {{ item.student.course }} </li>
                                     <li>
                                         <select name="courses" class="hidden-student{{ item.student.student_id }} input-long" hidden>
-                                            {% set courses = ["Mini-Músico", "Mini-Músico Sociável", "Instrumentista", "Instrumentista Sociável", "Semi-Instrumentista", "Semi-Músico", "Músico"] %}
-                                            
-                                            {% for course in courses %}
-                                                {% if course == item.student.course %}
-                                                    <option value="{{ course }}" selected> {{ course }}</option>
+                                            {% set courses = {
+                                                "mini_musician":"Mini-Musician", "sociable_mini_musician":"Sociable Mini-Musician",
+                                                "musician":"Musician", "semi_musician":"Semi-Musician",
+                                                "instrumentalist":"Instrumentalist", "semi_instrumentalist":"Semi-Instrumentalist",
+                                                "sociable_instrumentalist":"Sociable Instrumentalist"
+                                            } %} 
+
+                                            {% for value, name in courses.items() %}
+                                                {% if name == item.student.course %}
+                                                    <option value="{{ name }}" translation-key="{{ value }}" selected> {{ name }}</option>
                                                 {% else %}
-                                                    <option value="{{ course}}"> {{ course }}</option>
+                                                    <option value="{{ name }}" translation-key="{{ value }}"> {{ name }}</option>
                                                 {% endif %}
                                             {% endfor %}
                                         </select>
@@ -177,11 +187,11 @@
                                     <li> {{ item.teacher }} </li>
                                     <li> 
                                         <select name="teachers" class="hidden-student{{ item.student.student_id }}" hidden>
-                                            {% for name in teacher_names %}
-                                                {% if name[0] == item.teacher %}
-                                                    <option value="{{ name[0] }}" selected> {{ name[0] }} </option>
+                                            {% for teacher in active_teachers %}
+                                                {% if teacher.name == item.teacher %}
+                                                    <option value="{{ teacher.name }}" selected> {{ teacher.name }} </option>
                                                 {% else %}
-                                                    <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    <option value="{{ teacher.name }}"> {{ teacher.name }} </option>
                                                 {% endif %}
                                             {% endfor %}
                                         </select>

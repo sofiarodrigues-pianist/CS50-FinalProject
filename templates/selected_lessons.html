@@ -126,11 +126,11 @@
                                         <li> {{ item.teacher }} </li>
                                         <li> 
                                             <select name="teachers" class="hidden-lesson{{ item.lesson.lesson_id}}" hidden>
-                                                {% for name in teacher_names %}
-                                                    {% if name[0] == item.teacher %}
-                                                        <option value="{{ name[0] }}" selected> {{ name[0] }} </option>
+                                                {% for teacher in teachers %}
+                                                    {% if teacher.name == item.teacher %}
+                                                        <option value="{{ teacher.name }}" selected> {{ teacher.name }} </option>
                                                     {% else %}
-                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                        <option value="{{ teacher.name }}"> {{ teacher.name }} </option>
                                                     {% endif %}
                                                 {% endfor %}
                                             </select>
@@ -347,11 +347,11 @@
                                     <li> {{ item.teacher }} </li>
                                     <li> 
                                         <select name="teachers" class="hidden-lesson{{ item.lesson.lesson_id}}" hidden>
-                                            {% for name in teacher_names %}
-                                                {% if name[0] == item.teacher %}
-                                                    <option value="{{ name[0] }}" selected> {{ name[0] }} </option>
+                                            {% for teacher in teachers %}
+                                                {% if teacher.name == item.teacher %}
+                                                    <option value="{{ teacher.name }}" selected> {{ teacher.name }} </option>
                                                 {% else %}
-                                                    <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    <option value="{{ teacher.name }}"> {{ teacher.name }} </option>
                                                 {% endif %}
                                             {% endfor %}
                                         </select>

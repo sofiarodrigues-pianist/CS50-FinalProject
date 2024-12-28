@@ -174,28 +174,57 @@ def register():
 
     # user reaches via post method
     if request.method == "POST":
-        # get input from user
-        user = request.form.get("user")
-        password = request.form.get("password")
-        confirmation = request.form.get("confirmation")
 
+        saved_lang = request.form.get("saved_lang")
+
+        # get input from user
+        if saved_lang == "en":
+            user = request.form.get("user_en")
+            password = request.form.get("password_en")
+            confirmation = request.form.get("confirmation_en")
+        elif saved_lang == "pt":
+            user = request.form.get("user_pt")
+            password = request.form.get("password_pt")
+            confirmation = request.form.get("confirmation_pt")
+        
         # check existence in db
         new_user = db.session.query(Users).filter(Users.id == user).one_or_none()
-        print(new_user.is_registered)
-        print(new_user.name)
 
         if not new_user:
-            return NotFound(description="User not found")
+            if saved_lang == "pt":
+                error="Utilizador não encontrado!"
+            
+            elif saved_lang == "en":
+                error="Sorry, user not found!"
+
+            return render_template("register_error.html", error=error, register=False)
         else:
             # check if user already registered
             if new_user.is_registered:
-                print(new_user.is_registered)
-                return BadRequest(description="User is already registered")
+                if saved_lang == "pt":
+                    error="Utilizador já está registado!"
+                
+                elif saved_lang == "en":
+                    error="User already registered!"
+
+                return render_template("register_error.html", error=error, register=True)
             else:
                 if not password:
-                    return BadRequestKeyError(arg="Password not valid")
+                    if saved_lang == "pt":
+                        error="Inserir palavra-chave!"
+                
+                    elif saved_lang == "en":
+                        error="Password is missing!"
+
+                    return render_template("register_error.html", error=error, register=False)
                 elif not confirmation or confirmation != password:
-                    return BadRequestKeyError(arg="Passwords do not match")
+                    if saved_lang == "pt":
+                        error="Palavras-chave não correspondem!"
+                
+                    elif saved_lang == "en":
+                        error="Passwords do not match!"
+
+                    return render_template("register_error.html", error=error, register=False)
                 # update database
                 else:
                     hash_password = generate_password_hash(password)
@@ -230,16 +259,10 @@ def login():
         elif saved_lang == "en":
             user = request.form.get("user_en").strip()
             password = request.form.get("password_en")
-        else:
-            if saved_lang == "pt":
-                error = "Oops, utilizador não encontrado!"
-            else:
-                error = "Sorry, user not found!"
-
-            return render_template("login_error", error=error, register=True)
 
         print("user input:", user)
-        print("password", password)
+        print("password: ", password)
+        print("saved_lang: ", saved_lang)
 
         # check if user in database and registered
         user_table = db.session.query(Users).filter(Users.id == user).one_or_none()
@@ -493,9 +516,10 @@ def schedules():
             if user.role == "admin":
                 active_students = db.session.query(Users).join(Students).filter(Students.active == True).order_by(Users.name).all()
                 students = db.session.query(Users).filter(Users.role == "student").order_by(Users.name).all()
-                teacher_names = db.session.query(Users.name).filter(Users.role == "teacher").order_by(Users.name).all()
+                teachers = db.session.query(Users).filter(Users.role == "teacher").order_by(Users.name).all()
+                active_teachers = db.session.query(Users).join(Teachers).filter(Teachers.active == True).order_by(Users.name).all()
 
-                return render_template("schedules.html", classes_data=classes_data, user=user, students=students, active_students=active_students, teacher_names=teacher_names)
+                return render_template("schedules.html", classes_data=classes_data, user=user, students=students, active_students=active_students, teachers=teachers, active_teachers=active_teachers)
             
             elif user.role == "teacher":
                 return render_template("schedules.html", classes_data=classes_data, user=user)
@@ -695,7 +719,7 @@ def lessons():
                 schedules = teacher_schedules_info(Schedules, db, user.id)
             else:
                 lessons = db.session.query(Lessons).join(lesson_students).filter(and_(lesson_students.c.students_id == user.id, Lessons.lesson_date == date)).order_by(asc(Lessons.hour)).all()
-                schedules = schedules = student_schedules_info(Schedules, Users, students_schedules, db, user.id)
+                schedules = student_schedules_info(Schedules, Users, students_schedules, db, user.id)
 
             # If lessons on selected day
             if lessons:
@@ -719,12 +743,11 @@ def lessons():
                 # Display schedule for selected day
                 if user.role == "admin":
                     students = db.session.query(Users).filter(Users.role == "student").order_by(Users.name).all()
-                    teacher_names = db.session.query(Users.name).filter(Users.role == "teacher").order_by(Users.name).all()
+                    teachers = db.session.query(Users).filter(Users.role == "teacher").order_by(Users.name).all()
                     
-                    return render_template("selected_lessons.html", lessons_data=lessons_data, schedules=schedules, students=students, teacher_names=teacher_names, user=user, date_formatted=date_formatted)
+                    return render_template("selected_lessons.html", lessons_data=lessons_data, schedules=schedules, students=students, teachers=teachers, user=user, date_formatted=date_formatted)
                 
                 elif user.role == "teacher":
-
                     return render_template("selected_lessons.html", lessons_data=lessons_data, schedules=schedules, user=user, date_formatted=date_formatted)
                 
                 else:
@@ -760,19 +783,17 @@ def lessons():
 
                 # Display schedule for selected schedule
                 if user.role == "admin":
-
                     schedules = all_schedules_info(Schedules, Users, db)
                     students = db.session.query(Users).filter(Users.role == "student").order_by(Users.name).all()
-                    teacher_names = db.session.query(Users.name).filter(Users.role == "teacher").order_by(Users.name).all()
-                    return render_template("selected_lessons.html", lessons_data=lessons_data, schedules=schedules, students=students, teacher_names=teacher_names, user=user, date_formatted=None)
+                    teachers = db.session.query(Users).filter(Users.role == "teacher").order_by(Users.name).all()
+
+                    return render_template("selected_lessons.html", lessons_data=lessons_data, schedules=schedules, students=students, teachers=teachers, user=user, date_formatted=None)
                 
                 elif user.role == "teacher":
-
                     schedules = teacher_schedules_info(Schedules, db, user.id)
                     return render_template("selected_lessons.html", lessons_data=lessons_data, schedules=schedules, user=user, date_formatted=None)
                 
                 else:
-
                     schedules = student_schedules_info(Schedules, Users, students_schedules, db, user.id)
                     return render_template("selected_lessons.html", lessons_data=lessons_data, schedules=schedules, user=user, date_formatted=None)
                 
@@ -817,12 +838,13 @@ def lessons():
             # Display schedule for today
             if user.role == "admin":
                 students = db.session.query(Users).filter(Users.role == "student").order_by(Users.name).all()
-                teacher_names = db.session.query(Users.name).filter(Users.role == "teacher").order_by(Users.name).all()
+                teachers = db.session.query(Users).filter(Users.role == "teacher").order_by(Users.name).all()
+                active_teachers = db.session.query(Users).join(Teachers).filter(Teachers.active == True).order_by(Users.name).all()
+                active_students = db.session.query(Users).join(Students).filter(Students.active == True).order_by(Users.name).all()
                 
-                return render_template("lessons.html", lessons_data=lessons_data, user=user, schedules=schedules, teacher_names=teacher_names, students=students)
+                return render_template("lessons.html", lessons_data=lessons_data, user=user, schedules=schedules, teachers=teachers, students=students, active_students=active_students, active_teachers=active_teachers)
             
             elif user.role == "teacher":
-
                 return render_template("lessons.html", lessons_data=lessons_data, schedules=schedules, user=user)
             
             else:
@@ -1244,7 +1266,7 @@ def students():
     if request.method == "GET":
         
         students = db.session.query(Students).join(Users).filter(Students.active == True).order_by(Users.name).all()
-        teacher_names = db.session.query(Users.name).filter(Users.role == "teacher").order_by(Users.name).all()
+        active_teachers = db.session.query(Users).join(Teachers).filter(Teachers.active == True).order_by(Users.name).all()
 
         if students:
             for item in students:
@@ -1267,7 +1289,7 @@ def students():
 
                 students_data.append(data)
         
-            return render_template("students.html", user=user, students_data=students_data, teacher_names=teacher_names)
+            return render_template("students.html", user=user, students_data=students_data, active_teachers=active_teachers)
         
         else:
             return render_template("students.html", user=user, students_data=None)

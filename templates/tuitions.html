@@ -85,7 +85,6 @@
                 </div>
                 
                 <div class="search-options">
-                    <!-- NEW WAY -->
                     <div>
                         <form action="/tuitions" method="post" id="student-form">
                             <div class="search-elements">
@@ -188,69 +187,6 @@
                         </div>
                         
                     </div>
-
-
-                    <!-- OLD WAY
-                    <div class="horizontal-elements">
-                        <button class="search-btn" onclick="searchTuition(this.closest('span'))">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                            </svg>
-                        </button>
-                        <h5 translation-key="search"> Search </h5>  
-                    </div>
-                    
-                    <div class="modal-overlay search-overlay">
-                        <div class="modal search-modal">
-                            <div class="modal-content search-content">
-                                <div id="select-tuition">
-                                    <form action="/tuitions" method="post">
-                                        <select class="select-student lang-en" name="student" placeholder="Search by student"> 
-                                            <option value="" disabled selected> Search by student </option>
-                                            {% for name in students_names %}
-                                                <option value="{{ name[0] }}"> {{ name[0] }} </option>
-                                            {% endfor %}
-                                        </select>
-                                        <select class="select-student lang-pt" name="student" placeholder="Procurar por aluno" hidden> 
-                                            <option value="" disabled selected> Procurar por aluno </option>
-                                            {% for name in students_names %}
-                                                <option value="{{ name[0] }}"> {{ name[0] }} </option>
-                                            {% endfor %}
-                                        </select>
-                                        
-                                        <button type="submit" class="button" id="see-tuition" translation-key="search"> Search </button>
-                                    </form>
-
-                                    <form action="/tuitions" method="post">
-                                        <select class="select-month lang-en" name="month" placeholder="Search by month"> 
-                                            <option value="" disabled selected > Search by month </option>
-                                            {% set months = {
-                                                9: "September", 10: "October", 11: "November", 12: "December", 
-                                                1: "January", 2: "February", 3: "March", 4: "April",
-                                                5: "May", 6: "June", 7: "July"
-                                            } %} 
-                                            {% for number, name in months.items() %}
-                                                <option value="{{ number }}"> {{ name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <select class="select-month lang-pt" name="month" placeholder="Procurar por mês" hidden> 
-                                            <option value="" disabled selected > Procurar por mês </option>
-                                            {% set months = {
-                                                9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro", 
-                                                1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
-                                                5: "Maio", 6: "Junho", 7: "Julho"
-                                            } %} 
-                                            {% for number, name in months.items() %}
-                                                <option value="{{ number }}"> {{ name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <button type="submit" class="button" id="see-tuition" translation-key="search"> Search </button>
-                                    </form>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div> -->
                 </div>
             </div>
 

@@ -126,11 +126,11 @@
                                     <li> {{ item.teacher }} </li>
                                     <li> 
                                         <select name="teachers" class="hidden-lesson{{ item.lesson.lesson_id }}" hidden>
-                                            {% for name in teacher_names %}
-                                                {% if name[0] == item.teacher %}
-                                                    <option value="{{ name[0] }}" selected> {{ name[0] }} </option>
+                                            {% for teacher in active_teachers %}
+                                                {% if teacher.name == item.teacher %}
+                                                    <option value="{{ teacher.name }}" selected> {{ teacher.name}} </option>
                                                 {% else %}
-                                                    <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    <option value="{{ teacher.name }}"> {{ teacher.name }} </option>
                                                 {% endif %}
                                             {% endfor %}
                                         </select>
@@ -174,16 +174,16 @@
                                                 </div>
 
                                                 <div class="students-modal-body">
-                                                    {% for student in students %}
-                                                    <div class="student-item all-students" student-id="{{ student.id }}">
-                                                        <button type="button" class="add-btn" onclick="addStudent(this)" >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-plus" viewBox="0 0 16 16">
-                                                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                                                                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
-                                                            </svg>
-                                                        </button>
-                                                        <span> {{ student.name }} </span>
-                                                    </div>
+                                                    {% for student in active_students %}
+                                                        <div class="student-item all-students" student-id="{{ student.id }}">
+                                                            <button type="button" class="add-btn" onclick="addStudent(this)" >
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-plus" viewBox="0 0 16 16">
+                                                                    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                                                    <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                                                                </svg>
+                                                            </button>
+                                                            <span> {{ student.name }} </span>
+                                                        </div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
@@ -204,14 +204,14 @@
                                                 </div>
                                                 <div class="students-modal-body">
                                                     {% for student in item.students %}
-                                                    <div class="student-item students-in-class og-student" student-id="{{ student.student_id }}">
-                                                        <button type="button" class="remove-btn" onclick="removeStudent(this)"> 
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-less" viewBox="0 0 16 16">
-                                                                <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708"/>
-                                                            </svg>
-                                                        </button>
-                                                        <span> {{ student.user.name }} </span>
-                                                    </div>
+                                                        <div class="student-item students-in-class og-student" student-id="{{ student.student_id }}">
+                                                            <button type="button" class="remove-btn" onclick="removeStudent(this)"> 
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="stdnt-less" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708"/>
+                                                                </svg>
+                                                            </button>
+                                                            <span> {{ student.user.name }} </span>
+                                                        </div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
