@@ -67,8 +67,8 @@
                                             <td>
                                                 <select name="teacher" id="new-salary-teacher" required>
                                                     <option></option>
-                                                    {% for name in teachers_names %}
-                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    {% for teacher in teachers %}
+                                                        <option value="{{ teacher.name }}"> {{ teacher.name }} </option>
                                                     {% endfor %}
                                                 </select> 
                                             </td>
@@ -107,8 +107,8 @@
                                     <option value="" disabled selected> </option>
                                 {% endif %}
                                 
-                                {% for name in teachers_names %}
-                                    <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                {% for teacher in teachers %}
+                                    <option value="{{ teacher.name }}"> {{ teacher.name }} </option>
                                 {% endfor %}
                             </select>
                             
@@ -536,21 +536,6 @@
                 }  
             }
         }
-
-        /*function searchSalary(spanTag) {
-            let overlay = spanTag.querySelector(".search-overlay");
-            let modal = spanTag.querySelector(".search-modal");
-
-            overlay.style.display="block";
-            modal.style.display="block";
-
-            overlay.onclick = function(event) {
-                if (event.target == overlay) {
-                    modal.style.display = "none";
-                    overlay.style.display = "none";
-                } 
-            };
-        }*/
 
         // Display edit fields inline
         function displayEdit(button) {

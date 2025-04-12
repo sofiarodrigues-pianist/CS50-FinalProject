@@ -1,4 +1,4 @@
-from flask import redirect, session, request
+from flask import redirect, session
 from functools import wraps
 from datetime import datetime, date
 from dateutil.rrule import rrule, DAILY, MONTHLY
@@ -163,8 +163,8 @@ def populate_salaries_2425(Teachers, Salaries, db):
     if not Salaries.query.first():
 
         # Generate months list
-        start_date = datetime(2024, 9, 1)
-        end_date = datetime(2025, 7, 1)
+        start_date = datetime(2024, 9, 28)
+        end_date = datetime(2025, 7, 28)
         months = rrule(freq=MONTHLY, dtstart=start_date, until=end_date)
 
         for date in months:
@@ -236,7 +236,7 @@ def populate_lessons_2324(Schedules, Lessons, Students, students_schedules, less
                 for student in students:
                     item.students.append(student)  
 
-        #db.session.commit()
+        db.session.commit()
 
             
 def populate_lessons_2425(Schedules, Lessons, Students, students_schedules, db):

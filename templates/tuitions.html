@@ -65,8 +65,8 @@
                                             <td>
                                                 <select name="student" id="new-tuition-student" required>
                                                     <option></option>
-                                                    {% for name in students_names %}
-                                                        <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                                    {% for student in students %}
+                                                        <option value="{{ student.name }}"> {{ student.name }} </option>
                                                     {% endfor %}
                                                 </select> 
                                             </td>
@@ -105,8 +105,8 @@
                                     <option value="" disabled selected> </option>
                                 {% endif %}
                                 
-                                {% for name in students_names %}
-                                    <option value="{{ name[0] }}"> {{ name[0] }} </option>
+                                {% for student in students %}
+                                    <option value="{{ student.name }}"> {{ student.name }} </option>
                                 {% endfor %}
                             </select>
                             
@@ -321,10 +321,10 @@
 
             {% else %}
                 <span class="lang-pt title-container" hidden>
-                    <h2 class="title"> Ainda não existem mensalidades </h2>
+                    <h4 class="no-info-title"> Ainda não existem mensalidades. </h4>
                 </span> 
                 <span class="lang-en title-container">
-                    <h2 class="title"> There are no tuitions yet </h2>
+                    <h4 class="no-info-title"> There are no tuitions yet. </h4>
                 </span>
 
             {% endif %}
@@ -371,10 +371,10 @@
 
             {% else %}
                 <span class="lang-pt title-container">
-                    <h2 class="title"> Ainda não existem mensalidades </h2>
+                    <h4 class="no-info-title"> Ainda não existem mensalidades. </h4>
                 </span>
                 <span class="lang-en title-container">
-                    <h2 class="title"> There are no tuitions yet </h2>
+                    <h4 class="no-info-title"> There are no tuitions yet. </h4>
                 </span>
                 
             {% endif %}
@@ -541,22 +541,6 @@
                 }  
             }
         }
-
-        // Search tuitions
-        /*function searchTuition(spanTag) {
-            let overlay = spanTag.querySelector(".search-overlay");
-            let modal = spanTag.querySelector(".search-modal");
-
-            overlay.style.display="block";
-            modal.style.display="block";
-
-            overlay.onclick = function(event) {
-                if (event.target == overlay) {
-                    modal.style.display = "none";
-                    overlay.style.display = "none";
-                } 
-            };
-        }*/
 
         // Display edit fields inline
         function displayEdit(button) {

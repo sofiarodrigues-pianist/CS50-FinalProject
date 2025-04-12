@@ -1,10 +1,8 @@
 from flask import Flask, redirect, render_template, request, session, url_for, jsonify
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import desc, asc, and_
-from dateutil import parser
+from sqlalchemy import asc, and_
 from datetime import datetime
-from werkzeug.exceptions import Unauthorized, NotFound, BadRequest, BadRequestKeyError
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from helpers import login_required, populate_lessons_2324, populate_lessons_2425, populate_tuitions_2425, populate_salaries_2425, adjust_lessons, delete_lessons, all_schedules_info, teacher_schedules_info, student_schedules_info, attendance_update, payment_update, add_tuitions, add_salaries
@@ -150,10 +148,14 @@ class Lessons(db.Model):
 with app.app_context():
     db.create_all()
 
-    #populate_lessons_2324(Schedules, Lessons, Students, students_schedules, lesson_students, db)
-    #populate_lessons_2425(Schedules, Lessons, Students, students_schedules, db)
-    #populate_tuitions_2425(Students, Tuitions, db)
-    #populate_salaries_2425(Teachers, Salaries, db)
+    # Functions used one time for testing purposes
+    """
+    populate_lessons_2324(Schedules, Lessons, Students, students_schedules, lesson_students, db)
+    populate_lessons_2425(Schedules, Lessons, Students, students_schedules, db)
+    populate_tuitions_2425(Students, Tuitions, db)
+    populate_salaries_2425(Teachers, Salaries, db)"""
+    
+    # Functions to automatically update payments and attendances each day
     attendance_update(Lessons, db)
     payment_update(Tuitions, db)
     
@@ -309,11 +311,8 @@ def login():
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
     """Log user out"""
-    print("Session type:", app.config["SESSION_TYPE"])
 
-    print("session before clear:", session)
     session.clear()
-    print("session after clear", session)
 
     return redirect("/")
 
@@ -380,9 +379,9 @@ def index():
             
             else:
                 return render_template("index.html", logged_in=logged_in, user=user, classes_data=None)
-        
+            
+        # if user is admin
         else:
-
             classes = db.session.query(Lessons).filter(Lessons.lesson_date == today).order_by(asc(Lessons.hour)).all()
 
             if classes:
@@ -528,10 +527,20 @@ def schedules():
                 return render_template("schedules.html", classes_data=classes_data, user=user)
         # No schedules on that year 
         else:
-            return render_template("schedules.html", classes_data=None, user=user)
+            if user.role == "admin":
+                active_students = db.session.query(Users).join(Students).filter(Students.active == True).order_by(Users.name).all()
+                students = db.session.query(Users).filter(Users.role == "student").order_by(Users.name).all()
+                teachers = db.session.query(Users).filter(Users.role == "teacher").order_by(Users.name).all()
+                active_teachers = db.session.query(Users).join(Teachers).filter(Teachers.active == True).order_by(Users.name).all()
+
+                return render_template("schedules.html", classes_data=None, user=user, students=students, active_students=active_students, teachers=teachers, active_teachers=active_teachers)
+            else:
+                return render_template("schedules.html", classes_data=None, user=user)
 
 
 @app.route("/new_class", methods=["POST"])
+@login_required
+
 def new_class():
     """Crete new schedule """
     
@@ -594,6 +603,8 @@ def new_class():
 
 
 @app.route("/change_class", methods=["POST"])
+@login_required
+
 def change_class():
     """Change class data"""
 
@@ -601,7 +612,6 @@ def change_class():
 
     new_weekday_str = class_data["weekday"].strip()
     new_time_str = class_data["startTime"].strip()
-    # class_name = class_data["className"]
     class_id = class_data["classId"]
     new_teacher = class_data["teacher"].strip()
     new_students = class_data["students"]
@@ -618,7 +628,7 @@ def change_class():
     if new_weekday_str in weekday_names_en:
         new_weekday = weekday_names_en.index(new_weekday_str)
     elif new_weekday_str in weekday_names_pt:
-        weekday_int = weekday_names_pt.index(new_weekday_str)
+        new_weekday = weekday_names_pt.index(new_weekday_str)
     else:
         print("Error translating weekday string to int")
         return redirect("/schedules")
@@ -857,6 +867,8 @@ def lessons():
 
 
 @app.route("/new_lesson", methods=["POST"])
+@login_required
+
 def new_lesson():
     """Create new lesson"""
 
@@ -923,7 +935,9 @@ def new_lesson():
 
 
 
-@app.route("/edit_lesson", methods=["POST"])   
+@app.route("/edit_lesson", methods=["POST"])  
+@login_required
+
 def edit_lesson():
     """Change lesson data"""
 
@@ -1010,6 +1024,8 @@ def edit_lesson():
 
 
 @app.route("/lesson_attendance", methods=["POST"])
+@login_required
+
 def lesson_attendance():
     """Change lesson attendance"""
 
@@ -1054,6 +1070,8 @@ def lesson_attendance():
 
 
 @app.route("/delete_lesson", methods=["POST"])
+@login_required
+
 def delete_lesson():
     """Delete lesson"""
 
@@ -1084,6 +1102,8 @@ def delete_lesson():
 
 
 @app.route("/teachers", methods=["GET", "POST"])
+@login_required
+
 def teachers():
     """ Display list of teachers """
 
@@ -1121,6 +1141,8 @@ def teachers():
 
 
 @app.route("/new_teacher", methods=["POST"])
+@login_required
+
 def new_teacher():
     """ Add new teacher """
 
@@ -1166,6 +1188,8 @@ def new_teacher():
 
 
 @app.route("/change_teacher", methods=["POST"])
+@login_required
+
 def change_teacher():
     """ Change teacher info """
 
@@ -1204,6 +1228,8 @@ def change_teacher():
 
 
 @app.route("/delete_teacher", methods=["POST"])
+@login_required
+
 def delete_teacher():
     """Delete teacher"""
     
@@ -1256,48 +1282,48 @@ def delete_teacher():
         print("There was an error getting teacher_id from JSON")
 
 
-@app.route("/students", methods=["GET", "POST"])
+@app.route("/students", methods=["GET"])
+@login_required
+
 def students():
     """ Display list of students """
 
     user = db.session.query(Users).filter(Users.id == session["user_id"]).one_or_none()
     students_data = []
 
-    if request.method == "GET":
+    students = db.session.query(Students).join(Users).filter(Students.active == True).order_by(Users.name).all()
+    active_teachers = db.session.query(Users).join(Teachers).filter(Teachers.active == True).order_by(Users.name).all()
+
+    if students:
+        for item in students:
+            teacher_name = db.session.query(Users.name).filter(Users.id == item.teacher_id).scalar()
+            contacts = []
+
+            email = db.session.query(Users.email).filter(Users.id==item.student_id).scalar()
+            phone = db.session.query(Users.phone).filter(Users.id==item.student_id).scalar()
         
-        students = db.session.query(Students).join(Users).filter(Students.active == True).order_by(Users.name).all()
-        active_teachers = db.session.query(Users).join(Teachers).filter(Teachers.active == True).order_by(Users.name).all()
+            if email:
+                contacts.append(email)
+            if phone:
+                contacts.append(phone)
 
-        if students:
-            for item in students:
-                teacher_name = db.session.query(Users.name).filter(Users.id == item.teacher_id).scalar()
-                contacts = []
+            data = {
+                'student': item,
+                'teacher': teacher_name,
+                'contacts': contacts,
+            }
 
-                email = db.session.query(Users.email).filter(Users.id==item.student_id).scalar()
-                phone = db.session.query(Users.phone).filter(Users.id==item.student_id).scalar()
-             
-                if email:
-                    contacts.append(email)
-                if phone:
-                    contacts.append(phone)
-
-                data = {
-                    'student': item,
-                    'teacher': teacher_name,
-                    'contacts': contacts,
-                }
-
-                students_data.append(data)
-        
-            return render_template("students.html", user=user, students_data=students_data, active_teachers=active_teachers)
-        
-        else:
-            return render_template("students.html", user=user, students_data=None)
+            students_data.append(data)
+    
+        return render_template("students.html", user=user, students_data=students_data, active_teachers=active_teachers)
+    
     else:
         return render_template("students.html", user=user, students_data=None)
     
 
 @app.route("/new_student", methods=["POST"])
+@login_required
+
 def new_student():
     """ Add new student """
 
@@ -1326,11 +1352,11 @@ def new_student():
         role = "student",
         is_registered = False
     )
-
     # Add to database
     db.session.add(new_user)
     db.session.commit()
 
+    # Create new Students instance
     new_student = Students(
         student_id = new_user.id,
         course = course,
@@ -1339,10 +1365,11 @@ def new_student():
         monthly_fee = fee,
         active = True
     )
-    
+    # Add to database
     db.session.add(new_student)
     db.session.commit()
 
+    # Add tuitions to new student
     student_id = new_user.id
     first_tuition = enroll_date
     add_tuitions(db, Tuitions, Students, student_id, fee, first_tuition, year_finish)
@@ -1351,6 +1378,8 @@ def new_student():
 
 
 @app.route("/change_student", methods=["POST"])
+@login_required
+
 def change_student():
     """ Change student info """
 
@@ -1403,6 +1432,8 @@ def change_student():
 
 
 @app.route("/delete_student", methods=["POST"])
+@login_required
+
 def delete_student():
     """Delete student"""
 
@@ -1476,18 +1507,24 @@ def delete_student():
 
 
 @app.route("/tuitions", methods=["GET", "POST"])
+@login_required
+
 def tuitions():
     """ Display tuitions """
 
     user = db.session.query(Users).filter(Users.id == session["user_id"]).one_or_none()
-
     tuitions_data = []
+
+    # Get Global scope variable
+    year = year_begin 
+    # Get first tuition date of year
+    first_date = datetime(year, 9, 1).date()
     
     if request.method == "GET":
         
         if user.role == "admin":
-            tuitions = db.session.query(Tuitions).join(Users, Tuitions.student_id == Users.id).filter(Tuitions.tuition_date >= begin_date).order_by(Tuitions.tuition_date, Users.name).all()
-            students_names = db.session.query(Users.name).filter(Users.role == "student").order_by(Users.name).all()
+            tuitions = db.session.query(Tuitions).join(Users, Tuitions.student_id == Users.id).filter(Tuitions.tuition_date >= first_date).order_by(Tuitions.tuition_date, Users.name).all()
+            students = db.session.query(Users).join(Students).order_by(Users.name).all()
             
             if tuitions:
                 for item in tuitions:
@@ -1500,9 +1537,9 @@ def tuitions():
 
                     tuitions_data.append(data)
             
-                return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students_names=students_names)
+                return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students=students)
             else:
-                return render_template("tuitions.html", user=user, tuitions_data=None)
+                return render_template("tuitions.html", user=user, tuitions_data=None, students=students)
         
         elif user.role == "student":
             tuitions = db.session.query(Tuitions).join(student_tuitions).filter(and_(Tuitions.tuition_date >= begin_date, student_tuitions.c.student_id == user.id)).order_by(Tuitions.tuition_date).all()
@@ -1526,6 +1563,7 @@ def tuitions():
 
             student_id = db.session.query(Users.id).filter(Users.name == student_name).scalar()
             tuitions = db.session.query(Tuitions).filter(Tuitions.student_id == student_id).order_by(Tuitions.tuition_date).all()
+            students = db.session.query(Users).join(Students).order_by(Users.name).all()
 
             for item in tuitions:
 
@@ -1535,9 +1573,8 @@ def tuitions():
                 }
 
                 tuitions_data.append(data)
-            
-            students_names = db.session.query(Users.name).filter(Users.role == "student").order_by(Users.name).all()
-            return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students_names=students_names, student_name=student_name)
+           
+            return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students=students, student_name=student_name)
         
         elif month_str:
 
@@ -1546,13 +1583,11 @@ def tuitions():
             print("month:", month)
             
             if month >= 9:
-                # Get Global scope variable
-                year = year_begin 
 
                 # monthrange function returns a tuple (first_day_weekday, number_of_days)
                 last_day = calendar.monthrange(year, month)[1] # returns just the number of days
                 start_date = datetime(year, month, 1).date()
-                end_date = datetime(2024, month, last_day).date()
+                end_date = datetime(year, month, last_day).date()
 
                 print("Start_date:", start_date)
                 print("End_date:", end_date)
@@ -1568,8 +1603,8 @@ def tuitions():
                 print("End_date:", end_date)
 
             if user.role == "admin":
-                tuitions = db.session.query(Tuitions).join(Users, Tuitions.student_id == Users.id).filter(and_(Tuitions.tuition_date >= start_date, Tuitions.tuition_date <= end_date)).order_by(Users.name).all()
-                students_names = db.session.query(Users.name).filter(Users.role == "student").order_by(Users.name).all()
+                tuitions = db.session.query(Tuitions).join(Users, Tuitions.student_id == Users.id).filter(and_(Tuitions.tuition_date >= start_date, Tuitions.tuition_date <= end_date)).order_by(Users.name).all()  
+                students = db.session.query(Users.name).join(Students).order_by(Users.name).all()
 
                 for item in tuitions:
                     student = db.session.query(Users.name).filter(Users.id == item.student_id).scalar()
@@ -1580,9 +1615,8 @@ def tuitions():
                     }
 
                     tuitions_data.append(data)
-                    
-                students_names = db.session.query(Users.name).filter(Users.role == "student").order_by(Users.name).all()
-                return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students_names=students_names, month=month)
+               
+                return render_template("tuitions.html", user=user, tuitions_data=tuitions_data, students=students, month=month)
             
             elif user.role == "student":
                 tuitions = db.session.query(Tuitions).filter(and_(Tuitions.tuition_date >= start_date, Tuitions.tuition_date <= end_date, Tuitions.student_id == user.id)).all()
@@ -1595,6 +1629,8 @@ def tuitions():
 
 
 @app.route("/change_tuition", methods=["POST"])
+@login_required
+
 def change_tuition():
     """ Change tuition info """
 
@@ -1643,6 +1679,8 @@ def change_tuition():
     
 
 @app.route("/new_tuition", methods=["POST"])
+@login_required
+
 def new_tuition():
     """ Add new tuition """
 
@@ -1686,6 +1724,8 @@ def new_tuition():
 
 
 @app.route("/delete_finance", methods=["POST"])
+@login_required
+
 def delete_finance():
     """Delete tuition or salary """
 
@@ -1734,6 +1774,8 @@ def delete_finance():
 
 
 @app.route("/confirm_payment", methods=["POST"])
+@login_required
+
 def confirm_payment():
     """ Confirm payment and date """
 
@@ -1779,6 +1821,8 @@ def confirm_payment():
 
 
 @app.route("/remove_payment", methods=["POST"])
+@login_required
+
 def remove_payment():
     """ Remove payment and date """
 
@@ -1829,20 +1873,21 @@ def remove_payment():
 
 
 @app.route("/salaries", methods=["GET", "POST"])
+
+@login_required
 def salaries():
     """ Display salaries """
 
     user = db.session.query(Users).filter(Users.id == session["user_id"]).one_or_none()
-    year_start_str = "2024-09-01"
-    year_start = datetime.strptime(year_start_str, "%Y-%m-%d").date()
+
     salaries_data = []
-    teachers_names = db.session.query(Users.name).filter(Users.role == "teacher").order_by(Users.name).all()
-    
+    teachers = db.session.query(Users).join(Teachers).order_by(Users.name).all()
+
     if request.method == "GET":
 
         if user.role == "admin":
         
-            salaries = db.session.query(Salaries).join(Users, Salaries.teacher_id == Users.id).filter(Salaries.salary_date >= year_start).order_by(Salaries.salary_date, Users.name).all()
+            salaries = db.session.query(Salaries).join(Users, Salaries.teacher_id == Users.id).filter(Salaries.salary_date >= begin_date).order_by(Salaries.salary_date, Users.name).all()
 
             if salaries:
                 for item in salaries:
@@ -1855,13 +1900,13 @@ def salaries():
 
                     salaries_data.append(data)
             
-                return render_template("salaries.html", user=user, salaries_data=salaries_data, teachers_names=teachers_names)
+                return render_template("salaries.html", user=user, salaries_data=salaries_data, teachers=teachers)
             
             else:
-                return render_template("salaries.html", user=user, salaries_data=None)
+                return render_template("salaries.html", user=user, salaries_data=None, teachers=teachers)
             
         elif user.role == "teacher":
-            salaries = db.session.query(Salaries).filter(and_(Salaries.teacher_id == user.id, Salaries.salary_date >= year_start)).order_by(Salaries.salary_date).all()
+            salaries = db.session.query(Salaries).filter(and_(Salaries.teacher_id == user.id, Salaries.salary_date >= begin_date)).order_by(Salaries.salary_date).all()
 
             if salaries:
                 for item in salaries:
@@ -1879,6 +1924,7 @@ def salaries():
         teacher_name = request.form.get("teacher")
         month_str = request.form.get("month")
 
+        # User searched for teacher
         if teacher_name:
 
             print("teacher_name:", teacher_name)
@@ -1894,8 +1940,9 @@ def salaries():
 
                 salaries_data.append(data)
             
-            return render_template("salaries.html", user=user, salaries_data=salaries_data, teachers_names=teachers_names, teacher_name=teacher_name)
+            return render_template("salaries.html", user=user, salaries_data=salaries_data, teachers=teachers, teacher_name=teacher_name)
         
+        # User searched for month
         elif month_str:
 
             month=int(month_str)
@@ -1906,10 +1953,11 @@ def salaries():
                 # Get Global scope variable
                 year = year_begin 
 
+                # Get all days of month
                 # monthrange function returns a tuple (first_day_weekday, number_of_days)
                 last_day = calendar.monthrange(year, month)[1] # returns just the number of days
                 start_date = datetime(year, month, 1).date()
-                end_date = datetime(2024, month, last_day).date()
+                end_date = datetime(year, month, last_day).date()
 
                 print("Start_date:", start_date)
                 print("End_date:", end_date)
@@ -1917,6 +1965,7 @@ def salaries():
                 # Get Global scope variable
                 year = year_finish
 
+                # Get all days of month
                 last_day = calendar.monthrange(year, month)[1]
                 start_date = datetime(year, month, 1).date()
                 end_date = datetime(year, month, last_day).date()
@@ -1936,10 +1985,12 @@ def salaries():
 
                 salaries_data.append(data)
 
-            return render_template("salaries.html", user=user, salaries_data=salaries_data, teachers_names=teachers_names, month=month)
+            return render_template("salaries.html", user=user, salaries_data=salaries_data, teachers=teachers, month=month)
 
 
 @app.route("/change_salary", methods=["POST"])
+@login_required
+
 def change_salary():
     """ Change salary info """
 
@@ -1988,6 +2039,8 @@ def change_salary():
     
 
 @app.route("/new_salary", methods=["POST"])
+@login_required
+
 def new_salary():
     """ Add new salary """
 
@@ -2009,10 +2062,11 @@ def new_salary():
     # Get salary_date
     if month >= 9:
         year = year_begin
-        salary_date = datetime(year, month, 1).date()
     else:
         year = year_finish
-        salary_date = datetime(year, month, 1).date()
+ 
+    last_day = calendar.monthrange(year, month)[1]
+    salary_date = datetime(year, month, last_day).date()
 
     # Create new Salaries instance
     new_salary = Salaries(

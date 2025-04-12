@@ -164,7 +164,7 @@
                             <td>
                                 {{ item.class.hour_formatted }}
                             </td>
-                            <td translation-key="{{ item.class.name | lower }}" >
+                            <td translation-key="{{ item.class.name }}" >
                                 {{ item.class.name }}
                             </td>
                             <td>
@@ -213,7 +213,7 @@
                             <td>
                                 {{ item.class.hour_formatted }}
                             </td>
-                            <td translation-key="{{ item.class.name | lower }}">
+                            <td translation-key="{{ item.class.name }}">
                                 {{ item.class.name }}
                             </td>
                             <td>
@@ -280,7 +280,7 @@
                                 </ul> 
                             </td>
 
-                            <td class="class-name" translation-key="{{ item.class.name | lower }}">
+                            <td class="class-name" translation-key="{{ item.class.name }}">
                                 {{ item.class.name }}
                             </td>
 
@@ -594,7 +594,6 @@
                 console.log("For each inlineEdit function triggered");
 
                 column.hidden = true;
-                /*column.style.display="none";*/
             });
 
         };

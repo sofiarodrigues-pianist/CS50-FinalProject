@@ -174,7 +174,7 @@
                                 <ul>
                                     <li>
                                         {% if item.student.instrument %}
-                                            <span> {{ item.student.instrument }} </span>
+                                            <span translation-key="{{ item.student.instrument }}"> {{ item.student.instrument }} </span>
                                         {% else %}
                                             <span> ---- </span>
                                         {% endif %}
@@ -266,10 +266,10 @@
 
             {% else %}
                 <span class="lang-pt title-container" hidden>
-                    <h2 class="title"> Não existem alunos ainda </h2>
+                    <h4 class="no-info-title"> Ainda não existem alunos. </h4>
                 </span> 
                 <span class="lang-en title-container">
-                    <h2 class="title"> There are no students yet </h2>
+                    <h4 class="no-info-title"> There are no students yet. </h4>
                 </span>
                 
             {% endif %}

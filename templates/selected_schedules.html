@@ -185,11 +185,11 @@
             {% endif %}
 
         {% else %}
-            <span class="lang-en">
-                <h2> There is no schedule data for this year </h3>
+            <span class="lang-pt title-container" hidden>
+                <h4 class="no-info-title"> Não existe informação sobre horários deste ano. </h4>
             </span>
-            <span class="lang-pt" hidden>
-                <h2> Não há informação de horário para este ano </h3>
+            <span class="lang-en title-container">
+                <h4 class="no-info-title"> There is no schedule data from this year. </h4>
             </span>
 
         {% endif %}
@@ -197,29 +197,11 @@
     
     <script>
 
-        
         // Submit search data
         document.getElementById("select-year").addEventListener("change", function() {
                 document.getElementById("select-year-form").submit();
             })
 
-            
-        /*
-        // Display search modal
-        function scheduleModal(spanTag) {
-            let overlay = spanTag.querySelector(".search-year-overlay");
-            let modal = spanTag.querySelector(".search-year-modal");
-
-            overlay.style.display="block";
-            modal.style.display="block";
-
-            overlay.onclick = function(event) {
-                if (event.target == overlay) {
-                    modal.style.display = "none";
-                    overlay.style.display = "none";
-                } 
-            };
-        }*/
     </script>
 
     

@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+
+{% block main %}
+    <div class = "homepage"> 
+        <div class="homepage-container">
+            <span class="lang-pt homepage-text" hidden>
+                <h1> Software de Gestão Interna</h1>
+            </span>
+            <span class="lang-en homepage-text">
+                <h1> Internal Management App</h1>
+            </span> 
+        </div>
+    </div>
+
+    <div class="login-form">
+        <form id="login" action="/login" method="post">
+            {% if register %}
+                <div class="input-containers">
+                    <input type="hidden" name="saved_lang" class="saved-lang-input-form">
+                    <span class="lang-en">
+                        <input class="login-user" autocomplete="off" name="user_en" placeholder="school_ID" type="text">
+                        <input class="login-password" name="password_en" placeholder="Password" type="password">
+                    </span>
+                    <span class="lang-pt" hidden>
+                        <input class="login-user" autocomplete="off" name="user_pt" placeholder="ID da escola" type="text">
+                        <input class="login-password" name="password_pt" placeholder="Palavra-chave" type="password">
+                    </span>   
+                </div>
+
+                <div class="error-container"> 
+                    <span class="error-text"> {{ error }} </span>
+                </div>
+
+                <div class="btn-container">
+                    <button class="lang-en login-btn" type="submit"> Login </button>
+                    <button class="lang-pt login-btn" type="submit" hidden> Iniciar Sessão </button>
+                </div>
+            {% else %}
+                
+                <div class="error-container"> 
+                    <span class="error-text"> {{ error }} </span>
+                </div>
+
+                <a class="index-btn" href="/register" translation-key="register">REGISTER</a>
+            {% endif %}
+            
+        </form>
+    </div>
+   
+{% endblock %}
+

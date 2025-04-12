@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+
+{% block main %}
+    <div class = "homepage"> 
+        <div class="homepage-container">
+            <span class="lang-pt homepage-text" hidden>
+                <h1> Software de Gestão Interna</h1>
+            </span>
+            <span class="lang-en homepage-text">
+                <h1> Internal Management App</h1>
+            </span> 
+        </div>
+    </div>
+
+    <div class="register-form">
+        <form id="register" action="/register" method="post">
+            <input type="hidden" name="saved_lang" id="saved-lang-input-form">
+            {% if register %}
+                
+                <div class="error-container"> 
+                    <span class="error-text"> {{ error }} </span>
+                </div>
+
+                <a class="index-btn" href="/login" translation-key="login"> LOGIN </a>
+
+            {% else %}     
+                <div class="input-containers">
+                    <span class="lang-en">
+                        <input class="regist-user" autocomplete="off" name="user_en" placeholder="school_ID" type="text">
+                        <br>
+                        <input class="regist-password" name="password_en" placeholder="Password" type="password">
+                        <input class="regist-password" name="confirmation_en" placeholder="Confirm Password" type="password">
+                    </span>
+                    <span class="lang-pt" hidden>
+                        <input class="regist-user" autocomplete="off" name="user_pt" placeholder="ID da escola" type="text">
+                        <br>
+                        <input class="regist-password" name="password_pt" placeholder="Palavra-chave" type="password">
+                        <input class="regist-password" name="confirmation_pt" placeholder="Confirme a palavra-chave" type="password">
+                    </span>     
+                </div>
+
+                <div class="error-container"> 
+                    <span class="error-text"> {{ error }} </span>
+                </div>
+                
+                <div class="btn-container">
+                    <button class="lang-en register-btn" type="submit">  Register </button>
+                    <button class="lang-pt register-btn" type="submit" hidden> Registar </button>
+                </div>
+            {% endif %}
+           
+        </form>
+    </div>
+
+    <script>
+
+        // Get savedLang value and set it to input value
+        let lang = localStorage.getItem("selectedLanguage");
+        let input = document.getElementById("saved-lang-input-form");
+        input.value = lang;
+
+    </script>
+{% endblock %}
