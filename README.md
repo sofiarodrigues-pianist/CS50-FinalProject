@@ -6,7 +6,7 @@
 For my final project, I developed a web application that allows a school to manage its internal affairs. This idea was influenced by my personal experience with all the schools I worked with. 
 At one school we had an app to manage our students, their lessons and all kinds of information, although it wasn't remotely user friendly. At my current school, we don't care to much for burocracies, but there are some minimal management necessities, like lesson attendances, that we do control. The problem here is we do it on **PAPER**.
 
-This being said, my main objective was to develop a user-friendly app that allows all users - them being teachers, students or administrators - to easily access and manipulate important information.
+This being said, my main goal was to develop a user-friendly app that allows all users - them being teachers, students or administrators - to easily access and manipulate important information.
 
 This was the first obstacle I encountared. *What exactly is this important information?*
 
@@ -32,7 +32,7 @@ I ended up with the following Models:
 - Users (general info between each type of user)
   - Teachers (relationship to Users)
   - Students (relationship to Users)
-- Schedules (many-to-many rleationship with students)
+- Schedules (many-to-many relationship with students)
 - Lessons (many-to-many relationship with students)
 - Salaries (many-to-many relationship with a teacher)
 - Tuitions (many-to-many relationship with a student)
@@ -47,7 +47,7 @@ All Models have foreign keys to establish connections between them.
 
 ### Helper functions
 
-On helpers.py, besides useful functions, like *all_schedules_info*, *adjust_lessons* and similar ones, that are called on more than one function from app.py, I have four "*populate*" functions that I used in earlier stages for testing purposes. At the moment, these functions serve no purpose as they are not even called/triggered.
+On helpers.py, besides useful functions, like *all_schedules_info*, *adjust_lessons* and similar ones, that are called on more than one function from app.py, I have four "*populate*" functions that I used in earlier stages for testing purposes. At the moment, these functions serve no purpose as they are not even called/triggered. They should be moved to a test folder because they represent scenarios that will be discussed in more detail on the "future ideas" paragraph below.
 
 ## App usage and features
 
@@ -59,7 +59,7 @@ Both register and login processes are made through the user ID, which is unique 
 After this, at the register page (register.html), the user can now choose its password and confirm it, which is then encripted and saved in the database. The login page (login.html) is similar to the register page, although it doesn't have the confirmation input. 
 
 Initially, just with bug testing and functionality in mind, I had general error handlers like "BadRequest" and "NotFound".
-Later, for a more graphical error handling, I created login_error.html and register_error.html, both of which display error messages on the screen and/or redirects the user to the correct template. A feature I still want to implement in the future is the "I forgot my password" one, which would send an e-mail with a link to reset the user's password.
+Later, for a more graphical error handling, I created login_error.html and register_error.html, both of which display error messages on the screen and/or redirects the user to the correct template.
 
 ### Layout and Translations
 
@@ -75,7 +75,7 @@ Here I encountered some **setbacks** and **bugs** I ended up not entirely fixing
 
 On this app, each user is assigned a different role: *admin*, *teacher* and *student*.
 
-Initially, I visualized a set of different permissions and features for each user role. In the end, I decided that the teachers and students usage would be merely **informative**. They can only look for information, without changing anything. A future implementation would be to give them the possibility to ask for some modification, and then the admin would review and confirm/deny said modification. 
+Initially, I visualized a set of different permissions and features for each user role. In the end, I decided that the teachers and students usage would be merely **informative**. They can only look for information, without changing anything.
 
 #### Displayed information 
 
@@ -91,11 +91,24 @@ With all these modification possibilities, another difficulty I encountered was 
 - Removing a teacher means deleting its future salaries (and yet keeping older salaries), deleting schedules/classes that they used to teach (although keeping past lessons from that schedule) and to dissociate the students from those same lessons and schedules. 
 - Removing a student, besides the same problems as removing a teacher, means also to check for the schedules associated to that student and act accordingly if it's a group or individual class. If it's a group class, we only want to remove the student from that schedule, but if it is an individual class, we want to delete the schedule all together. 
 - Adding a new teacher/student means also to add all salaries/tuitions from that day on until the end of the school year (which is a global scope variable).
-- Editing any parameter from a schedule means updating every future lesson with that same modification. 
+- Editing any parameter from a schedule means updating every future lesson with that same modification.
+
+## Future Ideas
+
+There are 3 main future topics I would like to implement:
+
+- Login page: "I forgot my password" feature, which would send an e-mail with a link to reset the user's password.
+
+- Permissions: give teachers and students the possibility to ask for some modification, and then the admin would review and confirm/deny said modification.
+
+- Testing: currently this project doesn't have a dedicated testing framework. This would be beneficial since
+all testing was done manually by launching the app. As the project gets bigger, manual testing becomes more and more difficult because of the amount of features. The idea would be to create unit test, where all the used methods/functions would be tested against a given scenario. The framework to perfom this would be pytest.
 
 ## Final considerations
 
 Although there are still some minor bugs to fix and many features I still plan to implement in the future, this web app already includes a variety of important functionalities that will help a school community organize itself and streamline its internal affairs.
+
+
 
 
 
